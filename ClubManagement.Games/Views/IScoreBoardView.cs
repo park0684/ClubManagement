@@ -1,0 +1,38 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using ClubManagement.Games.DTOs;
+
+namespace ClubManagement.Games.Views
+{
+    public interface IScoreBoardView
+    {
+        string MatchTitle { set; }
+        string GameSeq { set; }
+
+        event Action<int> GameButtonClick;
+        event Action<int, int> AssignPlayerClick;
+        event EventHandler SideGameSetEvent;
+        event EventHandler AllcoverGameSetEvent;
+        event Action<string> PlayerOptionEvent;
+        event Action<PlayerInfoDto> EnterScoreEvent;
+        
+        void ShowForm();
+        void CloseForm();
+        void ShowMessage(string message);
+        void SetAllPlayerList(List<GameOrderDto> groups, List<PlayerInfoDto> players);
+        void SetBindingSideGame(List<PlayerInfoDto> players);
+        void SetSideGamePlayerList(List<PlayerInfoDto> Players);
+        void SetAllcoverGamePlayers(List<PlayerInfoDto> players);
+        void SetGroupScoreList(GameOrderDto groups);
+        void flpGameGroupClear();
+        void AddPlayerPanal(PlayerInfoDto player);
+        void CreateGroupPanal(GroupDto group, int gameSeq);
+        void CreateGameButton(List<GameOrderDto> games);
+        void LoadAllcoverGamePlayers(GameOrderDto game);
+        void SetSideGameScore(GameOrderDto game);
+    }
+}

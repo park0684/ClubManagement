@@ -44,17 +44,16 @@ namespace ClubManagement.Games.Views
             foreach (Panel pnl in flpGuestList.Controls)
             {
                 string guestName = pnl.Controls[0].Text;
-                bool isSelect = true;
                 bool gender = false;
-                if (pnl.Controls[1].Tag == "1")
+                if (pnl.Controls[1].Tag.ToString() == "1")
                     gender = true;
                 int handi = Convert.ToInt32(pnl.Controls[4].Text);
                 bool isPro = false;
-                if (pnl.Controls[2].Tag == "1")
+                if (pnl.Controls[2].Tag.ToString() == "1")
                     isPro = true;
                 PlayerInfoDto guest = new PlayerInfoDto
                 {
-                    PalyerName = guestName,
+                    PlayerName = guestName,
                     MemberCode = 0,
                     IsSelected = true,
                     Gender = gender,
@@ -139,10 +138,10 @@ namespace ClubManagement.Games.Views
             btnGender.Click += (sender, e) =>
             {
 
-                btnGender.Tag = btnGender.Tag == "0" ? "1" : "0";
-                btnGender.BackColor = btnGender.Tag == "1" ? Color.AliceBlue : Color.Transparent;
+                btnGender.Tag = btnGender.Tag.ToString() == "0" ? "1" : "0";
+                btnGender.BackColor = btnGender.Tag.ToString() == "1" ? Color.AliceBlue : Color.Transparent;
                 int i = Convert.ToInt32(txtHandi.Text);
-                if (btnGender.Tag == "1")
+                if (btnGender.Tag.ToString() == "1")
                 {
                     txtHandi.Text = (i + 15).ToString();
                 }
@@ -154,10 +153,10 @@ namespace ClubManagement.Games.Views
             btnPro.Click += (sender, e) =>
             {
 
-                btnPro.Tag = btnPro.Tag == "0" ? "1" : "0";
-                btnPro.BackColor = btnPro.Tag == "1" ? Color.AliceBlue : Color.Transparent;
+                btnPro.Tag = btnPro.Tag.ToString() == "0" ? "1" : "0";
+                btnPro.BackColor = btnPro.Tag.ToString() == "1" ? Color.AliceBlue : Color.Transparent;
                 int i = Convert.ToInt32(txtHandi.Text);
-                if (btnPro.Tag == "1")
+                if (btnPro.Tag.ToString() == "1")
                 {
                     txtHandi.Text = (i - 5).ToString();
                 }

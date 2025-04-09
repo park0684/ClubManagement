@@ -24,9 +24,12 @@ namespace ClubManagement.Members.Views
         event EventHandler SelectMemberEvent;
         event EventHandler DeleteEvent;
         event EventHandler TypeChaingedEvnet;
+        event EventHandler DuesAmountChaingedEvent;
+
         void CloseForm();
         void ShowForm();
         void SetDeleteButtonVisivle();
         void TypeChaingedSet();
+        void SetApplyCounter(int counter);
     }
 }

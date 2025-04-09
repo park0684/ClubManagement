@@ -31,6 +31,10 @@ namespace ClubManagement.Games.Repositories
                     query.Append($" AND Match_type = {model.MatchType}");
                 }
             }
+            if (model.IsScoreBoardRegisted == true)
+            {
+                query.Append(" AND match_scoreboard = 1");
+            }
             query.Append(" GROUP BY Match_code, Match_date, Match_type, Match_title, Match_host ORDER BY Match_date, Match_code");
             try
             {
@@ -89,7 +93,7 @@ namespace ClubManagement.Games.Repositories
             int matchCode = (int)model.MatchCode;
             string detetequery = "DELETE FROM attend WHERE att_code = @code";
             SqlParameter[] deleteParam = { new SqlParameter("@code", SqlDbType.Int) { Value = matchCode } };
-            string insertQuery = "INSERT INTO attend (att_code, att_name, att_memcode, att_memtype, att_gender, att_pro, att_handi) VALUES (@code, @name, @memCode, @memType, @gender, @isPro, @handi)";
+            string insertQuery = "INSERT INTO attend (att_code, att_name, att_memcode, att_memtype, att_gender, att_pro, att_handi, att_side, att_allcover) VALUES (@code, @name, @memCode, @memType, @gender, @isPro, @handi, 0, 0)";
 
             using (SqlConnection connection = OpenSql())
             {
@@ -102,10 +106,10 @@ namespace ClubManagement.Games.Repositories
                         SqlParameter[] insertParams =
                         {
                             new SqlParameter("@code", SqlDbType.Int) { Value = matchCode },
-                            new SqlParameter("@name", SqlDbType.NVarChar) { Value = player.PalyerName },
+                            new SqlParameter("@name", SqlDbType.NVarChar) { Value = player.PlayerName },
                             new SqlParameter("@memCode", SqlDbType.Int) { Value = player.MemberCode },
                             new SqlParameter("@memType", SqlDbType.Int) { Value = player.MemberCode == 0 ? 2 : 1 },
-                            new SqlParameter("@gender", SqlDbType.Int) { Value = player.Gender == true ? 0 :1 },
+                            new SqlParameter("@gender", SqlDbType.Int) { Value = player.Gender == true ? 1 :0 },
                             new SqlParameter("@isPro", SqlDbType.Int) { Value = player.IsPro == true? 1:0 },
                             new SqlParameter("@handi", SqlDbType.Int) { Value = player.Handycap }
                         };

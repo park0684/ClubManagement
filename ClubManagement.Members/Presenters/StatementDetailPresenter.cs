@@ -26,8 +26,16 @@ namespace ClubManagement.Members.Presenters
             this._view.SelectMemberEvent += MemberSelect;
             this._view.DeleteEvent += StatementDelete;
             this._view.TypeChaingedEvnet += TypeChainge;
+            this._view.DuesAmountChaingedEvent += OnAmountChainged;
             this._model.IsNew = true;
             this._view.TypeChaingedSet();
+        }
+
+        private void OnAmountChainged(object sender, EventArgs e)
+        {
+            int amount = (int)_view.DueAmount;
+            int applyCount = amount < 10000 ? 1: amount / 10000;
+            _view.SetApplyCounter(applyCount);
         }
 
         private void TypeChainge(object sender, EventArgs e)

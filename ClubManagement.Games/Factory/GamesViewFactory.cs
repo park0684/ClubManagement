@@ -23,11 +23,11 @@ namespace ClubManagement.Games.Factory
                     var presenter = new MatchListPresenter(matcthView, matchRepo);
                     return matcthView;
 
-                //case "DuesManage":
-                //    var duesView = new ScoreBoadView();
-                //    var duesRepo = new DuesRepsotiry();
-                //    var udesPres = new DuesManagePresenter(duesView, duesRepo);
-                //    return duesView;
+                case "ScoreBoardList":
+                    var ScoreBoardListView = new ScoreboardListView();
+                    var ScoreRepo = new ScoreBoardRepository();
+                    var ScorePres = new ScoreBoardListPresenter(ScoreBoardListView, ScoreRepo);
+                    return ScoreBoardListView;
 
             }
             return null;

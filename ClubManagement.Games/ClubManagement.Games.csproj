@@ -49,28 +49,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\GameOrderDto.cs" />
     <Compile Include="DTOs\PlayerInfoDto.cs" />
+    <Compile Include="DTOs\GroupDto.cs" />
     <Compile Include="Factory\GamesViewFactory.cs" />
     <Compile Include="Models\GuestModel.cs" />
     <Compile Include="Models\MatchModel.cs" />
     <Compile Include="Models\MatchSearchModel.cs" />
+    <Compile Include="Models\ScoreBoardModel.cs" />
+    <Compile Include="Presenters\EnterScorePresenter.cs" />
     <Compile Include="Presenters\GuestAddPresenter.cs" />
     <Compile Include="Presenters\MatchDetailPresenter.cs" />
     <Compile Include="Presenters\MatchListPresenter.cs" />
     <Compile Include="Presenters\MatchPlayerManagePresenter.cs" />
+    <Compile Include="Presenters\PlayerOtionPresenter.cs" />
+    <Compile Include="Presenters\ScoreBoardListPresenter.cs" />
+    <Compile Include="Presenters\ScoreBoardPlayerManagePresenter.cs" />
+    <Compile Include="Presenters\ScoreBoardPresenter.cs" />
+    <Compile Include="Presenters\ScoreboardRegistPresenter.cs" />
+    <Compile Include="Presenters\SearchMatchListPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IMatchRepository.cs" />
+    <Compile Include="Repositories\IScoreBoardRepository.cs" />
     <Compile Include="Repositories\MatchRepository.cs" />
+    <Compile Include="Repositories\ScoreBoardRepository.cs" />
+    <Compile Include="Views\EnterScoreView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\EnterScoreView.Designer.cs">
+      <DependentUpon>EnterScoreView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\GuestAddView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\GuestAddView.Designer.cs">
       <DependentUpon>GuestAddView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\IEnterScoreView.cs" />
     <Compile Include="Views\IGuestAddView.cs" />
     <Compile Include="Views\IMatchDetailView.cs" />
     <Compile Include="Views\IMatchListView.cs" />
     <Compile Include="Views\IMatchPlayerManageView.cs" />
+    <Compile Include="Views\IPlayerOptionView.cs" />
+    <Compile Include="Views\IScoreboardListView.cs" />
+    <Compile Include="Views\IScoreBoardPlayerManageView.cs" />
+    <Compile Include="Views\IScoreBoardRegistView.cs" />
+    <Compile Include="Views\IScoreBoardView.cs" />
+    <Compile Include="Views\ISearchMatchListView.cs" />
     <Compile Include="Views\MatchDetailView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +114,42 @@
     <Compile Include="Views\MatchPlayerManageView.Designer.cs">
       <DependentUpon>MatchPlayerManageView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlayerOptionView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\PlayerOptionView.Designer.cs">
+      <DependentUpon>PlayerOptionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScoreboardListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ScoreboardListView.Designer.cs">
+      <DependentUpon>ScoreboardListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScoreBoardPlayerManageView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ScoreBoardPlayerManageView.Designer.cs">
+      <DependentUpon>ScoreBoardPlayerManageView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScoreBoardRegistView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ScoreBoardRegistView.Designer.cs">
+      <DependentUpon>ScoreBoardRegistView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScoreBoardView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ScoreBoardView.Designer.cs">
+      <DependentUpon>ScoreBoardView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchMatchListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SearchMatchListView.Designer.cs">
+      <DependentUpon>SearchMatchListView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -97,12 +158,34 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\EnterScoreView.resx">
+      <DependentUpon>EnterScoreView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\GuestAddView.resx">
       <DependentUpon>GuestAddView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MatchPlayerManageView.resx">
       <DependentUpon>MatchPlayerManageView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\PlayerOptionView.resx">
+      <DependentUpon>PlayerOptionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ScoreboardListView.resx">
+      <DependentUpon>ScoreboardListView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ScoreBoardPlayerManageView.resx">
+      <DependentUpon>ScoreBoardPlayerManageView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ScoreBoardRegistView.resx">
+      <DependentUpon>ScoreBoardRegistView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ScoreBoardView.resx">
+      <DependentUpon>ScoreBoardView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\SearchMatchListView.resx">
+      <DependentUpon>SearchMatchListView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -123,6 +206,8 @@
       <Name>ClubManagement.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\check.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

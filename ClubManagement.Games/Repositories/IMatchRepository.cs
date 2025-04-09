@@ -18,5 +18,6 @@ namespace ClubManagement.Games.Repositories
         DataRow LoadMatchInfo(int MatchCode);//모임상세내역 조회
         void UpdateMatch(MatchModel model); //모임내역 업데이트
         void InsertMatch(MatchModel model); //신규 모임 등록
+
     }
 }

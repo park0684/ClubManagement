@@ -9,10 +9,14 @@ namespace ClubManagement.Games.DTOs
     public class PlayerInfoDto
     {
         public int MemberCode { get; set; }
-        public string PalyerName { get; set; }
+        public string PlayerName { get; set; }
         public bool IsSelected { get; set; }
         public bool Gender { get; set; }
         public int Handycap { get; set; }
         public bool IsPro { get; set; }
+        public int Score { get; set; }
+        public bool IndividualSide { get; set; }
+        public bool AllCoverSide { get; set; }
+        public bool IsAllCover { get; set; }
     }
 }

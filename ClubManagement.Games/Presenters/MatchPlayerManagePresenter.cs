@@ -24,14 +24,12 @@ namespace ClubManagement.Games.Presenters
             _repository = repository;
             _model = new MatchModel();
             _searchModel = new MatchSearchModel();
-            this._view.SearchMemberEvent += SearchMember;
-            this._view.PlayerUpdateEvent += PlayerUpdate;
+            this._view.SearchMemberEvent += SearchMember;;
             this._view.AddGuestEvent += GuestAdd;
             this._view.PlayerAddEvent += PlayerAdd;
             this._view.PlayerRemoveEvent += PlayerRemove;
             this._view.SavePlayerListEvent += PlayerUpdate;
             this._view.CloseEvent += CloseForm;
-            this._view.AddGuestEvent += GuestAdd;
         }
 
         private void GuestAdd(object sender, EventArgs e)
@@ -58,7 +56,7 @@ namespace ClubManagement.Games.Presenters
             string memberName = e.MemberName;
             int memberCode = (int)e.MemberCode;
 
-            var playerToRemove = _model.PlayerList.FirstOrDefault(p => p.MemberCode == memberCode && p.PalyerName == memberName);
+            var playerToRemove = _model.PlayerList.FirstOrDefault(p => p.MemberCode == memberCode && p.PlayerName == memberName);
             if (playerToRemove != null)
             {
                 _model.PlayerList.Remove(playerToRemove);
@@ -84,7 +82,7 @@ namespace ClubManagement.Games.Presenters
             _model.PlayerList.Add(new PlayerInfoDto
             {
                 MemberCode = member.MemberCode,
-                PalyerName = member.PalyerName,
+                PlayerName = member.PlayerName,
                 Gender = member.Gender,
                 IsPro = member.IsPro,
                 IsSelected = member.IsSelected,
@@ -120,9 +118,9 @@ namespace ClubManagement.Games.Presenters
             List<PlayerInfoDto> memberList = resutl.AsEnumerable().Select(row => new PlayerInfoDto
             {
                 MemberCode = row.Field<int>("mem_code"),
-                PalyerName = row.Field<string>("mem_name"),
+                PlayerName = row.Field<string>("mem_name"),
                 IsSelected = _model.PlayerList.Any(p => p.MemberCode == row.Field<int>("mem_code")),
-                Gender = row.Field<int>("mem_gender") == 0,
+                Gender = row.Field<int>("mem_gender") == 1,
                 IsPro = row.Field<int>("mem_pro") == 1
                 
             }).ToList();
@@ -135,9 +133,9 @@ namespace ClubManagement.Games.Presenters
             List<PlayerInfoDto> playerList = result.AsEnumerable().Select(row => new PlayerInfoDto
             {
                 MemberCode = row.Field<int>("att_memcode"),
-                PalyerName = row.Field<string>("att_name"),
+                PlayerName = row.Field<string>("att_name"),
                 IsSelected = true,
-                Gender = row.Field<int>("att_gender") == 0,
+                Gender = row.Field<int>("att_gender") == 1,
                 IsPro = row.Field<int>("att_pro") == 1
 
             }).ToList();

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\MemberDto.cs" />
     <Compile Include="Factory\MembersViewFactory.cs" />
     <Compile Include="Models\DuesModel.cs" />
     <Compile Include="Models\MemberModel.cs" />

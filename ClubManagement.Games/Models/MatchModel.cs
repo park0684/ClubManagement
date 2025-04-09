@@ -14,6 +14,7 @@ namespace ClubManagement.Games.Models
         public int? MatchType { get; set; }
         public DateTime? MatchDate { get; set; }
         public string MatchMemo { get; set; }
+        public bool IsScoreBoard { get; set; }
 
         public bool IsNew { get; set; }
         public List<PlayerInfoDto> PlayerList { get; set; }

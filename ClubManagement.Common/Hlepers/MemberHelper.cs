@@ -17,13 +17,14 @@ namespace ClubManagement.Common.Hlepers
             {2,"운영진" },
             {3,"볼링장 직원" },
             {4,"정회원" },
-            {5,"프로샵 직원" }
+            {5,"준회원" },
+            {10,"프로샵 직원" }
         };
         //성별
         public readonly static Dictionary<int, string> MemGender = new Dictionary<int, string>()
         {
-            {0, "여" },
-            {1, "남" }
+            {0, "남" },
+            {1, "여" }
         };
         //회비
         public readonly static Dictionary<int, string> DuesType = new Dictionary<int, string>()

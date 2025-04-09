@@ -136,7 +136,7 @@ namespace ClubManagement.Games.Views
         private void InitializeComboBox()
         {
             cmbType.Items.Add("전체");
-            foreach (var item in GameHelper.GaemType)
+            foreach (var item in GameHelper.MatchType)
             {
                 cmbType.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
             }
@@ -284,6 +284,17 @@ namespace ClubManagement.Games.Views
         public void SetPlayerListBinding(DataTable source)
         {
             dgvPlayerList.dgv.DataSource = source;
+        }
+
+        public void ShowForm()
+        {
+            StartPosition = FormStartPosition.CenterParent;
+            ShowDialog();
+        }
+
+        public void CloseForm()
+        {
+            Close();
         }
     }
 }

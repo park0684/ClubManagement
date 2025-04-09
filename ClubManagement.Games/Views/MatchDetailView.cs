@@ -28,7 +28,7 @@ namespace ClubManagement.Games.Views
         }
         private void InitializeComboBox()
         {
-            foreach (var item in GameHelper.GaemType)
+            foreach (var item in GameHelper.MatchType)
             {
                 cmbGameType.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
             }

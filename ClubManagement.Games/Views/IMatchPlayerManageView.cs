@@ -15,7 +15,6 @@ namespace ClubManagement.Games.Views
         bool SecessMember { get; set; }
 
         event EventHandler SearchMemberEvent;
-        event EventHandler PlayerUpdateEvent;
         event EventHandler<PlayerButtonEventArgs> PlayerAddEvent;
         event EventHandler<PlayerButtonEventArgs> PlayerRemoveEvent;
         event EventHandler SavePlayerListEvent;

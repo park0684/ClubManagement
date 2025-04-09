@@ -35,7 +35,7 @@ namespace ClubManagement.Games.Presenters
 
             _model.GuestList = guestList.Select(g => new PlayerInfoDto
             {
-                PalyerName = g.PalyerName,
+                PlayerName = g.PlayerName,
                 Gender = g.Gender,
                 IsPro = g.IsPro,
                 Handycap = g.Handycap,

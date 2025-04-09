@@ -27,5 +27,7 @@ namespace ClubManagement.Games.Views
         void SetGameListBinding(DataTable source);
         void SetPlayerListBinding(DataTable source);
         void ShowMessage(string message);
+        void ShowForm();
+        void CloseForm();
     }
 }

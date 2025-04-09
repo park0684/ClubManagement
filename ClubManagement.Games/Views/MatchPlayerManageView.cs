@@ -44,7 +44,6 @@ namespace ClubManagement.Games.Views
 
 
         public event EventHandler SearchMemberEvent;
-        public event EventHandler PlayerUpdateEvent;
         public event EventHandler<PlayerButtonEventArgs> PlayerAddEvent;
         public event EventHandler<PlayerButtonEventArgs> PlayerRemoveEvent;
         public event EventHandler SavePlayerListEvent;
@@ -71,7 +70,7 @@ namespace ClubManagement.Games.Views
                     Size = new Size(90, 50),
                     FlatStyle = FlatStyle.Flat,
 
-                    Text = member.PalyerName,
+                    Text = member.PlayerName,
                     Tag = member.MemberCode,
                     BackColor = member.IsSelected ? Color.FromArgb(65, 100, 223) : Color.FromArgb(54, 178, 221)
                 };
@@ -92,7 +91,7 @@ namespace ClubManagement.Games.Views
                 {
                     Size = new Size(90, 50),
                     FlatStyle = FlatStyle.Flat,
-                    Text = player.PalyerName,
+                    Text = player.PlayerName,
                     Tag = player.MemberCode,
                     BackColor = Color.FromArgb(54, 178, 221)
                 };

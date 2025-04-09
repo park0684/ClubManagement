@@ -8,7 +8,7 @@ namespace ClubManagement.Common.Hlepers
 {
     public static class GameHelper
     {
-        public readonly static Dictionary<int, string> GaemType = new Dictionary<int, string>()
+        public readonly static Dictionary<int, string> MatchType = new Dictionary<int, string>()
         {
             {1,"정기전" },
             {2,"비정기전" },
@@ -19,24 +19,36 @@ namespace ClubManagement.Common.Hlepers
             {1, "회원" },
             {2, "게스트" }
         };
-
-        public static string GetGameType(int keyCode)
+        public readonly static Dictionary<int, string> GameType = new Dictionary<int, string>()
         {
-            return CodeHelper.GetStatusString(GaemType, keyCode);
+            {1, "개인전" },
+            {2, "단체전" }
+        };
+        public static string GetMatchType(int keyCode)
+        {
+            return CodeHelper.GetStatusString(MatchType, keyCode);
         }
         public static string GetPlayerType(int keycode)
         {
             return CodeHelper.GetStatusString(PlayerType, keycode);
         }
-
-        public static int GetGameTypeCode(string valueString)
+        public static string GetGameType(int keycode)
         {
-            return CodeHelper.GetStatusCode(GaemType, valueString);
+            return CodeHelper.GetStatusString(GameType, keycode);
+        }
+
+        public static int GetMatchTypeCode(string valueString)
+        {
+            return CodeHelper.GetStatusCode(MatchType, valueString);
         }
 
         public static int GetPlayerTypeCode(string valueString)
         {
-            return CodeHelper.GetStatusCode(GaemType, valueString);
+            return CodeHelper.GetStatusCode(MatchType, valueString);
+        }
+        public static int GetGameTypeCode(string valueString)
+        {
+            return CodeHelper.GetStatusCode(GameType, valueString);
         }
     }
 }

@@ -21,34 +21,50 @@ namespace ClubManagement.Members.Views
             txtMemberName.Enabled = false;
             btnDelete.Visible = false;
         }
-        public void ViewEvent()
+        private void ViewEvent()
         {
             btnSave.Click += (s, e) => SaveEvent?.Invoke(this, EventArgs.Empty);
             btnClose.Click += (s, e) => CloseEvent?.Invoke(this, EventArgs.Empty);
             btnSelectMember.Click += (s, e) => SelectMemberEvent?.Invoke(this, EventArgs.Empty);
             btnDelete.Click += (s, e) => DeleteEvent?.Invoke(this, EventArgs.Empty);
             cmbStatementType.SelectedIndexChanged += (s, e) => TypeChaingedSet();
+            txtDueAmount.TextChanged += (s, e) => DuesAmountChaingedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public void TypeChaingedSet()
         {
-
-            if (!IsWithdrawal)
+            switch(((KeyValuePair<int, string>)cmbStatementType.SelectedItem).Value)
             {
-                grpDue.Enabled = true;
-                grpWihtdrawal.Enabled = false;
-                txtWithdrawalAmount.Text = "";
-                txtWithdrawalDetail.Text = "";
-                txtDueAmount.Text = "10000";
-                cmbCount.SelectedIndex = 0;
-            }
-            else
-            {
-                grpWihtdrawal.Enabled = true;
-                grpDue.Enabled = false;
-                txtDueAmount.Text = "";
-                txtMemberName.Text = "";
-                cmbCount.SelectedIndex = 0;
+                case "회비":
+                    grpDue.Enabled = true;
+                    grpWihtdrawal.Enabled = false;
+                    txtWithdrawalAmount.Text = "";
+                    txtWithdrawalDetail.Text = "";
+                    txtDueAmount.Text = "10000";
+                    cmbCount.SelectedIndex = 0;
+                    break;
+                case "지출":
+                    grpWihtdrawal.Enabled = true;
+                    grpDue.Enabled = false;
+                    txtDueAmount.Text = "";
+                    txtMemberName.Text = "";
+                    cmbCount.SelectedIndex = 0;
+                    break;
+                case "면제":
+                    grpDue.Enabled = true;
+                    grpWihtdrawal.Enabled = false;
+                    txtWithdrawalAmount.Text = "";
+                    txtWithdrawalDetail.Text = "";
+                    txtDueAmount.Text = "0";
+                    cmbCount.SelectedIndex = 0;
+                    break;
+                case "기타":
+                    grpWihtdrawal.Enabled = true;
+                    grpDue.Enabled = false;
+                    txtDueAmount.Text = "";
+                    txtMemberName.Text = "";
+                    cmbCount.SelectedIndex = 0;
+                    break;
             }
         }
         private void InitializeComboBox()
@@ -62,7 +78,7 @@ namespace ClubManagement.Members.Views
             cmbStatementType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStatementType.SelectedIndex = 0;
 
-            for (int i = 1; i < 12; i++)
+            for (int i = 1; i < 13; i++)
             {
                 cmbCount.Items.Add(i);
             }
@@ -93,13 +109,18 @@ namespace ClubManagement.Members.Views
         public int DueCount
         {
             get { return (int)cmbCount.SelectedItem; }
-            set { cmbCount.SelectedIndex = value; }
+            set { cmbCount.SelectedItem = value; }
         }
 
         public int? DueAmount
         {
-            get { return Convert.ToInt32(txtDueAmount.Text); }
-            set { txtDueAmount.Text = value.ToString(); }
+            get 
+            {
+                if (int.TryParse(txtDueAmount.Text, out var result))
+                    return result;
+                return 0;
+            }
+            set { txtDueAmount.Text = (value ?? 0).ToString(); }
         }
 
         public int? Withdrawal
@@ -150,6 +171,7 @@ namespace ClubManagement.Members.Views
         public event EventHandler SelectMemberEvent;
         public event EventHandler DeleteEvent;
         public event EventHandler TypeChaingedEvnet;
+        public event EventHandler DuesAmountChaingedEvent;
 
         public void CloseForm()
         {
@@ -166,6 +188,11 @@ namespace ClubManagement.Members.Views
             Form form = (Form)this;
             form.StartPosition = FormStartPosition.CenterParent;
             form.ShowDialog();
+        }
+
+        public void SetApplyCounter(int counter)
+        {
+            cmbCount.SelectedItem = counter;
         }
     }
 }
