@@ -34,6 +34,18 @@ namespace ClubManagement.Members.Presenters
 
         private void MemberInfoSave(object sender, EventArgs e)
         {
+            bool isError = ValidateInput();
+            if (isError)
+                return;
+
+            _model.MemberName = _view.MemberName;
+            _model.Status = _view.Status ?? 0;
+            _model.Gender = _view.Gender ?? 0;
+            _model.Position = _view.Position ?? 0;
+            _model.Birth = _view.Birth;
+            _model.AccessDate = (DateTime)_view.AccessDate;
+            _model.SecessDate = (DateTime)_view.SecessDate;
+            _model.Memo = _view.Memo;
             try
             {
                 if (_model.IsNew)
@@ -44,6 +56,7 @@ namespace ClubManagement.Members.Presenters
                 {
                     _repository.UpdateMember(_model);
                 }
+                _view.CloseForm();
             }
             catch(Exception ex)
             {
@@ -73,6 +86,20 @@ namespace ClubManagement.Members.Presenters
             _view.AccessDate = _model.AccessDate;
             _view.SecessDate = _model.SecessDate;
             _view.Memo = _model.Memo;
+        }
+        private bool ValidateInput()
+        {
+            if (string.IsNullOrEmpty(_view.MemberName))
+            {
+                _view.ShowMessage("회원명을 입력하세요");
+                return true;
+            }
+            if (string.IsNullOrEmpty(_view.Birth))
+            {
+                _view.ShowMessage("생년을 입력하세요");
+                return true;
+            }
+            return false;
         }
     }
 }

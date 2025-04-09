@@ -12,8 +12,8 @@ namespace ClubManagement.Common.Repositories
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
             builder.DataSource = "127.0.0.1,49492";
-            builder.UserID = "sa";
-            builder.Password = "!gksmftkfkd1";
+            builder.UserID = "na2so";
+            builder.Password = "!admin1010";
             builder.InitialCatalog = "na2so";
             _sqlConnectionstring = builder.ConnectionString;
             SqlConnection connectionDatabase = new SqlConnection(_sqlConnectionstring);
