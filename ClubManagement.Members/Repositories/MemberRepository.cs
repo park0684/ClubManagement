@@ -16,7 +16,7 @@ namespace ClubManagement.Members.Repositories
             //
 
             StringBuilder query = new StringBuilder();
-            
+
             query.Append("SELECT mem_code, mem_name ,mem_birth, mem_gender,mem_position, ISNULL(match_regular.att_count,0) reglar_count, ");
             query.Append(" ISNULL(match_irregular.att_count, 0) irregular_count, ISNULL(match_event.att_count, 0) event_count,(SELECT COUNT(match_code) FROM match WHERE match_type = 1 AND match_date >= mem_access) game_count ,mem_access, mem_secess, mem_status, ");
             query.Append("ISNULL((SELECT MAX(match_date) FROM attend, match WHERE att_code = match_code AND att_name = mem_name),NULL) match_last,");

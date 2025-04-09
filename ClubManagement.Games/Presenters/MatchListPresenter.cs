@@ -35,6 +35,7 @@ namespace ClubManagement.Games.Presenters
         {
             try
             {
+                
                 _model.FromDate = _view.MatchFromDate;
                 _model.ToDate = _view.MatchToDate;
                 _model.MatchType = _view.MatchType ?? 0;

@@ -31,6 +31,7 @@ namespace ClubManagement.Games.Presenters
             this._view.PlayerRemoveEvent += PlayerRemove;
             this._view.SavePlayerListEvent += PlayerUpdate;
             this._view.CloseEvent += CloseForm;
+            this._view.AddGuestEvent += GuestAdd;
         }
 
         private void GuestAdd(object sender, EventArgs e)

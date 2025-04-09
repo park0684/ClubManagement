@@ -44,6 +44,7 @@ namespace ClubManagement.Members.Views
             dtpSecToDate.Enabled = false;
             dtpGameFromDate.Enabled = false;
             dtpGameToDate.Enabled = false;
+            chkExculde.Enabled = false;
         }
 
         private void InitializeDataGridView()
