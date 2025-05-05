@@ -278,7 +278,7 @@ namespace ClubManagement.Members.Views
             {
                 if (dgvMemberList.dgv.SelectedRows.Count > 0)
                 {
-                    return Convert.ToInt32(dgvMemberList.dgv.CurrentRow.Cells["code"].Value);
+                    return Convert.ToInt32(dgvMemberList.dgv.CurrentRow.Cells["MemberCode"].Value);
                 }
                 return null;
             }

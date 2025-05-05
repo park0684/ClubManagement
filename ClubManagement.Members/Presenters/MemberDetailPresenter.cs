@@ -27,11 +27,21 @@ namespace ClubManagement.Members.Presenters
             this._model.IsNew = true;
         }
 
+        /// <summary>
+        /// 닫기 버튼 이벤트
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseFome(object sender, EventArgs e)
         {
             _view.CloseForm();
         }
 
+        /// <summary>
+        /// 저장 버튼 클릭 이벤트
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MemberInfoSave(object sender, EventArgs e)
         {
             bool isError = ValidateInput();
@@ -63,6 +73,11 @@ namespace ClubManagement.Members.Presenters
                 _view.ShowMessage(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 조호된 회원 더블 클릭 시 회원코드를 넘겨 받아 회원 정보 조회
+        /// </summary>
+        /// <param name="memCode"></param>
         public void GetMemberInfo(int memCode)
         {
             DataRow row = _repository.LoadMemberInfo(memCode);
@@ -88,6 +103,11 @@ namespace ClubManagement.Members.Presenters
             _view.SecessDate = _model.SecessDate;
             _view.Memo = _model.Memo;
         }
+
+        /// <summary>
+        /// 저장 이벤트 실행 시 미입력 여부 확인
+        /// </summary>
+        /// <returns></returns>
         private bool ValidateInput()
         {
             if (string.IsNullOrEmpty(_view.MemberName))

@@ -570,7 +570,7 @@ namespace ClubManagement.Games.Views
                 {
                     if(row.Cells["player"].Value.ToString() == player["playerName"].ToString())
                     {
-                        row.Cells["handycap"].Value = player["score"];
+                        row.Cells["handycap"].Value = player["handi"];
                         row.Cells["score"].Value = player["totalScore"];
                         row.Cells["rank"].Value = player["rank"];
                     }

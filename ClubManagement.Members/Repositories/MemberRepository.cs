@@ -122,8 +122,8 @@ namespace ClubManagement.Members.Repositories
             DataTable result = SqlAdapterQuery(query);
             DataRow row = result.Rows[0];
             var code = row[0];
-            query = "INSERT INTO MEMBER (mem_code, mem_name, mem_status, mem_birth, mem_gender, mem_position, mem_memo, mem_access)" +
-                $"VALUES (@code, @name, @status, @birth, @gender, @position, @memo, @access)";
+            query = "INSERT INTO MEMBER (mem_code, mem_name, mem_status, mem_birth, mem_gender, mem_position, mem_memo, mem_access, mem_pro)" +
+                $"VALUES (@code, @name, @status, @birth, @gender, @position, @memo, @access, @pro)";
             SqlParameter[] parameters =
             {
                 new SqlParameter("@code",SqlDbType.Int){Value = code },
@@ -133,7 +133,8 @@ namespace ClubManagement.Members.Repositories
                 new SqlParameter("@gender",SqlDbType.Int){Value = model.Gender},
                 new SqlParameter("@position", SqlDbType.Int){ Value = model.Position },
                 new SqlParameter("@memo", SqlDbType.NVarChar){ Value = model.Memo },
-                new SqlParameter("@access", SqlDbType.Date){Value = model.AccessDate.Value.ToString("yyyy-MM-dd")}
+                new SqlParameter("@access", SqlDbType.Date){Value = model.AccessDate.Value.ToString("yyyy-MM-dd") },
+                new SqlParameter("@pro",SqlDbType.Int){ Value = model.IsPro == true ? 1:0 } 
             };
             using (SqlConnection connection = OpenSql())
             {

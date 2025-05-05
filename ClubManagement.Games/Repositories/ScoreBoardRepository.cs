@@ -86,7 +86,7 @@ namespace ClubManagement.Games.Repositories
                     var currentGame = model.GameList.FirstOrDefault(g => g.GameSeq == gameOrder);
                     var currentGroup = currentGame.Groups.FirstOrDefault(c => c.GroupNumber == group);
                     query = "INSERT INTo players(pl_match, pl_game, pl_group, pl_member,pl_name,pl_handi,pl_pro,pl_gender, pl_side, pl_allcover,pl_score) " +
-                        "VALUES(@match,@game,@group, @member, @name, @handi, @pro, @gender, @side, @allcover, 0)";
+                        "VALUES(@match,@game,@group, @member, @name, @handi, @pro, @gender, @side, @allcover, @score)";
                     foreach (var player in currentGroup.players)
                     {
 
@@ -103,7 +103,8 @@ namespace ClubManagement.Games.Repositories
                             new SqlParameter("@gender",SqlDbType.TinyInt){Value = player.Gender},
                             //new SqlParameter("@newbie",SqlDbType.TinyInt){Value = player.new},
                             new SqlParameter("@side",SqlDbType.TinyInt){Value = player.IndividualSide},
-                            new SqlParameter("@allcover",SqlDbType.TinyInt){Value = player.AllCoverSide}
+                            new SqlParameter("@allcover",SqlDbType.TinyInt){Value = player.AllCoverSide},
+                            new SqlParameter("@score", SqlDbType.Int){Value = player.Score}
                         };
                         ExecuteNonQuery(query, connection, transaction, parameters);
                     }

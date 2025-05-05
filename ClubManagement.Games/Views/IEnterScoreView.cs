@@ -12,10 +12,10 @@ namespace ClubManagement.Games.Views
         int? Handi { get; set; }
         int? TotalScore { get; set; }
         string PlayerName { get;  set; }
-        bool IsPerface { get; set; }
+        bool IsPerfact { get; set; }
         bool IsAllcover { get; set; }
 
-        event EventHandler EnterScroeEvent;
+        event EventHandler EnterScoreEvent;
         event EventHandler IsPerFectEvent;
         event EventHandler IsAllcoverEvent;
         event EventHandler CloseFormEvent;

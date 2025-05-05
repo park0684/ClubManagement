@@ -10,9 +10,11 @@ namespace ClubManagement.Games.Views
 {
     public interface IScoreBoardView
     {
+        //필드
         string MatchTitle { set; }
         string GameSeq { set; }
 
+        //이벤트
         event Action<int> GameButtonClick;
         event Action<int, int> AssignPlayerClick;
         event EventHandler SideGameSetEvent;
@@ -20,6 +22,7 @@ namespace ClubManagement.Games.Views
         event Action<string> PlayerOptionEvent;
         event Action<PlayerInfoDto> EnterScoreEvent;
         
+        //메서드
         void ShowForm();
         void CloseForm();
         void ShowMessage(string message);

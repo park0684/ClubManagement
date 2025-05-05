@@ -25,7 +25,11 @@ namespace ClubManagement.Members.Presenters
             _view.AddMemberEvent += AddMember;
             _view.EidtMemberEvent += LoadMemberInfo;
         }
-
+        /// <summary>
+        /// 회원 선택 후 상세 정보 조회 또는 수정
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadMemberInfo(object sender, EventArgs e)
         {
             int memberCode = _view.SelectedCode.Value;
@@ -36,11 +40,25 @@ namespace ClubManagement.Members.Presenters
             view.ShowForm();
         }
 
+        /// <summary>
+        /// 회원 등록 버튼 클릭
+        /// 신규 회원 등록 기능
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddMember(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            IMemberDetailView view = new MemberDetailView();
+            IMemberRepository repository = new MemberRepository();
+            MemberDetailPresenter presenter = new MemberDetailPresenter(view, repository);
+            view.ShowForm();
         }
-
+        /// <summary>
+        /// 회원 조회 이벤트
+        /// view 필드의 회원 조회 조건을 MemberSearchModel에 등록 후 조회 진행
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadMemberList(object sender, EventArgs e)
         {
             try
@@ -82,29 +100,6 @@ namespace ClubManagement.Members.Presenters
                     row["nonPayment"] = nonPayment < 0 ? 0 : nonPayment;
                     double rate = DataConvertHelper.ConvertRate(row["game_count"], row["reglar_count"]);
                     row["regularRate"] = rate;
-                    //memberList.Add(new MemberDto
-                    //{
-                    //    No = i++,
-                    //    MemberCode = Convert.ToInt32(row["mem_code"]),
-                    //    Name = row["mem_name"].ToString(),
-                    //    Brith = row["mem_birth"].ToString(),
-                    //    Status = Convert.ToInt32(row["mem_status"]),
-                    //    Gender = Convert.ToInt32(row["mem_gender"]),
-                    //    Position = Convert.ToInt32(row["mem_position"]),
-                    //    RegularMatch = Convert.ToInt32(row["reglar_count"]),
-                    //    IrregularMatch = Convert.ToInt32(row["irregular_count"]),
-                    //    EventMatch = Convert.ToInt32(row["event_count"]),
-                    //    RegulaRate = DataConvertHelper.ConvertRate(row["game_count"], row["reglar_count"]),
-                    //    Payment = Convert.ToInt32(row["Payment"]),
-                    //    NonPayament = Math.Max(0, Convert.ToInt32(row["mem_dues"]) - Convert.ToInt32(row["Payment"])),
-                    //    AccessDate = row["mem_access"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["mem_access"]),
-                    //    SecessDate = row["mem_secess"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["mem_secess"]),
-                    //    LastMatchDate = row["match_last"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["match_last"]),
-                    //    Memo = row["mem_memo"].ToString()
-                    //});
-
-
-
                 }
                 result.Columns.Remove("mem_status");
                 result.Columns.Remove("mem_gender");
