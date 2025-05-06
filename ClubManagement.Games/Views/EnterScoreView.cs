@@ -162,7 +162,7 @@ namespace ClubManagement.Games.Views
             }
             else if(Convert.ToInt32(lblScore.Text) > 300) // 300점 이상 입력 시 메시지 박스 발생
             {
-                ShowMessage("대단한데... 핀이 20개라도 된거야?");
+                ShowMessage("300점 이상은 입력 할 수 없습니다");
                 lblScore.Text = "0";
             }
         }

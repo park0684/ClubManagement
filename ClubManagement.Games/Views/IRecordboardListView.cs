@@ -8,16 +8,16 @@ using System.Data;
 
 namespace ClubManagement.Games.Views
 {
-    public interface IScoreboardListView
+    public interface IRecordboardListView
     {
         DateTime FromDate { get; set; }
         DateTime ToDate { get; set; }
         int? GetMatchCode { get; }
 
-        event EventHandler ScoreBoardRegistEvent;
-        event EventHandler ScoreBoardEditEvent;
-        event EventHandler ScoreBoarSelectedEvent;
-        event EventHandler SearchScoreBoardEvnt;
+        event EventHandler RecordBoardRegistEvent;
+        event EventHandler RecordBoardEditEvent;
+        event EventHandler RecordBoarSelectedEvent;
+        event EventHandler SearchRecordBoardEvnt;
 
         void SetDataBinding(DataTable resource);
         void ShowMessage(string message);

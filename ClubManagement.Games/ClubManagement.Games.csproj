@@ -56,23 +56,23 @@
     <Compile Include="Models\GuestModel.cs" />
     <Compile Include="Models\MatchModel.cs" />
     <Compile Include="Models\MatchSearchModel.cs" />
-    <Compile Include="Models\ScoreBoardModel.cs" />
+    <Compile Include="Models\RecordBoardModel.cs" />
     <Compile Include="Presenters\EnterScorePresenter.cs" />
     <Compile Include="Presenters\GuestAddPresenter.cs" />
     <Compile Include="Presenters\MatchDetailPresenter.cs" />
     <Compile Include="Presenters\MatchListPresenter.cs" />
     <Compile Include="Presenters\MatchPlayerManagePresenter.cs" />
     <Compile Include="Presenters\PlayerOtionPresenter.cs" />
-    <Compile Include="Presenters\ScoreBoardListPresenter.cs" />
-    <Compile Include="Presenters\ScoreBoardPlayerManagePresenter.cs" />
-    <Compile Include="Presenters\ScoreBoardPresenter.cs" />
-    <Compile Include="Presenters\ScoreboardRegistPresenter.cs" />
+    <Compile Include="Presenters\RecordBoardListPresenter.cs" />
+    <Compile Include="Presenters\RecordBoardPlayerManagePresenter.cs" />
+    <Compile Include="Presenters\RecordBoardPresenter.cs" />
+    <Compile Include="Presenters\RecordboardRegistPresenter.cs" />
     <Compile Include="Presenters\SearchMatchListPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IMatchRepository.cs" />
-    <Compile Include="Repositories\IScoreBoardRepository.cs" />
+    <Compile Include="Repositories\IRecordBoardRepository.cs" />
     <Compile Include="Repositories\MatchRepository.cs" />
-    <Compile Include="Repositories\ScoreBoardRepository.cs" />
+    <Compile Include="Repositories\RecordBoardRepository.cs" />
     <Compile Include="Views\EnterScoreView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,10 +91,10 @@
     <Compile Include="Views\IMatchListView.cs" />
     <Compile Include="Views\IMatchPlayerManageView.cs" />
     <Compile Include="Views\IPlayerOptionView.cs" />
-    <Compile Include="Views\IScoreboardListView.cs" />
-    <Compile Include="Views\IScoreBoardPlayerManageView.cs" />
-    <Compile Include="Views\IScoreBoardRegistView.cs" />
-    <Compile Include="Views\IScoreBoardView.cs" />
+    <Compile Include="Views\IRecordboardListView.cs" />
+    <Compile Include="Views\IRecordBoardPlayerManageView.cs" />
+    <Compile Include="Views\IRecordBoardRegistView.cs" />
+    <Compile Include="Views\IRecordBoardView.cs" />
     <Compile Include="Views\ISearchMatchListView.cs" />
     <Compile Include="Views\MatchDetailView.cs">
       <SubType>Form</SubType>
@@ -120,29 +120,29 @@
     <Compile Include="Views\PlayerOptionView.Designer.cs">
       <DependentUpon>PlayerOptionView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScoreboardListView.cs">
+    <Compile Include="Views\RecordboardListView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ScoreboardListView.Designer.cs">
-      <DependentUpon>ScoreboardListView.cs</DependentUpon>
+    <Compile Include="Views\RecordboardListView.Designer.cs">
+      <DependentUpon>RecordboardListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScoreBoardPlayerManageView.cs">
+    <Compile Include="Views\RecordBoardPlayerManageView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ScoreBoardPlayerManageView.Designer.cs">
-      <DependentUpon>ScoreBoardPlayerManageView.cs</DependentUpon>
+    <Compile Include="Views\RecordBoardPlayerManageView.Designer.cs">
+      <DependentUpon>RecordBoardPlayerManageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScoreBoardRegistView.cs">
+    <Compile Include="Views\RecordBoardRegistView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ScoreBoardRegistView.Designer.cs">
-      <DependentUpon>ScoreBoardRegistView.cs</DependentUpon>
+    <Compile Include="Views\RecordBoardRegistView.Designer.cs">
+      <DependentUpon>RecordBoardRegistView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScoreBoardView.cs">
+    <Compile Include="Views\RecordBoardView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ScoreBoardView.Designer.cs">
-      <DependentUpon>ScoreBoardView.cs</DependentUpon>
+    <Compile Include="Views\RecordBoardView.Designer.cs">
+      <DependentUpon>RecordBoardView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchMatchListView.cs">
       <SubType>Form</SubType>
@@ -172,17 +172,17 @@
     <EmbeddedResource Include="Views\PlayerOptionView.resx">
       <DependentUpon>PlayerOptionView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ScoreboardListView.resx">
-      <DependentUpon>ScoreboardListView.cs</DependentUpon>
+    <EmbeddedResource Include="Views\RecordboardListView.resx">
+      <DependentUpon>RecordboardListView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ScoreBoardPlayerManageView.resx">
-      <DependentUpon>ScoreBoardPlayerManageView.cs</DependentUpon>
+    <EmbeddedResource Include="Views\RecordBoardPlayerManageView.resx">
+      <DependentUpon>RecordBoardPlayerManageView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ScoreBoardRegistView.resx">
-      <DependentUpon>ScoreBoardRegistView.cs</DependentUpon>
+    <EmbeddedResource Include="Views\RecordBoardRegistView.resx">
+      <DependentUpon>RecordBoardRegistView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ScoreBoardView.resx">
-      <DependentUpon>ScoreBoardView.cs</DependentUpon>
+    <EmbeddedResource Include="Views\RecordBoardView.resx">
+      <DependentUpon>RecordBoardView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SearchMatchListView.resx">
       <DependentUpon>SearchMatchListView.cs</DependentUpon>

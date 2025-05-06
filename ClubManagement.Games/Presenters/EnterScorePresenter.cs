@@ -14,9 +14,9 @@ namespace ClubManagement.Games.Presenters
     public class EnterScorePresenter
     {
         IEnterScoreView _view;
-        IScoreBoardRepository _repository;
-        ScoreBoardModel _model;
-        public EnterScorePresenter(IEnterScoreView view, IScoreBoardRepository repository, ScoreBoardModel model)
+        IRecordBoardRepository _repository;
+        RecordBoardModel _model;
+        public EnterScorePresenter(IEnterScoreView view, IRecordBoardRepository repository, RecordBoardModel model)
         {
             _view = view;
             _repository = repository;

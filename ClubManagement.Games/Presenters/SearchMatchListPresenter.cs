@@ -44,7 +44,7 @@ namespace ClubManagement.Games.Presenters
         {
             _model.FromDate = _view.FromDate;
             _model.ToDate = _view.ToDate;
-            _model.IsScoreBoardRegisted = false;
+            _model.IsRecordBoardRegisted = false;
             _model.MatchType = 0;
             DataTable source;
 

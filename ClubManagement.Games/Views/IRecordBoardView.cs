@@ -8,7 +8,7 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Views
 {
-    public interface IScoreBoardView
+    public interface IRecordBoardView
     {
         //필드
         string MatchTitle { set; }

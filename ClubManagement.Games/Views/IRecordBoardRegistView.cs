@@ -7,7 +7,7 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Views
 {
-    public interface IScoreBoardRegistView
+    public interface IRecordBoardRegistView
     {
         string MatchTitle { get; set; }
         int OrderCount { get; set; }
@@ -27,5 +27,7 @@ namespace ClubManagement.Games.Views
         void CloseForm();
         void ShowForm();
         void ShowMessge(string message);
+        void SetMatchButton();
+
     }
 }

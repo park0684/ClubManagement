@@ -7,7 +7,7 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Views
 {
-    public interface IScoreBoardPlayerManageView
+    public interface IRecordBoardPlayerManageView
     {
 
         event EventHandler SaveEvent;

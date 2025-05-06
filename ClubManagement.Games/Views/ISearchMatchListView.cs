@@ -13,6 +13,7 @@ namespace ClubManagement.Games.Views
         DateTime ToDate { get; set; }
         int MatchCode { get;}
         string MatchTitle { get;}
+        bool IsRecodeRegisted { get; }
 
         event EventHandler CloseFormEvent;
         event EventHandler SearchMatchEvent;

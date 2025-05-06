@@ -48,8 +48,12 @@ namespace ClubManagement.Games.Views
             dgv.Columns.Add("totalPlayer", "참석인원");
             dgv.Columns.Add("member", "회원");
             dgv.Columns.Add("nonMember", "비회원");
+            dgv.Columns.Add("isRecord", "등록여부");
+            dgv.Columns["isRecord"].Visible = false;
+            
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.AutoGenerateColumns = false;
             dgvMatchList.ApplyDefaultColumnSettings();
             dgvMatchList.FormatAsDate("date");
             dgvMatchList.FormatAsStringLeft("title");
@@ -64,6 +68,7 @@ namespace ClubManagement.Games.Views
             dgv.Columns["totalPlayer"].DataPropertyName = "totalplayer";
             dgv.Columns["member"].DataPropertyName = "Member";
             dgv.Columns["nonMember"].DataPropertyName = "guest";
+            dgv.Columns["isRecord"].DataPropertyName = "match_record";
 
         }
         private void InitializeDateTimePicker()
@@ -168,6 +173,17 @@ namespace ClubManagement.Games.Views
                 if (dgvMatchList.dgv.CurrentRow == null) return string.Empty;
                 return dgvMatchList.dgv.CurrentRow.Cells["title"].Value.ToString();
             }
+        }
+
+        public bool IsRecodeRegisted
+        {  
+            get
+            {
+                if (dgvMatchList.dgv.CurrentCell == null)
+                    return false;
+                return Convert.ToBoolean(dgvMatchList.dgv.CurrentRow.Cells["isRecord"].Value);
+            }
+
         }
     }
 }

@@ -11,27 +11,27 @@ using ClubManagement.Games.Views;
 
 namespace ClubManagement.Games.Presenters
 {
-    public class ScoreBoardListPresenter
+    public class RecordBoardListPresenter
     {
-        IScoreboardListView _view;
-        IScoreBoardRepository _repository;
+        IRecordboardListView _view;
+        IRecordBoardRepository _repository;
         MatchSearchModel _model;
-        public ScoreBoardListPresenter(IScoreboardListView view, IScoreBoardRepository repository)
+        public RecordBoardListPresenter(IRecordboardListView view, IRecordBoardRepository repository)
         {
             this._view = view;
             this._repository = repository;
             this._model = new MatchSearchModel();
-            this._view.ScoreBoardRegistEvent += ScoreBoardSetRegist;
-            this._view.ScoreBoardEditEvent += ScoreBoardSetEidt;
-            this._view.ScoreBoarSelectedEvent += ScoreBoardSelected;
-            this._view.SearchScoreBoardEvnt += SearchMatchList;
+            this._view.RecordBoardRegistEvent += ScoreBoardSetRegist;
+            this._view.RecordBoardEditEvent += ScoreBoardSetEidt;
+            this._view.RecordBoarSelectedEvent += ScoreBoardSelected;
+            this._view.SearchRecordBoardEvnt += SearchMatchList;
             LoadMatchList();
         }
         private void LoadMatchList()
         {
             _model.FromDate = _view.FromDate;
             _model.ToDate = _view.ToDate;
-            _model.IsScoreBoardRegisted = true;
+            _model.IsRecordBoardRegisted = true;
             _model.MatchType = 0;
             IMatchRepository repository = new MatchRepository();
             DataTable source = repository.LoadMatchList(_model);
@@ -53,9 +53,9 @@ namespace ClubManagement.Games.Presenters
         private void ScoreBoardSelected(object sender, EventArgs e)
         {
             int code = _view.GetMatchCode.Value;
-            IScoreBoardView view = new ScoreBoardView();
-            IScoreBoardRepository repository = new ScoreBoardRepository();
-            ScoreBoardPresenter presenter = new ScoreBoardPresenter(view, repository);
+            IRecordBoardView view = new RecordBoardView();
+            IRecordBoardRepository repository = new RecordBoardRepository();
+            RecordBoardPresenter presenter = new RecordBoardPresenter(view, repository);
             presenter.GetMatchInfo(code);
             view.ShowForm();
         }
@@ -63,18 +63,18 @@ namespace ClubManagement.Games.Presenters
         private void ScoreBoardSetEidt(object sender, EventArgs e)
         {
             int code = _view.GetMatchCode.Value;
-            IScoreBoardRegistView view = new ScoreBoardRegistView();
-            IScoreBoardRepository repository = new ScoreBoardRepository();
-            ScoreboardRegistPresenter presenter = new ScoreboardRegistPresenter(view, repository);
+            IRecordBoardRegistView view = new RecordBoardRegistView();
+            IRecordBoardRepository repository = new RecordBoardRepository();
+            RecordboardRegistPresenter presenter = new RecordboardRegistPresenter(view, repository);
             presenter.LoadGameList(code);
             view.ShowForm();
         }
 
         private void ScoreBoardSetRegist(object sender, EventArgs e)
         {
-            IScoreBoardRegistView view = new ScoreBoardRegistView();
-            IScoreBoardRepository repository = new ScoreBoardRepository();
-            new ScoreboardRegistPresenter(view, repository);
+            IRecordBoardRegistView view = new RecordBoardRegistView();
+            IRecordBoardRepository repository = new RecordBoardRepository();
+            new RecordboardRegistPresenter(view, repository);
             view.ShowForm();
         }
     }

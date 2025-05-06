@@ -40,7 +40,6 @@ namespace ClubManagement.Games.Views
             this.btnNumber5 = new System.Windows.Forms.Button();
             this.btnNumber6 = new System.Windows.Forms.Button();
             this.btnNumber7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
             this.btnNumber8 = new System.Windows.Forms.Button();
             this.btnNumber9 = new System.Windows.Forms.Button();
             this.btnNumber0 = new System.Windows.Forms.Button();
@@ -184,16 +183,6 @@ namespace ClubManagement.Games.Views
             this.btnNumber7.TabIndex = 3;
             this.btnNumber7.Text = "7";
             this.btnNumber7.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Font = new System.Drawing.Font("맑은 고딕", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.button8.Location = new System.Drawing.Point(419, 181);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(60, 60);
-            this.button8.TabIndex = 3;
-            this.button8.Text = "button1";
-            this.button8.UseVisualStyleBackColor = true;
             // 
             // btnNumber8
             // 
@@ -379,7 +368,6 @@ namespace ClubManagement.Games.Views
             this.Controls.Add(this.btnNumber0);
             this.Controls.Add(this.btnNumber9);
             this.Controls.Add(this.btnNumber8);
-            this.Controls.Add(this.button8);
             this.Controls.Add(this.btnNumber7);
             this.Controls.Add(this.btnNumber6);
             this.Controls.Add(this.btnNumber5);
@@ -420,7 +408,6 @@ namespace ClubManagement.Games.Views
         private System.Windows.Forms.Button btnNumber5;
         private System.Windows.Forms.Button btnNumber6;
         private System.Windows.Forms.Button btnNumber7;
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button btnNumber8;
         private System.Windows.Forms.Button btnNumber9;
         private System.Windows.Forms.Button btnNumber0;

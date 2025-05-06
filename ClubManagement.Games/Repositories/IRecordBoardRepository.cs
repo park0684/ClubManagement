@@ -9,15 +9,15 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Repositories
 {
-    public interface IScoreBoardRepository
+    public interface IRecordBoardRepository
     {
         DataTable LoadGameOrder(int code);
         DataTable LoadAllPalyerList(int code);
         DataTable LoadGamePlayers(int match);
         DataRow LoadGamePlayer(int match, int game, string name);
         object LoadMatchTitle(int matchCode);
-        void InsertGame(ScoreBoardModel model);
-        void InsertGamePlayer(ScoreBoardModel model);
+        void InsertGame(RecordBoardModel model);
+        void InsertGamePlayer(RecordBoardModel model);
         void UpdatePlayerInfo(PlayerInfoDto player, int match);
         void UPdatePlayerScore(PlayerInfoDto player,int match, int game);
 

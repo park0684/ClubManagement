@@ -11,13 +11,13 @@ using ClubManagement.Games.Views;
 
 namespace ClubManagement.Games.Presenters
 {
-    public class ScoreBoardPlayerManagePresenter
+    public class RecordBoardPlayerManagePresenter
     {
-        IScoreBoardPlayerManageView _view;
-        IScoreBoardRepository _repository;
-        ScoreBoardModel _model;
+        IRecordBoardPlayerManageView _view;
+        IRecordBoardRepository _repository;
+        RecordBoardModel _model;
 
-        public ScoreBoardPlayerManagePresenter(IScoreBoardPlayerManageView view,IScoreBoardRepository repository,ScoreBoardModel model)
+        public RecordBoardPlayerManagePresenter(IRecordBoardPlayerManageView view,IRecordBoardRepository repository,RecordBoardModel model)
         {
             _view = view;
             _repository = repository;

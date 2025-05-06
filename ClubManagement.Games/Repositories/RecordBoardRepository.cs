@@ -11,9 +11,9 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Repositories
 {
-    class ScoreBoardRepository : BaseRepository, IScoreBoardRepository 
+    class RecordBoardRepository : BaseRepository, IRecordBoardRepository 
     {
-        public void InsertGame(ScoreBoardModel model)
+        public void InsertGame(RecordBoardModel model)
         {
             int matchCode = model.MatchCode;
             string query = $"SELECT COUNT(game_order) FROM games WHERE game_code = {matchCode} ";
@@ -44,7 +44,7 @@ namespace ClubManagement.Games.Repositories
                         };
                         ExecuteNonQuery(query, connection, transaction, parameters);
                     }
-                    query = $"UPDATE match SET match_scoreboard = 1 WHERE match_code = @code";
+                    query = $"UPDATE match SET match_recordboard = 1 WHERE match_code = @code";
                     SqlParameter[] updateParam = { new SqlParameter("@code", SqlDbType.Int) { Value = matchCode } };
                     ExecuteNonQuery(query, connection, transaction, updateParam);
                     transaction.Commit();
@@ -59,7 +59,7 @@ namespace ClubManagement.Games.Repositories
             
         }
 
-        public void InsertGamePlayer(ScoreBoardModel model)
+        public void InsertGamePlayer(RecordBoardModel model)
         {
             int matchCode = model.MatchCode;
             int gameOrder = model.CurrentGame;

@@ -12,16 +12,16 @@ using ClubManagement.Games.Views;
 
 namespace ClubManagement.Games.Presenters
 {
-    public class ScoreboardRegistPresenter
+    public class RecordboardRegistPresenter
     {
-        private readonly IScoreBoardRegistView _view;
-        private readonly IScoreBoardRepository _repository;
-        private ScoreBoardModel _model;
-        public ScoreboardRegistPresenter(IScoreBoardRegistView view, IScoreBoardRepository repository)
+        private readonly IRecordBoardRegistView _view;
+        private readonly IRecordBoardRepository _repository;
+        private RecordBoardModel _model;
+        public RecordboardRegistPresenter(IRecordBoardRegistView view, IRecordBoardRepository repository)
         {
             this._view = view;
             this._repository = repository;
-            this._model = new ScoreBoardModel();
+            this._model = new RecordBoardModel();
             this._view.CloseFormEvent += CloseForm;
             this._view.AddOrderEvent += AddGame;
             this._view.EditPlayerEvent += EidtPlayer;
@@ -50,7 +50,14 @@ namespace ClubManagement.Games.Presenters
             
             _view.MatchTitle = _model.MatchTitle;
             _view.OrderCount = _model.MatchCode;
-            if(_model.MatchCode > 0)
+            if (view.IsRecodeRegisted == true)
+            {
+                view.ShowMessage("이미 등록된 모임입니다"); 
+                LoadGameList(_model.MatchCode);
+                return;
+            }
+                
+            if (_model.MatchCode > 0)
                 LoadPlayer(_model.MatchCode);
         }
 
@@ -121,6 +128,7 @@ namespace ClubManagement.Games.Presenters
             }
             _view.LoadOrder(_model.GameList);
             LoadPlayer(matchCode);
+            _view.SetMatchButton();
         }
         public void LoadPlayer(int code)
         {

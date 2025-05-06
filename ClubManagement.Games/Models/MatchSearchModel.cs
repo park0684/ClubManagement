@@ -15,6 +15,6 @@ namespace ClubManagement.Games.Models
         public bool ExcludeType { get; set; }
         public string SearchWord { get; set; }
         public bool IncludeSecessMember { get; set; }
-        public bool IsScoreBoardRegisted { get; set; }
+        public bool IsRecordBoardRegisted { get; set; }
     }
 }

@@ -24,9 +24,9 @@ namespace ClubManagement.Games.Factory
                     return matcthView;
 
                 case "ScoreBoardList":
-                    var ScoreBoardListView = new ScoreboardListView();
-                    var ScoreRepo = new ScoreBoardRepository();
-                    var ScorePres = new ScoreBoardListPresenter(ScoreBoardListView, ScoreRepo);
+                    var ScoreBoardListView = new RecordboardListView();
+                    var ScoreRepo = new RecordBoardRepository();
+                    var ScorePres = new RecordBoardListPresenter(ScoreBoardListView, ScoreRepo);
                     return ScoreBoardListView;
 
             }

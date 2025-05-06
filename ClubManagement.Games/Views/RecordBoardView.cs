@@ -12,13 +12,13 @@ using ClubManagement.Common.Controls;
 
 namespace ClubManagement.Games.Views
 {
-    public partial class ScoreBoardView : Form, IScoreBoardView
+    public partial class RecordBoardView : Form, IRecordBoardView
     {
         CustomDataGridViewControl dgvPlayer;
         CustomDataGridViewControl dgvsideGame;
         CustomDataGridViewControl dgvAllCover;
         CustomDataGridViewControl dgvGameScore;
-        public ScoreBoardView()
+        public RecordBoardView()
         {
             InitializeComponent();
             InitializeDataGridView();

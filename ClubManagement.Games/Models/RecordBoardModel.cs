@@ -7,7 +7,7 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Models
 {
-    public class ScoreBoardModel
+    public class RecordBoardModel
     {
         public int MatchCode { get; set; }
         public string MatchTitle { get; set; }

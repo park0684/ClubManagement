@@ -1,7 +1,7 @@
 ﻿
 namespace ClubManagement.Games.Views
 {
-    partial class ScoreBoardRegistView
+    partial class RecordBoardRegistView
     {
         /// <summary>
         /// Required designer variable.

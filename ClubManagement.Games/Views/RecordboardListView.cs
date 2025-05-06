@@ -12,10 +12,10 @@ using ClubManagement.Common.Hlepers;
 
 namespace ClubManagement.Games.Views
 {
-    public partial class ScoreboardListView : Form,IScoreboardListView
+    public partial class RecordboardListView : Form,IRecordboardListView
     {
         CustomDataGridViewControl dgvMatchList;
-        public ScoreboardListView()
+        public RecordboardListView()
         {
             InitializeComponent();
             InitializeDateTimePicker();
@@ -24,9 +24,9 @@ namespace ClubManagement.Games.Views
         }
         private void ViewEvent()
         {
-            btnAddGame.Click += (s, e) => ScoreBoardRegistEvent?.Invoke(this, EventArgs.Empty);
-            btnGameListEdit.Click += (s, e) => ScoreBoardEditEvent?.Invoke(this, EventArgs.Empty);
-            dgvMatchList.dgv.CellDoubleClick += (s, e) => ScoreBoarSelectedEvent?.Invoke(this, EventArgs.Empty);
+            btnAddGame.Click += (s, e) => RecordBoardRegistEvent?.Invoke(this, EventArgs.Empty);
+            btnGameListEdit.Click += (s, e) => RecordBoardEditEvent?.Invoke(this, EventArgs.Empty);
+            dgvMatchList.dgv.CellDoubleClick += (s, e) => RecordBoarSelectedEvent?.Invoke(this, EventArgs.Empty);
 
             // 내부 컨트롤러
             btnPre.Click += MovePreMonth;
@@ -77,7 +77,7 @@ namespace ClubManagement.Games.Views
         {
             dtpFromDate.Value = dtpFromDate.Value.AddMonths(1);
             AdjustToDate();
-            SearchScoreBoardEvnt?.Invoke(this, EventArgs.Empty);
+            SearchRecordBoardEvnt?.Invoke(this, EventArgs.Empty);
 
         }
 
@@ -91,7 +91,7 @@ namespace ClubManagement.Games.Views
         {
             dtpFromDate.Value = dtpFromDate.Value.AddMonths(-1);
             AdjustToDate();
-            SearchScoreBoardEvnt?.Invoke(this, EventArgs.Empty);
+            SearchRecordBoardEvnt?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -140,10 +140,10 @@ namespace ClubManagement.Games.Views
 
     
 
-        public event EventHandler ScoreBoardRegistEvent;
-        public event EventHandler ScoreBoardEditEvent;
-        public event EventHandler ScoreBoarSelectedEvent;
-        public event EventHandler SearchScoreBoardEvnt;
+        public event EventHandler RecordBoardRegistEvent;
+        public event EventHandler RecordBoardEditEvent;
+        public event EventHandler RecordBoarSelectedEvent;
+        public event EventHandler SearchRecordBoardEvnt;
 
         public void SetDataBinding(DataTable source)
         {

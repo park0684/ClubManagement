@@ -16,7 +16,7 @@ namespace ClubManagement.Games.Repositories
         {
             StringBuilder query = new StringBuilder();
             query.Append("SELECT match_code, match_date, match_type, match_title, match_host, ");
-            query.Append("COUNT(att_code) as totalplayer, COUNT(CASE WHEN att_memtype = 1 THEN 1 END) as member, COUNT( CASE WHEN att_memtype = 2 THEN 1 END) as guest ");
+            query.Append("COUNT(att_code) as totalplayer, COUNT(CASE WHEN att_memtype = 1 THEN 1 END) as member, COUNT( CASE WHEN att_memtype = 2 THEN 1 END) as guest, match_record ");
             query.Append("FROM Match LEFT OUTER JOIN attend ON Match_code =att_code WHERE");
             query.Append($" Match_date >= '{model.FromDate.ToString("yyyy-MM-dd")}' AND Match_date < '{model.ToDate.AddDays(1).ToString("yyyy-MM-dd")}'");
 
@@ -31,11 +31,11 @@ namespace ClubManagement.Games.Repositories
                     query.Append($" AND Match_type = {model.MatchType}");
                 }
             }
-            if (model.IsScoreBoardRegisted == true)
+            if (model.IsRecordBoardRegisted == true)
             {
-                query.Append(" AND match_scoreboard = 1");
+                query.Append(" AND match_record = 1");
             }
-            query.Append(" GROUP BY Match_code, Match_date, Match_type, Match_title, Match_host ORDER BY Match_date, Match_code");
+            query.Append(" GROUP BY match_code, match_date, match_type, match_title, match_host, match_record ORDER BY Match_date, Match_code");
             try
             {
                 return SqlAdapterQuery(query.ToString());

@@ -12,9 +12,9 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Views
 {
-    public partial class ScoreBoardRegistView : Form, IScoreBoardRegistView
+    public partial class RecordBoardRegistView : Form, IRecordBoardRegistView
     {
-        public ScoreBoardRegistView()
+        public RecordBoardRegistView()
         {
             InitializeComponent();
             ViewEvent();
@@ -123,22 +123,6 @@ namespace ClubManagement.Games.Views
                 else
                 {
 
-                    //for (int i = 2; i <= playerCount; i++)
-                    //{
-                    //    if (playerCount % i == 0)
-                    //    {
-                    //        groupCount = i ;
-                    //        if(i == playerCount)
-                    //        {
-                    //            playerCount ++;
-                    //            i = 1;
-                    //        }
-                    //        else
-                    //        {
-                    //            break;
-                    //        }
-                    //    }
-                    //}
                     groupCount = SetGroupCount(playerCount);
 
                     cmbPlayerCount.Enabled = true;
@@ -283,6 +267,11 @@ namespace ClubManagement.Games.Views
         public void ShowMessge(string message)
         {
             MessageBox.Show(message, "알림");
+        }
+
+        public void SetMatchButton()
+        {
+            btnGameSearch.Enabled = false;
         }
     }
 }

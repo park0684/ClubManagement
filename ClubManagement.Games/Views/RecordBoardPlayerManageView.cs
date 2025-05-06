@@ -11,9 +11,9 @@ using ClubManagement.Games.DTOs;
 
 namespace ClubManagement.Games.Views
 {
-    public partial class ScoreBoardPlayerManageView : Form,IScoreBoardPlayerManageView
+    public partial class RecordBoardPlayerManageView : Form,IRecordBoardPlayerManageView
     {
-        public ScoreBoardPlayerManageView()
+        public RecordBoardPlayerManageView()
         {
             InitializeComponent();
             ViewEvnet();

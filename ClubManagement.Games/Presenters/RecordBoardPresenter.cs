@@ -12,17 +12,17 @@ using ClubManagement.Games.Views;
 
 namespace ClubManagement.Games.Presenters
 {
-    public class ScoreBoardPresenter
+    public class RecordBoardPresenter
     {
-        IScoreBoardView _view;
-        IScoreBoardRepository _repository;
-        ScoreBoardModel _model;
+        IRecordBoardView _view;
+        IRecordBoardRepository _repository;
+        RecordBoardModel _model;
         int _gameSeq = 0;
-        public ScoreBoardPresenter(IScoreBoardView view, IScoreBoardRepository repository)
+        public RecordBoardPresenter(IRecordBoardView view, IRecordBoardRepository repository)
         {
             _view = view;
             _repository = repository;
-            _model = new ScoreBoardModel();
+            _model = new RecordBoardModel();
             _view.PlayerOptionEvent += SetPlayerOption;
             _view.GameButtonClick += ShowGameGroup;
             _view.AssignPlayerClick += ParticipantRegist;
@@ -292,8 +292,8 @@ namespace ClubManagement.Games.Presenters
         /// <param name="groupNumber"></param>
         private void ParticipantRegist(int gameSeq, int groupNumber)
         {
-            IScoreBoardPlayerManageView view = new ScoreBoardPlayerManageView();
-            ScoreBoardPlayerManagePresenter presenter = new ScoreBoardPlayerManagePresenter(view, _repository, _model);
+            IRecordBoardPlayerManageView view = new RecordBoardPlayerManageView();
+            RecordBoardPlayerManagePresenter presenter = new RecordBoardPlayerManagePresenter(view, _repository, _model);
             _model.CurrentGame = gameSeq;
             _model.CurrentGroup = groupNumber;
             presenter.SetPlayerList();
@@ -309,7 +309,7 @@ namespace ClubManagement.Games.Presenters
         private void EnterPlayerScore(PlayerInfoDto obj)
         {
             IEnterScoreView view = new EnterScoreView();
-            IScoreBoardRepository repository = new ScoreBoardRepository();
+            IRecordBoardRepository repository = new RecordBoardRepository();
             EnterScorePresenter presenter = new EnterScorePresenter(view, repository, _model);
             presenter.GetGameInfo(obj);
             view.ShowForm();
