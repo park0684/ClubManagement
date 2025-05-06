@@ -27,12 +27,16 @@ namespace ClubManagement.Games.Presenters
             _view.GameButtonClick += ShowGameGroup;
             _view.AssignPlayerClick += ParticipantRegist;
             _view.EnterScoreEvent += EnterPlayerScore;
+            _view.SetIndividualSideEvent += SetIndividualSide;
+            _view.SaveIndividualRankEvent += SaveIndividualSideRank;
             _model.CurrentGame = 1;
             _model.CurrentGroup = 0;
         }
 
         
-        
+
+
+
         /// <summary>
         /// 모임(경기) 정보 수신 후 그룹 및 참가자 목록 생성
         /// 설정한 참가자/팀 수 만큼 그룹 자동 생성
@@ -52,8 +56,11 @@ namespace ClubManagement.Games.Presenters
 
             _view.CreateGameButton(_model.GameList); // 게임 조회 버튼 생성
             _view.SetAllPlayerList(_model.GameList, _model.PlayerList); // 전체 참가자 리스트 생성 및 데이터 등록            
+
+            LoadIndiviualSideSet();
+
             //사이드게임 데이터그리드뷰 서정
-            SetSideGameGroupBox();
+            //SetSideGameGroupBox();
             ShowGameGroup(_model.CurrentGame);
         }
 
@@ -79,6 +86,10 @@ namespace ClubManagement.Games.Presenters
                 CreateGroup(gameOrder);
             }
         }
+
+        /// <summary>
+        /// 전체 참가자 정보 수신
+        /// </summary>
         private void GetAllPlayer()
         {
             // attend 참가자 정보에서 참가자 수신 후 리스트에 등록
@@ -88,11 +99,11 @@ namespace ClubManagement.Games.Presenters
             {
                 _model.PlayerList.Add(new PlayerInfoDto
                 {
-                    MemberCode = Convert.ToInt32(row["att_memcode"]),
+                    //MemberCode = Convert.ToInt32(row["att_memcode"]),
                     PlayerName = row["att_name"].ToString(),
                     Gender = Convert.ToInt32(row["att_gender"]) == 1 ? true : false,
                     IsPro = Convert.ToInt32(row["att_pro"]) == 1 ? true : false,
-                    Handycap = Convert.ToInt32(row["att_handi"]),
+                    //Handycap = Convert.ToInt32(row["att_handi"]),
                     IndividualSide = Convert.ToInt32(row["att_side"]) == 1 ? true : false,
                     AllCoverSide = Convert.ToInt32(row["att_allcover"]) == 1 ? true : false
                 });
@@ -114,6 +125,7 @@ namespace ClubManagement.Games.Presenters
             }
             //_view.LoadAllPlayers(_model.PlayerList);
         }
+
         /// <summary>
         /// 게임 버튼 클릭 이벤트 실행시 해당 게임의 그룹별 플레이어 정보를 표시
         /// </summary>
@@ -176,24 +188,10 @@ namespace ClubManagement.Games.Presenters
                 //_view.AddPlayerPanal(player);
                 _repository.InsertGamePlayer(_model);
             }
+            //Todo 참가자가 변경 되었을 경우 리프레쉬 기능 필요 
         }
 
-        /// <summary>
-        /// 참가자의 핸디캡조건, 사이드게임 참가 여부 설정 이벤트
-        /// </summary>
-        /// <param name="obj"></param>
-        private void SetPlayerOption(string obj)
-        {
-            IPlayerOptionView view = new PlayerOptionView();
-            PlayerInfoDto player = _model.PlayerList.FirstOrDefault(p => p.PlayerName == obj);
-            if(player != null)
-            {
-                PlayerOtionPresenter presenter = new PlayerOtionPresenter(view,player);
-                presenter.UpdatePlayer += UpdateInfo;
-                view.ShowForm();
-            }
-            
-        }
+       
         /// <summary>
         /// 참가자 정보가 수정되었다면 model의 값 수정
         /// </summary>
@@ -220,18 +218,37 @@ namespace ClubManagement.Games.Presenters
         /// </summary>
         private void SetSideGameGroupBox()
         {
-            
-            var IndividualsidePlayers = _model.PlayerList.Where(p => p.IndividualSide).ToList();
-            _view.SetSideGamePlayerList(IndividualsidePlayers);  // 사이드 게임만
-            
-            var AllcoverSidePlayers = _model.PlayerList.Where(p => p.AllCoverSide).ToList();
-            _view.SetAllcoverGamePlayers(AllcoverSidePlayers);
-            var selectedGame = _model.GameList.FirstOrDefault(g => g.GameSeq == _model.CurrentGame);
 
+            //개인 사이드 
+            _model.SideGamePlayers = _model.PlayerList.Where(p => p.IndividualSide).ToList();
+            _view.SetSideGamePlayerList(_model.SideGamePlayers);  // 사이드 게임만
+            
+            
+            //올커버 사이드
+            _model.AllcoverGamePlayers = _model.PlayerList.Where(p => p.AllCoverSide).ToList();
+            _view.SetAllcoverGamePlayers(_model.AllcoverGamePlayers);
+
+            // 선택되 게임 스코어 정보 적용
+            var selectedGame = _model.GameList.FirstOrDefault(g => g.GameSeq == _model.CurrentGame);
+            //선택된 게임 점수 사이드 게임 반영
             _view.SetSideGameScore(selectedGame);
             _view.LoadAllcoverGamePlayers(selectedGame);
         }
-        
+        private void LoadIndiviualSideSet()
+        {
+            DataTable result = _repository.LoadIndividualSideSet(_model.MatchCode);
+            _model.IndividaulSideSet.Clear();
+            foreach (DataRow row in result.Rows)
+            {
+                IndividaulSetDto individaulSet = new IndividaulSetDto
+                {
+                    Rank = (int)row["ind_rank"],
+                    Prize = (int)row["ind_prize"],
+                    Handi = (int)row["ind_handi"]
+                };
+                _model.IndividaulSideSet.Add(individaulSet);
+            }
+        }
         /// <summary>
         /// gameOrder내 참가자/팀 수 만큼 그룹 자동 생성 메서드
         /// </summary>
@@ -250,6 +267,24 @@ namespace ClubManagement.Games.Presenters
                 gameOrder.Groups.Add(group);
             }
         }
+
+        /// <summary>
+        /// 참가자의 핸디캡조건, 사이드게임 참가 여부 설정 이벤트
+        /// </summary>
+        /// <param name="obj"></param>
+        private void SetPlayerOption(string obj)
+        {
+            IPlayerOptionView view = new PlayerOptionView();
+            PlayerInfoDto player = _model.PlayerList.FirstOrDefault(p => p.PlayerName == obj);
+            if (player != null)
+            {
+                PlayerOtionPresenter presenter = new PlayerOtionPresenter(view, player);
+                presenter.UpdatePlayer += UpdateInfo;
+                view.ShowForm();
+            }
+        }
+
+
         /// <summary>
         /// 등록된 게임별 플레이어 정보 수신 후 각 그룹별로 플레이어 정보 등록
         /// </summary>
@@ -301,7 +336,27 @@ namespace ClubManagement.Games.Presenters
             //ShowGameGroup(gameSeq);
             GetMatchInfo(_model.MatchCode);
         }
+        private void SaveIndividualSideRank(object sender, EventArgs e)
+        {
+            int? rankCount = _model.IndividaulSideSet.Count;
+            _model.IndividualRanker = _view.SetIndividualSideRank(_model.IndividaulSideSet.Count);
+            RankAssignmentView view = new RankAssignmentView();
+            RankAssignmentPresnter presnter = new RankAssignmentPresnter(view, _model);
+            view.AddPlayerPanel();
+            view.ShowForm();
+        }
 
+        /// <summary>
+        /// 개인 사이드 게임 설정 창 실행
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetIndividualSide(object sender, EventArgs e)
+        {
+            IIndividualSideSetView view = new IndividaulSideSetView();
+            IndividualSideSetPresenter presenter = new IndividualSideSetPresenter(view, _repository, _model);
+            view.ShowForm();
+        }
         /// <summary>
         /// 플레이어별 점수 입력
         /// </summary>

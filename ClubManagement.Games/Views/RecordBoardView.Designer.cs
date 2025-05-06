@@ -39,10 +39,11 @@ namespace ClubManagement.Games.Views
             this.grpScore = new System.Windows.Forms.GroupBox();
             this.pnlGameRecord = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnSideGame = new System.Windows.Forms.Button();
+            this.btnSideGameSet = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.btnAllcoverGame = new System.Windows.Forms.Button();
             this.flpGameButton = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnSaveIndividualSide = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.grpScore.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -153,7 +154,8 @@ namespace ClubManagement.Games.Views
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.btnSideGame);
+            this.groupBox3.Controls.Add(this.btnSaveIndividualSide);
+            this.groupBox3.Controls.Add(this.btnSideGameSet);
             this.groupBox3.Controls.Add(this.pnlSideGame);
             this.groupBox3.Location = new System.Drawing.Point(894, 47);
             this.groupBox3.Name = "groupBox3";
@@ -162,20 +164,20 @@ namespace ClubManagement.Games.Views
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "개인사이드";
             // 
-            // btnSideGame
+            // btnSideGameSet
             // 
-            this.btnSideGame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSideGame.BackColor = System.Drawing.Color.Black;
-            this.btnSideGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSideGame.Font = new System.Drawing.Font("맑은 고딕", 9F);
-            this.btnSideGame.ForeColor = System.Drawing.Color.White;
-            this.btnSideGame.Location = new System.Drawing.Point(214, 23);
-            this.btnSideGame.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnSideGame.Name = "btnSideGame";
-            this.btnSideGame.Size = new System.Drawing.Size(75, 30);
-            this.btnSideGame.TabIndex = 8;
-            this.btnSideGame.Text = "추가";
-            this.btnSideGame.UseVisualStyleBackColor = false;
+            this.btnSideGameSet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSideGameSet.BackColor = System.Drawing.Color.Black;
+            this.btnSideGameSet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideGameSet.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.btnSideGameSet.ForeColor = System.Drawing.Color.White;
+            this.btnSideGameSet.Location = new System.Drawing.Point(214, 23);
+            this.btnSideGameSet.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnSideGameSet.Name = "btnSideGameSet";
+            this.btnSideGameSet.Size = new System.Drawing.Size(75, 30);
+            this.btnSideGameSet.TabIndex = 8;
+            this.btnSideGameSet.Text = "설정";
+            this.btnSideGameSet.UseVisualStyleBackColor = false;
             // 
             // groupBox4
             // 
@@ -212,7 +214,22 @@ namespace ClubManagement.Games.Views
             this.flpGameButton.Size = new System.Drawing.Size(385, 40);
             this.flpGameButton.TabIndex = 8;
             // 
-            // ScoreBoardView
+            // btnSaveIndividualSide
+            // 
+            this.btnSaveIndividualSide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveIndividualSide.BackColor = System.Drawing.Color.Black;
+            this.btnSaveIndividualSide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSaveIndividualSide.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.btnSaveIndividualSide.ForeColor = System.Drawing.Color.White;
+            this.btnSaveIndividualSide.Location = new System.Drawing.Point(133, 23);
+            this.btnSaveIndividualSide.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnSaveIndividualSide.Name = "btnSaveIndividualSide";
+            this.btnSaveIndividualSide.Size = new System.Drawing.Size(75, 30);
+            this.btnSaveIndividualSide.TabIndex = 8;
+            this.btnSaveIndividualSide.Text = "확정";
+            this.btnSaveIndividualSide.UseVisualStyleBackColor = false;
+            // 
+            // RecordBoardView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -226,7 +243,7 @@ namespace ClubManagement.Games.Views
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "ScoreBoardView";
+            this.Name = "RecordBoardView";
             this.Text = "ScoreBoardView";
             this.groupBox1.ResumeLayout(false);
             this.grpScore.ResumeLayout(false);
@@ -251,7 +268,8 @@ namespace ClubManagement.Games.Views
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.FlowLayoutPanel flpGameButton;
-        private System.Windows.Forms.Button btnSideGame;
+        private System.Windows.Forms.Button btnSideGameSet;
         private System.Windows.Forms.Button btnAllcoverGame;
+        private System.Windows.Forms.Button btnSaveIndividualSide;
     }
 }

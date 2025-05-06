@@ -46,6 +46,8 @@ namespace ClubManagement.Games.Views
             dgv.Columns.Add("totalPlayer", "참석인원");
             dgv.Columns.Add("member", "회원");
             dgv.Columns.Add("nonMember", "비회원");
+
+            dgv.AutoGenerateColumns = false;
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvMatchList.ApplyDefaultColumnSettings();

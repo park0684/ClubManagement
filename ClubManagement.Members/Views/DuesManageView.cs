@@ -49,7 +49,7 @@ namespace ClubManagement.Members.Views
 
             dgvMember.Columns.Add("code", "코드");
             dgvMember.Columns.Add("name", "회원명");
-            dgvMember.Columns.Add("totlaDues", "대상");
+            dgvMember.Columns.Add("totalDues", "대상");
             dgvMember.Columns.Add("payment", "납부");
             dgvMember.Columns.Add("nonPayment", "미납");
             dgvMember.Columns.Add("free", "면제");

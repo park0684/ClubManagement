@@ -50,19 +50,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\GameOrderDto.cs" />
+    <Compile Include="DTOs\IndividaulSetDto.cs" />
+    <Compile Include="DTOs\IndividualPlayerDto.cs" />
     <Compile Include="DTOs\PlayerInfoDto.cs" />
     <Compile Include="DTOs\GroupDto.cs" />
     <Compile Include="Factory\GamesViewFactory.cs" />
+    <Compile Include="Presenters\NumericPadPresenter.cs" />
+    <Compile Include="Views\INumericPadView.cs" />
+    <Compile Include="Views\IRankAssignmentView.cs" />
     <Compile Include="Models\GuestModel.cs" />
     <Compile Include="Models\MatchModel.cs" />
     <Compile Include="Models\MatchSearchModel.cs" />
     <Compile Include="Models\RecordBoardModel.cs" />
     <Compile Include="Presenters\EnterScorePresenter.cs" />
     <Compile Include="Presenters\GuestAddPresenter.cs" />
+    <Compile Include="Presenters\IndividualSideSetPresenter.cs" />
     <Compile Include="Presenters\MatchDetailPresenter.cs" />
     <Compile Include="Presenters\MatchListPresenter.cs" />
     <Compile Include="Presenters\MatchPlayerManagePresenter.cs" />
     <Compile Include="Presenters\PlayerOtionPresenter.cs" />
+    <Compile Include="Presenters\RankAssignmentPresnter.cs" />
     <Compile Include="Presenters\RecordBoardListPresenter.cs" />
     <Compile Include="Presenters\RecordBoardPlayerManagePresenter.cs" />
     <Compile Include="Presenters\RecordBoardPresenter.cs" />
@@ -87,9 +94,16 @@
     </Compile>
     <Compile Include="Views\IEnterScoreView.cs" />
     <Compile Include="Views\IGuestAddView.cs" />
+    <Compile Include="Views\IIndividaulSideSetView.cs" />
     <Compile Include="Views\IMatchDetailView.cs" />
     <Compile Include="Views\IMatchListView.cs" />
     <Compile Include="Views\IMatchPlayerManageView.cs" />
+    <Compile Include="Views\IndividaulSideSetView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\IndividaulSideSetView.Designer.cs">
+      <DependentUpon>IndividaulSideSetView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\IPlayerOptionView.cs" />
     <Compile Include="Views\IRecordboardListView.cs" />
     <Compile Include="Views\IRecordBoardPlayerManageView.cs" />
@@ -114,11 +128,23 @@
     <Compile Include="Views\MatchPlayerManageView.Designer.cs">
       <DependentUpon>MatchPlayerManageView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\NumericPadView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\NumericPadView.Designer.cs">
+      <DependentUpon>NumericPadView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\PlayerOptionView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\PlayerOptionView.Designer.cs">
       <DependentUpon>PlayerOptionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RankAssignmentView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\RankAssignmentView.Designer.cs">
+      <DependentUpon>RankAssignmentView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\RecordboardListView.cs">
       <SubType>Form</SubType>
@@ -166,11 +192,20 @@
     <EmbeddedResource Include="Views\GuestAddView.resx">
       <DependentUpon>GuestAddView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\IndividaulSideSetView.resx">
+      <DependentUpon>IndividaulSideSetView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\MatchPlayerManageView.resx">
       <DependentUpon>MatchPlayerManageView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\NumericPadView.resx">
+      <DependentUpon>NumericPadView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\PlayerOptionView.resx">
       <DependentUpon>PlayerOptionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RankAssignmentView.resx">
+      <DependentUpon>RankAssignmentView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\RecordboardListView.resx">
       <DependentUpon>RecordboardListView.cs</DependentUpon>

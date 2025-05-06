@@ -1,4 +1,5 @@
-﻿using ClubManagement.Games.DTOs;
+﻿using ClubManagement.Common.Controls;
+using ClubManagement.Games.DTOs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,16 +7,14 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClubManagement.Common.Controls;
 
 namespace ClubManagement.Games.Views
 {
     public partial class RecordBoardView : Form, IRecordBoardView
     {
         CustomDataGridViewControl dgvPlayer;
-        CustomDataGridViewControl dgvsideGame;
+        CustomDataGridViewControl dgvIndividaulSide;
         CustomDataGridViewControl dgvAllCover;
         CustomDataGridViewControl dgvGameScore;
         public RecordBoardView()
@@ -37,10 +36,11 @@ namespace ClubManagement.Games.Views
 
         public event Action<int> GameButtonClick;
         public event Action<int,int> AssignPlayerClick;
-        public event EventHandler SideGameSetEvent;
+        public event EventHandler SetIndividualSideEvent;
         public event EventHandler AllcoverGameSetEvent;
         public event Action<string> PlayerOptionEvent;
         public event Action<PlayerInfoDto> EnterScoreEvent;
+        public event EventHandler SaveIndividualRankEvent;
 
         public void CloseForm()
         {
@@ -66,7 +66,7 @@ namespace ClubManagement.Games.Views
         }
         public void SetBindingSideGame(List<PlayerInfoDto> players)
         {
-            var dgv = dgvsideGame.dgv;
+            var dgv = dgvIndividaulSide.dgv;
 
             BindingList<PlayerInfoDto> bindingList = new BindingList<PlayerInfoDto>(players);
             dgv.DataSource = bindingList;
@@ -237,8 +237,9 @@ namespace ClubManagement.Games.Views
         /// </summary>
         private void ViewEvent()
         {
-            btnSideGame.Click += (s, e) => SideGameSetEvent?.Invoke(this, EventArgs.Empty);
+            btnSideGameSet.Click += (s, e) => SetIndividualSideEvent?.Invoke(this, EventArgs.Empty);
             btnAllcoverGame.Click += (s, e) => AllcoverGameSetEvent?.Invoke(this, EventArgs.Empty);
+            btnSaveIndividualSide.Click += (s, e) => SaveIndividualRankEvent?.Invoke(this, EventArgs.Empty);
             dgvPlayer.dgv.CellClick += dgvPlayer_CellClick;
         }
 
@@ -252,17 +253,18 @@ namespace ClubManagement.Games.Views
             dgvPlayer = new CustomDataGridViewControl();
             pnlPlayerDataGird.Controls.Add(dgvPlayer.dgv);
             dgvPlayer.dgv.Dock = DockStyle.Fill;
-
+            dgvPlayer.dgv.RowTemplate.Height = 35;
             //개인 사인드 플레이어 리스트
-            dgvsideGame = new CustomDataGridViewControl();
-            var sideGame = dgvsideGame.dgv;
+            dgvIndividaulSide = new CustomDataGridViewControl();
+            var sideGame = dgvIndividaulSide.dgv;
             pnlSideGame.Controls.Add(sideGame);
             sideGame.Dock = DockStyle.Fill;
             sideGame.Columns.Add("player", "이름");
             sideGame.Columns.Add("handycap", "핸디");
             sideGame.Columns.Add("score", "점수");
             sideGame.Columns.Add("rank", "순위");
-            dgvsideGame.ApplyDefaultColumnSettings();
+            sideGame.RowTemplate.Height = 35;
+            dgvIndividaulSide.ApplyDefaultColumnSettings();
             sideGame.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             sideGame.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             sideGame.ReadOnly = true;
@@ -278,6 +280,7 @@ namespace ClubManagement.Games.Views
             allcoverGame.Dock = DockStyle.Fill;
             allcoverGame.Columns.Add("player", "이름");
             allcoverGame.Columns.Add("whether", "올커버");
+            allcoverGame.RowTemplate.Height = 35;
             dgvAllCover.ApplyDefaultColumnSettings();
             allcoverGame.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             allcoverGame.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -295,6 +298,7 @@ namespace ClubManagement.Games.Views
             gameScore.Columns.Add("name", "참가자/팀");
             gameScore.Columns.Add("score", "점수");
             gameScore.Columns.Add("rank", "순위");
+            gameScore.RowTemplate.Height = 35;
             gameScore.Columns.Remove("No");
             gameScore.Columns["group"].Visible = false;
             gameScore.ReadOnly = true;
@@ -358,14 +362,24 @@ namespace ClubManagement.Games.Views
         /// <param name="players"></param>
         public void SetSideGamePlayerList(List<PlayerInfoDto> players)
         {
-            var dgv = dgvsideGame.dgv;
-
-            BindingList<PlayerInfoDto> bindingList = new BindingList<PlayerInfoDto>(players);
-            dgv.DataSource = bindingList;
-            foreach (DataGridViewRow row in dgv.Rows)
+            var dgv = dgvIndividaulSide.dgv;
+            dgv.Rows.Clear();
+            foreach(var player in players)
             {
-                row.Cells["No"].Value = row.Index + 1;
+                int newRow = dgv.Rows.Add();
+                dgv.Rows[newRow].Cells["No"].Value = newRow + 1;
+                dgv.Rows[newRow].Cells["player"].Value = player.PlayerName;
+                dgv.Rows[newRow].Cells["handycap"].Value = 0;
+                dgv.Rows[newRow].Cells["score"].Value = Math.Min(300, player.Score + player.Score);
             }
+
+            //BindingList<PlayerInfoDto> bindingList = new BindingList<PlayerInfoDto>(players);
+            //dgv.DataSource = bindingList;
+            
+            //foreach (DataGridViewRow row in dgv.Rows)
+            //{
+            //    row.Cells["No"].Value = row.Index + 1;
+            //}
         }
         public void SetAllcoverGamePlayers(List<PlayerInfoDto> players)
         {
@@ -530,12 +544,13 @@ namespace ClubManagement.Games.Views
              {
                  player = p.PlayerName,
                  score = p.Score,
-                 handi = p.Handycap,
+                 handi = 0,
                  totalScore = Math.Min(300, p.Score + p.Handycap)
              })
              .OrderByDescending(p => p.totalScore)
              .ToList();
-            foreach(var player in sortPlayaers)
+
+            foreach (var player in sortPlayaers)
             {
                 DataRow newRow = players.NewRow();
 
@@ -549,6 +564,7 @@ namespace ClubManagement.Games.Views
             int currentRank = 1;
             int sameScoreCount = 1;
             int? prevScore = null;
+
             foreach(DataRow player in players.Rows)
             {
                 if(prevScore.HasValue && Convert.ToInt32(player["score"]) == prevScore.Value)
@@ -566,15 +582,15 @@ namespace ClubManagement.Games.Views
                     sameScoreCount = 1;
                 }
                 prevScore = Convert.ToInt32(player["score"]);
-                foreach(DataGridViewRow row in dgvsideGame.dgv.Rows)
+
+                foreach(DataGridViewRow row in dgvIndividaulSide.dgv.Rows)
                 {
                     if(row.Cells["player"].Value.ToString() == player["playerName"].ToString())
                     {
-                        row.Cells["handycap"].Value = player["handi"];
+                        //row.Cells["handycap"].Value = player["handi"];
                         row.Cells["score"].Value = player["totalScore"];
                         row.Cells["rank"].Value = player["rank"];
                     }
-
                 }
             }
             
@@ -607,6 +623,35 @@ namespace ClubManagement.Games.Views
                 }
             }
             
+        }
+        /// <summary>
+        /// 개인 사이드 랭크 등록을 위한 플레이어 리스트
+        /// </summary>
+        /// <param name="players"></param>
+        public List<IndividualPlayerDto> SetIndividualSideRank(int rank)
+        {
+            List<IndividualPlayerDto> players = new List<IndividualPlayerDto>();
+            var dav = dgvIndividaulSide.dgv;
+            int i = 1;
+            foreach(DataGridViewRow row in dav.Rows)
+            {
+                IndividualPlayerDto player = new IndividualPlayerDto
+                {
+                    seq = i,
+                    Player = row.Cells["player"].Value.ToString(),
+                    Score = Convert.ToInt32(row.Cells["score"].Value),
+                    Handi = Convert.ToInt32(row.Cells["handycap"].Value),
+                    Rank = Convert.ToInt32(row.Cells["rank"].Value)
+                };
+                players.Add(player);
+                i++;
+            }
+            return players;
+        }
+
+        public bool ShowConfirmation(string message)
+        {
+            return MessageBox.Show(message, "확인", MessageBoxButtons.YesNo) == DialogResult.Yes;
         }
     }
 }

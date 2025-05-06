@@ -44,7 +44,7 @@ namespace ClubManagement.Games.Repositories
                         };
                         ExecuteNonQuery(query, connection, transaction, parameters);
                     }
-                    query = $"UPDATE match SET match_recordboard = 1 WHERE match_code = @code";
+                    query = $"UPDATE match SET match_record = 1 WHERE match_code = @code";
                     SqlParameter[] updateParam = { new SqlParameter("@code", SqlDbType.Int) { Value = matchCode } };
                     ExecuteNonQuery(query, connection, transaction, updateParam);
                     transaction.Commit();
@@ -54,9 +54,7 @@ namespace ClubManagement.Games.Repositories
                     transaction.Rollback();
                     throw new Exception(ex.Message);
                 }
-            }
-
-            
+            }  
         }
 
         public void InsertGamePlayer(RecordBoardModel model)
@@ -209,6 +207,111 @@ namespace ClubManagement.Games.Repositories
         {
             string query = $"SELECT pl_game ,pl_group, pl_member, pl_name,pl_handi,pl_pro,pl_gender,pl_side,pl_allcover,pl_score, pl_isallcover FROM players WHERE pl_match = {match} ORDER BY pl_game, pl_group";
             return SqlAdapterQuery(query);
+        }
+
+        public DataTable LoadIndividualSideSet(int match)
+        {
+            string query = $"SELECT ind_rank, ind_prize, ind_handi FROM individualset WHERE ind_match = {match}";
+            return SqlAdapterQuery(query);
+        }
+
+        public void UpdateIndividualSet(RecordBoardModel model)
+        {
+            int match = model.MatchCode;
+            string query = $"SELECT COUNT(ind_rank) FROM individualset WHERE ind_match = {match}";
+            using(SqlConnection connection = OpenSql())
+            {
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    int count = Convert.ToInt32(ScalaQuery(query));
+                    if (count > 0)
+                    {
+                        query = $"DELETE FROM individualset WHERE ind_match = @match";
+                        SqlParameter[] deleteParameters = { new SqlParameter("@match", SqlDbType.Int) { Value = match } };
+                        ExecuteNonQuery(query, connection, transaction, deleteParameters);
+                    }
+                    query = "INSERT INTO individualset(ind_match,  ind_rank, ind_prize, ind_handi) VALUES(@match, @rank, @prize, @handi)";
+                    foreach(var set in model.IndividaulSideSet)
+                    {
+                        SqlParameter[] parameters =
+                        {
+                            new SqlParameter("@match", SqlDbType.Int){Value = match},
+                            new SqlParameter("@rank",SqlDbType.Int){Value = set.Rank},
+                            new SqlParameter("@prize", SqlDbType.Int){Value  = set.Prize},
+                            new SqlParameter("@handi", SqlDbType.Int){Value = set.Handi}
+                        };
+                        ExecuteNonQuery(query, connection, transaction, parameters);
+                        
+                    }
+                    transaction.Commit();
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception(ex.Message);
+                }
+
+            }
+            
+        }
+
+        public DataTable LoadIndividualSideRank(int match, int game)
+        {
+            string query = $"SELECT is_name, is_rank, is_handi FROM individaulside WHERE is_match = {match} AND is_game < {game}";
+            return SqlAdapterQuery(query);
+        }
+
+        public void UpdateIndividualRank(List<IndividualPlayerDto> players, int match, int game, bool reRecord)
+        {
+            using(SqlConnection connection = OpenSql())
+            {
+                
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    string query;
+                    if (reRecord)
+                    {
+                        query = $"DELETE FROM individualside WHERE is_match =@match AND is_game = @game";
+                        SqlParameter[] deleteParameters =
+                        {
+                            new SqlParameter("@match", SqlDbType.Int){ Value = match},
+                            new SqlParameter("@game", SqlDbType.Int){ Value = game}
+                        };
+                        ExecuteNonQuery(query, connection, transaction, deleteParameters);
+                    }
+                        
+                    query = "INSERT INTO individualside ( is_match, is_game, is_name, is_rank, is_handi) VALUES( @match, @game, @name, @rank,  @handi) ";
+
+                    foreach (var player in players)
+                    {
+                        SqlParameter[] parameters =
+                        {
+                            new SqlParameter("@match", SqlDbType.Int){ Value = match},
+                            new SqlParameter("@game", SqlDbType.Int){ Value = game},
+                            new SqlParameter("@name", SqlDbType.VarChar){ Value = player.Player},
+                            new SqlParameter("@rank", SqlDbType.Int){ Value = player.Rank},
+                            new SqlParameter("@handi", SqlDbType.Int){ Value = player.AddHandi}
+                        };
+                        if(player.Rank != 0)
+                            ExecuteNonQuery(query, connection, transaction, parameters);
+                    }
+                    transaction.Commit();
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception(ex.Message);
+                }
+            }
+            
+        }
+
+        public int CheckIndividualSideRank(int match, int game)
+        {
+            string query = $"SELECT COUNT(*) FROM individualside WHERE is_match = {match} AND is_game = {game}";
+            return Convert.ToInt32(ScalaQuery(query));
         }
     }
 }

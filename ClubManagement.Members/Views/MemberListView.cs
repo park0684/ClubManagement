@@ -93,7 +93,7 @@ namespace ClubManagement.Members.Views
             dgv.Columns["NonPayament"].DataPropertyName = "nonPayment";
             dgv.Columns["AccessDate"].DataPropertyName = "mem_access";
             dgv.Columns["SecessDate"].DataPropertyName = "mem_secess";
-            dgv.Columns["LastMatchDate"].DataPropertyName = "game_last";
+            dgv.Columns["LastMatchDate"].DataPropertyName = "match_last";
             dgv.Columns["Memo"].DataPropertyName = "mem_memo";
 
             //코드 칼럼 및 칼럼 자동생성 비화성
@@ -105,6 +105,7 @@ namespace ClubManagement.Members.Views
             dgvMemberList.FormatAsInt("irregular", "regular", "event", "payment", "nonPayent");
             dgvMemberList.FormatAsStringCenter("name", "birth", "gender", "status", "position");
             dgvMemberList.FormatAsDecimal("regularRate");
+            dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
         }
 

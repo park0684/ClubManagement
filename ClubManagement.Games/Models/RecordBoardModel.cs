@@ -18,5 +18,7 @@ namespace ClubManagement.Games.Models
         public List<PlayerInfoDto> PlayerList { get; set; } = new List<PlayerInfoDto>();
         public List<PlayerInfoDto> SideGamePlayers { get; set; } = new List<PlayerInfoDto>();
         public List<PlayerInfoDto> AllcoverGamePlayers { get; set; } = new List<PlayerInfoDto>();
+        public List<IndividaulSetDto> IndividaulSideSet { get; set; } = new List<IndividaulSetDto>();
+        public List<IndividualPlayerDto> IndividualRanker { get; set; } = new List<IndividualPlayerDto>();
     }
 }

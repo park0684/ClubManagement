@@ -77,7 +77,7 @@ namespace ClubManagement.Games.Views
             // btnGameListEdit
             // 
             this.btnGameListEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGameListEdit.BackColor = System.Drawing.Color.Black;
+            this.btnGameListEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(107)))), ((int)(((byte)(214)))));
             this.btnGameListEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGameListEdit.ForeColor = System.Drawing.Color.White;
             this.btnGameListEdit.Location = new System.Drawing.Point(551, 12);
@@ -91,7 +91,7 @@ namespace ClubManagement.Games.Views
             // btnAddGame
             // 
             this.btnAddGame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddGame.BackColor = System.Drawing.Color.Black;
+            this.btnAddGame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(107)))), ((int)(((byte)(214)))));
             this.btnAddGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddGame.ForeColor = System.Drawing.Color.White;
             this.btnAddGame.Location = new System.Drawing.Point(632, 12);
@@ -113,7 +113,7 @@ namespace ClubManagement.Games.Views
             this.pnlDataGrid.Size = new System.Drawing.Size(695, 464);
             this.pnlDataGrid.TabIndex = 4;
             // 
-            // ScoreboardListView
+            // RecordboardListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -128,7 +128,7 @@ namespace ClubManagement.Games.Views
             this.Controls.Add(this.pnlDataGrid);
             this.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "ScoreboardListView";
+            this.Name = "RecordboardListView";
             this.Text = "ScoreboardListView";
             this.ResumeLayout(false);
 

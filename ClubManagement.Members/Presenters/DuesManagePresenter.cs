@@ -27,6 +27,8 @@ namespace ClubManagement.Members.Presenters
             _view.StatementAddEvent += AddState;
             _view.StatementEditEvent += EditState;
             LoadMemberList();
+            _model.MemberCode = 0;
+            LoadStatementList();
         }
 
         private void EditState(object sender, EventArgs e)

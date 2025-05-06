@@ -17,10 +17,12 @@ namespace ClubManagement.Games.Views
         //이벤트
         event Action<int> GameButtonClick;
         event Action<int, int> AssignPlayerClick;
-        event EventHandler SideGameSetEvent;
+        event EventHandler SetIndividualSideEvent;
         event EventHandler AllcoverGameSetEvent;
         event Action<string> PlayerOptionEvent;
         event Action<PlayerInfoDto> EnterScoreEvent;
+        event EventHandler SaveIndividualRankEvent;
+
         
         //메서드
         void ShowForm();
@@ -37,5 +39,7 @@ namespace ClubManagement.Games.Views
         void CreateGameButton(List<GameOrderDto> games);
         void LoadAllcoverGamePlayers(GameOrderDto game);
         void SetSideGameScore(GameOrderDto game);
+        List<IndividualPlayerDto> SetIndividualSideRank(int rank);
+        bool ShowConfirmation(string message);
     }
 }

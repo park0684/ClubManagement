@@ -14,7 +14,7 @@ namespace ClubManagement.Members.Repositories
     {
         public DataRow GetBalance(DuesModel model)
         {
-            string query = $"SELECT ISNULL(SUM(CASE WHEN du_type = 1 THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS deus, ISNULL(SUM(CASE WHEN du_type IN ( 2,4) THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS payment FROM dues WHERE du_date < '{model.FromDate.ToString("yyyy-MM-dd")}' AND du_status = 1";
+            string query = $"SELECT ISNULL(SUM(CASE WHEN du_type = 1 THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS deus, ISNULL(SUM(CASE WHEN du_type NOT IN (1,3) THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS payment FROM dues WHERE du_date < '{model.FromDate.ToString("yyyy-MM-dd")}' AND du_status = 1";
 
             return SqlAdapterQuery(query).Rows[0];
         }
@@ -45,7 +45,7 @@ namespace ClubManagement.Members.Repositories
         public DataTable GetStateList(DuesModel model)
         {
             StringBuilder query = new StringBuilder();
-            query.Append("SELECT du_code, du_date, du_type, du_detail , du_apply, CASE WHEN du_type IN (1,3) THEN du_pay ELSE 0 END as deposit, CASE WHEN du_type IN (2,4) THEN du_pay ELSE 0 END whthdrawal FROM dues");
+            query.Append("SELECT du_code, du_date, du_type, du_detail , du_apply, CASE WHEN du_type IN (1,3) THEN du_pay ELSE 0 END as deposit, CASE WHEN du_type NOT IN (1,3) THEN du_pay ELSE 0 END whthdrawal FROM dues");
             query.Append($" WHERE du_date >= '{model.FromDate.ToString("yyyy-MM-dd")}' AND du_date < '{model.ToDate.AddDays(1).ToString("yyyy-MM-dd")}' AND du_status = 1");
             if (model.MemberCode != 0)
                 query.Append($" AND du_memcode = {model.MemberCode}");

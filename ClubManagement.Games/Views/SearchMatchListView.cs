@@ -54,10 +54,12 @@ namespace ClubManagement.Games.Views
             dgv.ReadOnly = true;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.AutoGenerateColumns = false;
+
             dgvMatchList.ApplyDefaultColumnSettings();
             dgvMatchList.FormatAsDate("date");
             dgvMatchList.FormatAsStringLeft("title");
             dgvMatchList.FormatAsInt("totalPlayer", "member", "nonMember", "code");
+            
             dgv.Columns["code"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgv.Columns["code"].DataPropertyName = "match_code";

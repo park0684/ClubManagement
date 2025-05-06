@@ -18,7 +18,7 @@ namespace ClubManagement.View
         public MainView()
         {
             InitializeComponent();
-            
+            this.Text = "Na2So 볼링 클럽";
         }
 
         public void SetMenuItems(Dictionary<string, List<MenuItemInfo>> groupedItems)

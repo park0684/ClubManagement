@@ -165,7 +165,7 @@ namespace ClubManagement.Games.Repositories
             string query = "SELECT ISNULL(MAX(match_code),0) + 1 FROM match";
             int code = (int)ScalaQuery(query);
 
-            query = "INSERT INTO match(match_code, match_title, match_host, match_date, match_type, match_memo) VALUES(@code, @title, @host, @date, @type, @memo)";
+            query = "INSERT INTO match(match_code, match_title, match_host, match_date, match_type, match_memo, match_recode) VALUES(@code, @title, @host, @date, @type, @memo,0)";
             SqlParameter[] parameters =
             {
                 new SqlParameter ("@code",SqlDbType.Int){Value = code},

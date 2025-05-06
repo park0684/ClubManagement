@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{196B232B-F897-4C04-B7BD-F82A74CB361C}</ProjectGuid>
+    <ProjectGuid>{826D93C2-4308-4D7D-AA82-3BB93E83CFE9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ClubManagement.Common</RootNamespace>
-    <AssemblyName>ClubManagement.Common</AssemblyName>
+    <RootNamespace>ClubManagement.Options</RootNamespace>
+    <AssemblyName>ClubManagement.Options</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -49,21 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\CustomDataGridViewControl.cs" />
-    <Compile Include="Controls\CustomRounButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Factory\CompositeViewFactory.cs" />
-    <Compile Include="Factory\IViewFactory.cs" />
-    <Compile Include="Hlepers\CodeHelper.cs" />
-    <Compile Include="Hlepers\DataConvertHelper.cs" />
-    <Compile Include="Hlepers\GameHelper.cs" />
-    <Compile Include="Hlepers\MemberHelper.cs" />
-    <Compile Include="Menu\MenuConfiguration.cs" />
-    <Compile Include="Menu\MenuItemInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\BaseRepository.cs" />
-    <Compile Include="Repositories\IBaseRepository.cs" />
+    <Compile Include="views\DatabaseConfigView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\DatabaseConfigView.Designer.cs">
+      <DependentUpon>DatabaseConfigView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\IDatabaseConfigView.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -73,6 +66,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="views\DatabaseConfigView.resx">
+      <DependentUpon>DatabaseConfigView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -86,6 +82,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Presenters\" />
+    <Folder Include="Repositries\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
