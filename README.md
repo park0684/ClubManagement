@@ -12,7 +12,7 @@
   - 정기/비정기 모임 출석 관리
   - 회비 납부 및 미납 내역 관리
   - 게임 기록 및 스코어보드 관리
-
+  - 기획서 바로가기 : https://github.com/park0684/ClubManagement/blob/master/%EA%B8%B0%ED%9A%8D%EC%84%9C.md
 ---
 
 ## 📅 개발 기간
