@@ -14,5 +14,6 @@ namespace ClubManagement.Games.DTOs
         public bool AllCoverGame { get; set; }
         public bool PersonalSideGame { get; set; }
         public List<GroupDto> Groups { get; set; } = new List<GroupDto>();
+        public List<IndividualPlayerDto> IndividualPlayers { get; set; } = new List<IndividualPlayerDto>();
     }
 }

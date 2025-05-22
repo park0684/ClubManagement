@@ -17,6 +17,7 @@ namespace ClubManagement.Games.Views
         {
             InitializeComponent();
             ViewEvent();
+            this.Text = "참가자 설정";
         }
         private void ViewEvent()
         {

@@ -22,6 +22,7 @@ namespace ClubManagement.Games.Views
             InitializeComponent();
             InitializeDataGridView();
             ViewEvent();
+            this.Text = "기록";
         }
 
         public string MatchTitle
@@ -369,17 +370,9 @@ namespace ClubManagement.Games.Views
                 int newRow = dgv.Rows.Add();
                 dgv.Rows[newRow].Cells["No"].Value = newRow + 1;
                 dgv.Rows[newRow].Cells["player"].Value = player.PlayerName;
-                dgv.Rows[newRow].Cells["handycap"].Value = 0;
-                dgv.Rows[newRow].Cells["score"].Value = Math.Min(300, player.Score + player.Score);
+                dgv.Rows[newRow].Cells["handycap"].Value = player.Handycap;
+                dgv.Rows[newRow].Cells["score"].Value = 0;
             }
-
-            //BindingList<PlayerInfoDto> bindingList = new BindingList<PlayerInfoDto>(players);
-            //dgv.DataSource = bindingList;
-            
-            //foreach (DataGridViewRow row in dgv.Rows)
-            //{
-            //    row.Cells["No"].Value = row.Index + 1;
-            //}
         }
         public void SetAllcoverGamePlayers(List<PlayerInfoDto> players)
         {
@@ -408,8 +401,6 @@ namespace ClubManagement.Games.Views
                 dgv.Rows[newRow].Cells["handycap"].Value = player.Handycap;
                 
             }
-            //BindingList<PlayerInfoDto> bindingList = new BindingList<PlayerInfoDto>(players);
-            //dgv.DataSource = bindingList;
 
         }
         private void LoadAllPlayerScore(List<GameOrderDto> games)
@@ -530,73 +521,7 @@ namespace ClubManagement.Games.Views
             ;
             //SideScoreList(groups);
         }
-        public void SetSideGameScore(GameOrderDto selectedGame)
-        {
-            var sideGamePlayers = selectedGame.Groups.SelectMany(g => g.players).Where(p => p.IndividualSide).OrderBy(p => p.Score + p.Handycap).ToList();
-            DataTable players = new DataTable();
-            players.Columns.Add("playerName", typeof(string));
-            players.Columns.Add("score", typeof(int));
-            players.Columns.Add("handi", typeof(int));
-            players.Columns.Add("totalScore", typeof(int));
-            players.Columns.Add("rank", typeof(int));
-
-            var sortPlayaers = sideGamePlayers.Select(p => new
-             {
-                 player = p.PlayerName,
-                 score = p.Score,
-                 handi = 0,
-                 totalScore = Math.Min(300, p.Score + p.Handycap)
-             })
-             .OrderByDescending(p => p.totalScore)
-             .ToList();
-
-            foreach (var player in sortPlayaers)
-            {
-                DataRow newRow = players.NewRow();
-
-                newRow["playerName"] = player.player;
-                newRow["score"] = player.score;
-                newRow["handi"] = player.handi;
-                newRow["totalScore"] = player.totalScore;
-                players.Rows.Add(newRow);
-            }
-
-            int currentRank = 1;
-            int sameScoreCount = 1;
-            int? prevScore = null;
-
-            foreach(DataRow player in players.Rows)
-            {
-                if(prevScore.HasValue && Convert.ToInt32(player["score"]) == prevScore.Value)
-                {
-                    player["rank"] = currentRank;
-                    sameScoreCount++;
-                }
-                else
-                {
-                    if(prevScore.HasValue)
-                    {
-                        currentRank += sameScoreCount;
-                    }
-                    player["rank"] = currentRank;
-                    sameScoreCount = 1;
-                }
-                prevScore = Convert.ToInt32(player["score"]);
-
-                foreach(DataGridViewRow row in dgvIndividaulSide.dgv.Rows)
-                {
-                    if(row.Cells["player"].Value.ToString() == player["playerName"].ToString())
-                    {
-                        //row.Cells["handycap"].Value = player["handi"];
-                        row.Cells["score"].Value = player["totalScore"];
-                        row.Cells["rank"].Value = player["rank"];
-                    }
-                }
-            }
-            
-
-        }
-
+        
         /// <summary>
         /// 올커버 플레이어 표시
         /// 점수입력시 클릭된 올커버 여부로 확인
@@ -649,6 +574,21 @@ namespace ClubManagement.Games.Views
             return players;
         }
 
+        public void BindingIndividualScore(DataTable players)
+        {
+            foreach(DataRow player in players.Rows)
+            {
+                foreach (DataGridViewRow row in dgvIndividaulSide.dgv.Rows)
+                {
+                    if (row.Cells["player"].Value.ToString() == player["playerName"].ToString())
+                    {
+                        row.Cells["handycap"].Value = player["handi"];
+                        row.Cells["score"].Value = player["totalScore"];
+                        row.Cells["rank"].Value = player["rank"];
+                    }
+                }
+            }
+        }
         public bool ShowConfirmation(string message)
         {
             return MessageBox.Show(message, "확인", MessageBoxButtons.YesNo) == DialogResult.Yes;

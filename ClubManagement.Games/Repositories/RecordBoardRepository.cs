@@ -258,7 +258,7 @@ namespace ClubManagement.Games.Repositories
 
         public DataTable LoadIndividualSideRank(int match, int game)
         {
-            string query = $"SELECT is_name, is_rank, is_handi FROM individaulside WHERE is_match = {match} AND is_game < {game}";
+            string query = $"SELECT is_name, is_rank, is_handi FROM individualside WHERE is_match = {match} AND is_game = {game}";
             return SqlAdapterQuery(query);
         }
 

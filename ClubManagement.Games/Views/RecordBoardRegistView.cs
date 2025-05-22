@@ -20,6 +20,7 @@ namespace ClubManagement.Games.Views
             ViewEvent();
             flpOrderList.AutoScroll = true;
             GameOrderList = new List<GameOrderDto>();
+            this.Text = "게임 설정";
         }
 
         private void ViewEvent()

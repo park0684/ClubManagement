@@ -21,7 +21,7 @@ namespace ClubManagement.Games.Presenters
             _view = view;
             _model = model;
             _view.IndividaulSets = _model.IndividaulSideSet;
-            _view.IndividaulRankers = _model.IndividualRanker.OrderBy(r => r.Rank).ToList();
+            _view.IndividaulRankers = _model.IndividualRanker.OrderByDescending(r => r.Score).ToList();
             _view.CloseEvent += CloseForm;
             _view.SaveEvent += SaveRank;
             _view.EditHandiEvent += OnEidtHandi;

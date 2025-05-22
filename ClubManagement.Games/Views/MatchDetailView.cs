@@ -19,6 +19,7 @@ namespace ClubManagement.Games.Views
             InitializeComboBox();
             InitializeControlBox();
             ViewEvent();
+            this.Text = "모임 상세 내역";
         }
         private void ViewEvent()
         {
