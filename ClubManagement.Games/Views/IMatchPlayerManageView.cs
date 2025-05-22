@@ -26,5 +26,6 @@ namespace ClubManagement.Games.Views
         void SetPlayerList(List<PlayerInfoDto> players);
         void CloseForm();
         void ShowForm();
+        void ShowMessage(string message);
     }
 }

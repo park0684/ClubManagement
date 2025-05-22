@@ -14,16 +14,16 @@ namespace ClubManagement.Games.Views
     public partial class PlayerOptionView : Form,IPlayerOptionView
     {
         private PlayerInfoDto _player = new PlayerInfoDto();
-
         public PlayerInfoDto UpdatePlayer => _player;
 
         public PlayerOptionView()
         {
             InitializeComponent();
             this.ControlBox = false;
+            this.Text = "참가자 설정";
             ViewEvent();
-
             BindEvents();
+
         }
 
         public event EventHandler SaveEvent;
@@ -37,6 +37,7 @@ namespace ClubManagement.Games.Views
         public void SetPlayerOption(PlayerInfoDto player)
         {
             _player = player;
+            lblPlayerName.Text = player.PlayerName;
             SetLabelColor(_player.Gender, lblIconGender, lblGenderHandi);
             SetLabelColor(_player.IsPro, lblIconPro, lblIsPro);
             SetLabelColor(_player.IndividualSide, lblIconSide, lblSideGame);

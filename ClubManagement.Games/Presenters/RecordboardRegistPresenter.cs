@@ -7,6 +7,7 @@ using System.Data;
 using ClubManagement.Common.Hlepers;
 using ClubManagement.Games.DTOs;
 using ClubManagement.Games.Models;
+using ClubManagement.Games.Service;
 using ClubManagement.Games.Repositories;
 using ClubManagement.Games.Views;
 
@@ -14,14 +15,16 @@ namespace ClubManagement.Games.Presenters
 {
     public class RecordboardRegistPresenter
     {
-        private readonly IRecordBoardRegistView _view;
-        private readonly IRecordBoardRepository _repository;
+        private IRecordBoardRegistView _view;
+        private IRecordBoardRepository _repository;
         private RecordBoardModel _model;
+        private RecordBoardService _service;
         public RecordboardRegistPresenter(IRecordBoardRegistView view, IRecordBoardRepository repository)
         {
             this._view = view;
             this._repository = repository;
             this._model = new RecordBoardModel();
+            this._service = new RecordBoardService(_repository);
             this._view.CloseFormEvent += CloseForm;
             this._view.AddOrderEvent += AddGame;
             this._view.EditPlayerEvent += EidtPlayer;
@@ -56,7 +59,6 @@ namespace ClubManagement.Games.Presenters
                 LoadGameList(_model.MatchCode);
                 return;
             }
-                
             if (_model.MatchCode > 0)
                 LoadPlayer(_model.MatchCode);
         }
@@ -65,7 +67,7 @@ namespace ClubManagement.Games.Presenters
         {
             try
             {
-                _repository.InsertGame(_model);
+                _service.InsertGames(_model);
                 _view.CloseForm();
             }
             catch(Exception ex)
@@ -76,13 +78,13 @@ namespace ClubManagement.Games.Presenters
 
         private void EidtPlayer(object sender, EventArgs e)
         {
-            int code = _model.MatchCode;
+            int match = _model.MatchCode;
             IMatchPlayerManageView view = new MatchPlayerManageView();
             IMatchRepository repository = new MatchRepository();
             MatchPlayerManagePresenter presenter = new MatchPlayerManagePresenter(view, repository);
-            presenter.PlayerManageCall(code);
+            presenter.PlayerManageCall(match);
             view.ShowForm();
-            LoadPlayer(code);
+            LoadPlayer(match);
         }
 
         private void AddGame(object sender, EventArgs e)
@@ -112,41 +114,16 @@ namespace ClubManagement.Games.Presenters
         }
         public void LoadGameList(int matchCode)
         {
-            //int code = matchCode;
             _model.MatchCode = matchCode;
-            DataTable source = _repository.LoadGameOrder(matchCode);
-            GameOrderDto gameOrder;
-            foreach (DataRow row in source.Rows)
-            {
-                gameOrder = new GameOrderDto();
-                gameOrder.GameSeq = Convert.ToInt32(row["game_order"]);
-                gameOrder.GameType = Convert.ToInt32(row["game_type"]);
-                gameOrder.PlayerCount = Convert.ToInt32(row["game_player"]);
-                gameOrder.PersonalSideGame = Convert.ToInt32(row["game_side"]) == 1 ? true : false;
-                gameOrder.AllCoverGame = Convert.ToInt32(row["game_allcover"]) == 1 ? true : false;
-                _model.GameList.Add(gameOrder);
-            }
+            _model.GameList = _service.LoadGames(matchCode);
             _view.LoadOrder(_model.GameList);
             LoadPlayer(matchCode);
             _view.SetMatchButton();
         }
-        public void LoadPlayer(int code)
+        public void LoadPlayer(int match)
         {
-            IMatchRepository repository = new MatchRepository();
-            _model.MatchTitle = _repository.LoadMatchTitle(code).ToString();
-            DataTable result = repository.LoadAttendPlayer(code);
-            List<PlayerInfoDto> playerList = result.AsEnumerable().Select(row => new PlayerInfoDto
-            {
-                MemberCode = row.Field<int>("att_memcode"),
-                PlayerName = row.Field<string>("att_name"),
-                IsSelected = true,
-                Gender = row.Field<int>("att_gender") == 0,
-                IsPro = row.Field<int>("att_pro") == 1
-
-            }).ToList();
-            _model.PlayerList = playerList;
-            _view.LoadPlayer(playerList);
-            _view.MatchTitle = _model.MatchTitle;
+            _model.PlayerList = _service.LoadAttendees(match);
+            _view.LoadPlayer(_model.PlayerList);
         }
     }
 }

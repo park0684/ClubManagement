@@ -19,6 +19,7 @@ namespace ClubManagement.Games.Views
             InitializeComboBox();
             InitializeControlBox();
             ViewEvent();
+            this.Text = "모임 상세 내역";
         }
         private void ViewEvent()
         {
@@ -63,6 +64,11 @@ namespace ClubManagement.Games.Views
             Form form = (Form)this;
             form.StartPosition = FormStartPosition.CenterParent;
             form.ShowDialog();
+        }
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
         }
 
         public string GameTitle

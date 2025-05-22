@@ -16,6 +16,8 @@ namespace ClubManagement.Games.Views
         {
             InitializeComponent();
             viewEvent();
+            this.ControlBox = false;
+            this.FormBorderStyle = FormBorderStyle.None;
         }
 
         public int Nember

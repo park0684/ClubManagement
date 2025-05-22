@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using ClubManagement.Games.Models;
 using ClubManagement.Games.DTOs;
+using ClubManagement.Games.Service;
 using ClubManagement.Games.Repositories;
 using ClubManagement.Games.Views;
 
@@ -16,12 +17,14 @@ namespace ClubManagement.Games.Presenters
         IRecordBoardPlayerManageView _view;
         IRecordBoardRepository _repository;
         RecordBoardModel _model;
+        RecordBoardService _service;
 
         public RecordBoardPlayerManagePresenter(IRecordBoardPlayerManageView view,IRecordBoardRepository repository,RecordBoardModel model)
         {
             _view = view;
             _repository = repository;
             _model = model;
+            _service = new RecordBoardService(_repository);
             this._view.CloaseEvent += CloseForm;
             this._view.SaveEvent += ParticipantsUpdate;
             this._view.PlayerAddEvent += ParticipantAdd;
@@ -30,19 +33,15 @@ namespace ClubManagement.Games.Presenters
         }
         private void ParticitantRemove(object sender, participantButtonEventArgs e)
         {
-            string playerName = e.MemberName;
-            bool participant = e.Attend;
             var currentGame = _model.GameList.FirstOrDefault(g => g.GameSeq == _model.CurrentGame);
-            var currentGroup = currentGame.Groups.FirstOrDefault(group => group.GroupNumber == _model.CurrentGroup);
-            var particitandPlayer = currentGroup.players;
-            var playerToRemove = particitandPlayer.FirstOrDefault(p => p.PlayerName == playerName);
-            if(playerToRemove != null)
-            {
-                particitandPlayer.Remove(playerToRemove);
-                _view.UpdateButtonColor(playerName,false, false);
-                _view.CreateAttendButton(particitandPlayer);
-                playerToRemove.IsSelected = false;
-            }
+            var currentGroup = currentGame.Groups.FirstOrDefault(g => g.GroupNumber == _model.CurrentGroup);
+            var player = currentGroup.players.FirstOrDefault(p => p.PlayerName == e.MemberName);
+
+            currentGroup.players.Remove(player);
+            player.IsSelected = false;
+
+            _view.UpdateButtonColor(player.PlayerName, false, false);
+            _view.CreateAttendButton(currentGroup.players);
         }
         public  void SetPlayerList()
         {
@@ -65,7 +64,6 @@ namespace ClubManagement.Games.Presenters
             }
             var player = _model.PlayerList.FirstOrDefault(p => p.PlayerName == playerName);
             particitandPlayer.Add(player);
-            //(new PlayerInfoDto {PlayerName = player.PlayerName});
             player.IsSelected = true;
             _view.UpdateButtonColor(playerName, true, true);
             _view.CreateAttendButton(particitandPlayer);
@@ -73,8 +71,15 @@ namespace ClubManagement.Games.Presenters
 
         private void ParticipantsUpdate(object sender, EventArgs e)
         {
-            _repository.InsertGamePlayer(_model);
-            _view.CloseForm();
+            try
+            {
+                _service.InsertGamePlayer(_model);
+                _view.CloseForm();
+            }
+            catch(Exception ex)
+            {
+                _view.ShowMessage(ex.Message);
+            }
         }
 
         private void CloseForm(object sender, EventArgs e)

@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using ClubManagement.Common.Hlepers;
 using ClubManagement.Games.Models;
 using ClubManagement.Games.Repositories;
+using ClubManagement.Games.Service;
 using ClubManagement.Games.Views;
 
 namespace ClubManagement.Games.Presenters
@@ -14,13 +11,15 @@ namespace ClubManagement.Games.Presenters
     public class RecordBoardListPresenter
     {
         IRecordboardListView _view;
-        IRecordBoardRepository _repository;
+        IMatchRepository _repository;
         MatchSearchModel _model;
-        public RecordBoardListPresenter(IRecordboardListView view, IRecordBoardRepository repository)
+        MatchService _service;
+        public RecordBoardListPresenter(IRecordboardListView view, IMatchRepository repository)
         {
             this._view = view;
             this._repository = repository;
             this._model = new MatchSearchModel();
+            this._service = new MatchService(_repository);
             this._view.RecordBoardRegistEvent += ScoreBoardSetRegist;
             this._view.RecordBoardEditEvent += ScoreBoardSetEidt;
             this._view.RecordBoarSelectedEvent += ScoreBoardSelected;
@@ -33,14 +32,11 @@ namespace ClubManagement.Games.Presenters
             _model.ToDate = _view.ToDate;
             _model.IsRecordBoardRegisted = true;
             _model.MatchType = 0;
-            IMatchRepository repository = new MatchRepository();
-            DataTable source = repository.LoadMatchList(_model);
-            int i = 1;
-            source.Columns.Add("No", typeof(int));
+            
+            DataTable source = _service.LoadMatchList(_model);
             source.Columns.Add("type", typeof(string));
             foreach (DataRow row in source.Rows)
             {
-                row["No"] = i++;
                 row["type"] = GameHelper.GetMatchType(Convert.ToInt32(row["match_type"]));
             }
             _view.SetDataBinding(source);

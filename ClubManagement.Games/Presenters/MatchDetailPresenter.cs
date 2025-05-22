@@ -7,6 +7,7 @@ using System.Data;
 using ClubManagement.Common.Hlepers;
 using ClubManagement.Games.Models;
 using ClubManagement.Games.Repositories;
+using ClubManagement.Games.Service;
 using ClubManagement.Games.Views;
 namespace ClubManagement.Games.Presenters
 {
@@ -15,12 +16,14 @@ namespace ClubManagement.Games.Presenters
         private IMatchDetailView _view;
         private IMatchRepository _repository;
         private MatchModel _model;
+        private MatchService _service;
 
         public MatchDetailPresenter(IMatchDetailView view, IMatchRepository repository)
         {
             this._view = view;
             this._repository = repository;
             this._model = new MatchModel();
+            this._service = new MatchService(_repository);
             this._view.CloseEvenvt += CloseAction;
             this._view.SaveEvent += SaveMatch;
             _model.IsNew = true;
@@ -28,15 +31,7 @@ namespace ClubManagement.Games.Presenters
 
         public void LoadMatch(int code)
         {
-            DataRow row = _repository.LoadMatchInfo(code);
-
-            _model.MatchCode = code;
-            _model.IsNew = false;
-            _model.MatchTitle = row["match_title"].ToString();
-            _model.MatchHost = row["match_host"].ToString();
-            _model.MatchMemo = row["match_memo"].ToString();
-            _model.MatchDate = (DateTime)row["match_date"];
-            _model.MatchType = (int)row["match_type"];
+            _model = _service.LoadMatch(code);
 
             _view.GameTitle = _model.MatchTitle;
             _view.GameHost = _model.MatchHost;
@@ -52,13 +47,13 @@ namespace ClubManagement.Games.Presenters
             _model.MatchType = _view.GameType;
             _model.MatchMemo = _view.GameMemo;
 
-            if (_model.IsNew)
+            try
             {
-                _repository.InsertMatch(_model);
+                _service.SaveMatch(_model);
             }
-            else
+            catch(Exception ex)
             {
-                _repository.UpdateMatch(_model);
+                _view.ShowMessage(ex.Message);
             }
             _view.CloseForm();
         }

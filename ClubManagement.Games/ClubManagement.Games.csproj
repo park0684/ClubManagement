@@ -56,6 +56,9 @@
     <Compile Include="DTOs\GroupDto.cs" />
     <Compile Include="Factory\GamesViewFactory.cs" />
     <Compile Include="Presenters\NumericPadPresenter.cs" />
+    <Compile Include="Service\IRecordBoardService.cs" />
+    <Compile Include="Service\MatchService.cs" />
+    <Compile Include="Service\RecordBoardService.cs" />
     <Compile Include="Views\INumericPadView.cs" />
     <Compile Include="Views\IRankAssignmentView.cs" />
     <Compile Include="Models\GuestModel.cs" />

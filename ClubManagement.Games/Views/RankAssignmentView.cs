@@ -71,9 +71,11 @@ namespace ClubManagement.Games.Views
             };
             pnlPlayer.Controls.Add(lblPlayer);
 
-            StringBuilder score = new StringBuilder(player.Score.ToString());
+            StringBuilder score = new StringBuilder();
             if (player.Handi != 0)
-                score.Append(" / " + (player.Score - player.Handi));
+                score.Append((player.Score + player.Handi).ToString() + " / " + player.Score.ToString());
+            else
+                score.Append(player.Score.ToString());
             string _score = score.ToString();
             Label lblScore = new Label
             {
@@ -82,7 +84,7 @@ namespace ClubManagement.Games.Views
                 Location = new Point(159, 17),
                 TextAlign = ContentAlignment.MiddleRight,
                 AutoSize = true,
-                ForeColor = Convert.ToInt32(score.ToString()) > 199 ? Color.Red : Color.Black
+                ForeColor = player.Score  > 199 ? Color.Red : Color.Black
             };
             pnlPlayer.Controls.Add(lblScore);
 

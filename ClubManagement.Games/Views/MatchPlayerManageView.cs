@@ -17,6 +17,7 @@ namespace ClubManagement.Games.Views
         {
             InitializeComponent();
             ViewEvent();
+            this.Text = "참가자 설정";
         }
         private void ViewEvent()
         {
@@ -110,6 +111,11 @@ namespace ClubManagement.Games.Views
                     break; // 찾았으면 더 이상 반복할 필요 없음
                 }
             }
+        }
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
         }
     }
     /// <summary>

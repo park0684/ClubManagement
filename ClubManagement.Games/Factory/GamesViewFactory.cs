@@ -25,7 +25,7 @@ namespace ClubManagement.Games.Factory
 
                 case "ScoreBoardList":
                     var ScoreBoardListView = new RecordboardListView();
-                    var ScoreRepo = new RecordBoardRepository();
+                    var ScoreRepo = new MatchRepository();
                     var ScorePres = new RecordBoardListPresenter(ScoreBoardListView, ScoreRepo);
                     return ScoreBoardListView;
 

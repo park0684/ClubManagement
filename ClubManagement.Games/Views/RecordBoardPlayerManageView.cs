@@ -17,6 +17,7 @@ namespace ClubManagement.Games.Views
         {
             InitializeComponent();
             ViewEvnet();
+            this.Text = "팀원 설정";
         }
 
         public event EventHandler SaveEvent;

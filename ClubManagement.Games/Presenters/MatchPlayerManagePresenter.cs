@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using ClubManagement.Common.Hlepers;
+﻿using ClubManagement.Games.DTOs;
 using ClubManagement.Games.Models;
 using ClubManagement.Games.Repositories;
+using ClubManagement.Games.Service;
 using ClubManagement.Games.Views;
-using ClubManagement.Games.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace ClubManagement.Games.Presenters
 {
     public class MatchPlayerManagePresenter
@@ -17,6 +14,7 @@ namespace ClubManagement.Games.Presenters
         IMatchRepository _repository;
         MatchModel _model;
         MatchSearchModel _searchModel;
+        MatchService _service;
 
         public MatchPlayerManagePresenter(IMatchPlayerManageView view, IMatchRepository repository)
         {
@@ -24,6 +22,7 @@ namespace ClubManagement.Games.Presenters
             _repository = repository;
             _model = new MatchModel();
             _searchModel = new MatchSearchModel();
+            _service = new MatchService(_repository);
             this._view.SearchMemberEvent += SearchMember;;
             this._view.AddGuestEvent += GuestAdd;
             this._view.PlayerAddEvent += PlayerAdd;
@@ -42,7 +41,7 @@ namespace ClubManagement.Games.Presenters
             guests = presenter.getGuestList();
             if (guests == null || guests.Count == 0)
                 return;
-            _model.PlayerList.AddRange(presenter.getGuestList());
+            _model.PlayerList.AddRange(guests);
             _view.SetPlayerList(_model.PlayerList);
         }
 
@@ -100,9 +99,15 @@ namespace ClubManagement.Games.Presenters
 
         private void PlayerUpdate(object sender, EventArgs e)
         {
-
-            _repository.MatchPlayerUpdate(_model);
-            _view.CloseForm();
+            try
+            {
+                _service.PlayerUpdate(_model);
+                _view.CloseForm();
+            }
+            catch (Exception ex) 
+            { 
+                _view.ShowMessage(ex.Message); 
+            }
         }
 
         private void SearchMember(object sender, EventArgs e)
@@ -114,33 +119,27 @@ namespace ClubManagement.Games.Presenters
 
         private void LoadMember()
         {
-            DataTable resutl = _repository.LoadMember(_searchModel);
-            List<PlayerInfoDto> memberList = resutl.AsEnumerable().Select(row => new PlayerInfoDto
+            try
             {
-                MemberCode = row.Field<int>("mem_code"),
-                PlayerName = row.Field<string>("mem_name"),
-                IsSelected = _model.PlayerList.Any(p => p.MemberCode == row.Field<int>("mem_code")),
-                Gender = row.Field<int>("mem_gender") == 1,
-                IsPro = row.Field<int>("mem_pro") == 1
-                
-            }).ToList();
-            _model.MemberList = memberList;
-            _view.SetMemberList(_model.MemberList);
+                _model.MemberList = _service.LoadMember(_searchModel, _model.PlayerList);
+                _view.SetMemberList(_model.MemberList);
+            }
+            catch(Exception ex)
+            {
+                _view.ShowMessage(ex.Message);
+            }
         }
-        public void LoadPlayer(int code)
+        private void LoadPlayer(int code)
         {
-            DataTable result = _repository.LoadAttendPlayer(code);
-            List<PlayerInfoDto> playerList = result.AsEnumerable().Select(row => new PlayerInfoDto
+            try
             {
-                MemberCode = row.Field<int>("att_memcode"),
-                PlayerName = row.Field<string>("att_name"),
-                IsSelected = true,
-                Gender = row.Field<int>("att_gender") == 1,
-                IsPro = row.Field<int>("att_pro") == 1
-
-            }).ToList();
-            _model.PlayerList = playerList;
-            _view.SetPlayerList(_model.PlayerList);
+                _model.PlayerList = _service.LoadPlayer(code);
+                _view.SetPlayerList(_model.PlayerList);
+            }
+            catch(Exception ex)
+            {
+                _view.ShowMessage(ex.Message);
+            }
         }
     }
 }

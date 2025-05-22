@@ -19,6 +19,7 @@ namespace ClubManagement.Games.Views
             InitializeTextBox();
             ViewEvent();
             txtPrize1st.Focus();
+            this.Text = "개인 사이드 게임 설정";
         }
 
         public int? Prize1st

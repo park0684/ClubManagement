@@ -38,8 +38,8 @@ namespace ClubManagement.Games.Views
         void CreateGroupPanal(GroupDto group, int gameSeq);
         void CreateGameButton(List<GameOrderDto> games);
         void LoadAllcoverGamePlayers(GameOrderDto game);
-        void SetSideGameScore(GameOrderDto game);
         List<IndividualPlayerDto> SetIndividualSideRank(int rank);
         bool ShowConfirmation(string message);
+        void BindingIndividualScore(DataTable players);
     }
 }

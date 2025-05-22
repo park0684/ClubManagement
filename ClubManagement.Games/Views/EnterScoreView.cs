@@ -15,8 +15,7 @@ namespace ClubManagement.Games.Views
         public EnterScoreView()
         {
             InitializeComponent();
-            //FormBorderStyle = FormBorderStyle.None;
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.Text = "점수 입력";
             ControlBox = false;
             InitializeButtonTag();
             ViewEvent();

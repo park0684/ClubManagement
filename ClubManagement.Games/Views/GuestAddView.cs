@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace ClubManagement.Games.Views
             InitializeComponent();
             ViewEvent();
             flpGuestList.AutoScroll = true;
+            this.Text = "게스트 추가";
         }
 
         private void ViewEvent()
@@ -30,6 +32,7 @@ namespace ClubManagement.Games.Views
                 if (e.KeyCode == Keys.Enter)
                     AddGuestEvent?.Invoke(this, EventArgs.Empty);
             };
+            txtGuestName.Click += txtGuestName_Enter;
         }
 
         public string GuestName
@@ -175,6 +178,15 @@ namespace ClubManagement.Games.Views
         public void TextBoxClear()
         {
             txtGuestName.Text = "";
+        }
+
+        private void txtGuestName_Enter(object sender, EventArgs e)
+        {
+            var alreadyRunning = Process.GetProcessesByName("TabTip").Any();
+            if (!alreadyRunning)
+            {
+                Process.Start(@"C:\Program Files\Common Files\Microsoft Shared\ink\TabTip.exe");
+            }
         }
     }
 }

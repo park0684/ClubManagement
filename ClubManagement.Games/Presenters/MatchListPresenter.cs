@@ -7,6 +7,7 @@ using System.Data;
 using ClubManagement.Common.Hlepers;
 using ClubManagement.Games.Models;
 using ClubManagement.Games.Views;
+using ClubManagement.Games.Service;
 using ClubManagement.Games.Repositories;
 
 namespace ClubManagement.Games.Presenters
@@ -16,11 +17,13 @@ namespace ClubManagement.Games.Presenters
         IMatchListView _view;
         IMatchRepository _repository;
         MatchSearchModel _model;
+        MatchService _service;
         public MatchListPresenter(IMatchListView view, IMatchRepository repository)
         {
             this._view = view;
             this._repository = repository;
             this._model = new MatchSearchModel();
+            this._service = new MatchService(repository);
             //뷰이벤트 핸들러 설정
             this._view.EditMatchEvent += EditGame;
             this._view.AddMatchEvent += AddGame;
@@ -33,54 +36,17 @@ namespace ClubManagement.Games.Presenters
 
         private void LoadMatchList()
         {
-            try
-            {
-                
-                _model.FromDate = _view.MatchFromDate;
-                _model.ToDate = _view.MatchToDate;
-                _model.MatchType = _view.MatchType ?? 0;
-                _model.ExcludeType = _view.ExcludeType;
-
-                DataTable result = _repository.LoadMatchList(_model);
-                result.Columns.Add("No");
-                int i = 1;
-                foreach (DataRow row in result.Rows)
-                {
-                    row["No"] = i++;
-                }
-
-                _view.SetGameListBinding(result);
-            }
-            catch (Exception ex)
-            {
-                _view.ShowMessage(ex.Message);
-            }
+            _model.FromDate = _view.MatchFromDate;
+            _model.ToDate = _view.MatchToDate;
+            _model.MatchType = _view.MatchType ?? 0;
+            _model.ExcludeType = _view.ExcludeType;
+            DataTable dataSource = _service.LoadMatchList(_model);
+            _view.SetGameListBinding(dataSource);
         }
         private void LoadPlayerList(int code)
         {
-            try
-            {
-                DataTable players = _repository.LoadPlayerList(code);
-                players.Columns.Add("No");
-                players.Columns.Add("gender");
-                players.Columns.Add("memberType");
-                int i = 1;
-                foreach (DataRow row in players.Rows)
-                {
-                    row["No"] = i++;
-                    row["gender"] = MemberHelper.GetMemberGenger(Convert.ToInt32(row["att_gender"]));
-                    row["memberType"] = GameHelper.GetPlayerType(Convert.ToInt32(row["att_memtype"]));
-                }
-
-                players.Columns.Remove("att_gender");
-                players.Columns.Remove("att_memtype");
-                
-                _view.SetPlayerListBinding(players);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            DataTable players = _service.LoadPlayerList(code);
+            _view.SetPlayerListBinding(players);
         }
         private void SearchPlayerList(object sender, EventArgs e)
         {
@@ -102,13 +68,20 @@ namespace ClubManagement.Games.Presenters
 
         private void SearchGame(object sender, EventArgs e)
         {
-            LoadMatchList();
+            try
+            {
+                LoadMatchList();
+            }
+            catch(Exception ex)
+            {
+                _view.ShowMessage(ex.Message);
+            }
         }
         private void EidtPlayerList(object sender, EventArgs e)
         {
             int code = _view.GetMatchCode.Value;
             IMatchPlayerManageView view = new MatchPlayerManageView();
-            IMatchRepository repository = new MatchRepository();
+            IMatchRepository repository = _repository;
             MatchPlayerManagePresenter presenter = new MatchPlayerManagePresenter(view, repository);
             presenter.PlayerManageCall(code);
             view.ShowForm();
@@ -118,7 +91,7 @@ namespace ClubManagement.Games.Presenters
         private void AddGame(object sender, EventArgs e)
         {
             IMatchDetailView view = new MatchDetailView();
-            IMatchRepository repository = new MatchRepository();
+            IMatchRepository repository = _repository;
             new MatchDetailPresenter(view, repository);
             view.ShowForm();
             LoadMatchList();
@@ -128,7 +101,7 @@ namespace ClubManagement.Games.Presenters
         {
             int code = _view.GetMatchCode.Value;
             IMatchDetailView view = new MatchDetailView();
-            IMatchRepository repository = new MatchRepository();
+            IMatchRepository repository = _repository;
             MatchDetailPresenter presenter = new MatchDetailPresenter(view, repository);
             presenter.LoadMatch(code);
             view.ShowForm();

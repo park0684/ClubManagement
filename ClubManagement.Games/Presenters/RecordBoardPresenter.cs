@@ -9,6 +9,7 @@ using ClubManagement.Games.DTOs;
 using ClubManagement.Games.Models;
 using ClubManagement.Games.Repositories;
 using ClubManagement.Games.Views;
+using ClubManagement.Games.Service;
 
 namespace ClubManagement.Games.Presenters
 {
@@ -16,6 +17,7 @@ namespace ClubManagement.Games.Presenters
     {
         IRecordBoardView _view;
         IRecordBoardRepository _repository;
+        RecordBoardService _service;
         RecordBoardModel _model;
         int _gameSeq = 0;
         public RecordBoardPresenter(IRecordBoardView view, IRecordBoardRepository repository)
@@ -23,6 +25,7 @@ namespace ClubManagement.Games.Presenters
             _view = view;
             _repository = repository;
             _model = new RecordBoardModel();
+            _service = new RecordBoardService(_repository);
             _view.PlayerOptionEvent += SetPlayerOption;
             _view.GameButtonClick += ShowGameGroup;
             _view.AssignPlayerClick += ParticipantRegist;
@@ -44,87 +47,17 @@ namespace ClubManagement.Games.Presenters
         /// <param name="matchCode"></param>
         public void GetMatchInfo(int matchCode)
         {
-            //조회 모임 코드 및 모임명 설정
-            _model.MatchCode = matchCode;
-            _view.MatchTitle = _repository.LoadMatchTitle(matchCode).ToString();
-
-            //모임 내 등록된 게임 정보 수신 및 조회 버튼 생성
-            LoadGames(); // 모임내 게임리스트 설정 후 
+            // 모임내 게임리스트 설정 후 
             //각 게임별 참여자 및 그룹 설정
-            LoadParticitnadPlayers();
-            GetAllPlayer(); //
-
+            _model = _service.LoadRecodeDate(matchCode, _model.CurrentGame);
+            _view.MatchTitle = _repository.LoadMatchTitle(matchCode).ToString();
             _view.CreateGameButton(_model.GameList); // 게임 조회 버튼 생성
             _view.SetAllPlayerList(_model.GameList, _model.PlayerList); // 전체 참가자 리스트 생성 및 데이터 등록            
 
-            LoadIndiviualSideSet();
-
-            //사이드게임 데이터그리드뷰 서정
-            //SetSideGameGroupBox();
             ShowGameGroup(_model.CurrentGame);
         }
 
-        /// <summary>
-        /// 모임에 등록된 게임 정보 수신 후 _model 게임리스트에 반영
-        /// </summary>
-        private void LoadGames()
-        {
-            DataTable games = _repository.LoadGameOrder(_model.MatchCode);
-            _model.GameList = new List<GameOrderDto>();
-            foreach (DataRow row in games.Rows)
-            {
-                var gameOrder = new GameOrderDto
-                {
-                    GameSeq = Convert.ToInt32(row["game_order"]),
-                    GameType = Convert.ToInt32(row["game_type"]),
-                    PlayerCount = Convert.ToInt32(row["game_player"]),
-                    PersonalSideGame = Convert.ToInt32(row["game_side"]) == 1 ? true : false,
-                    AllCoverGame = Convert.ToInt32(row["game_allcover"]) == 1 ? true : false
-                };
-                _model.GameList.Add(gameOrder);
-                //참가자 그룹 자동 생성
-                CreateGroup(gameOrder);
-            }
-        }
-
-        /// <summary>
-        /// 전체 참가자 정보 수신
-        /// </summary>
-        private void GetAllPlayer()
-        {
-            // attend 참가자 정보에서 참가자 수신 후 리스트에 등록
-            DataTable Players = _repository.LoadAllPalyerList(_model.MatchCode);
-            _model.PlayerList = new List<PlayerInfoDto>();
-            foreach (DataRow row in Players.Rows)
-            {
-                _model.PlayerList.Add(new PlayerInfoDto
-                {
-                    //MemberCode = Convert.ToInt32(row["att_memcode"]),
-                    PlayerName = row["att_name"].ToString(),
-                    Gender = Convert.ToInt32(row["att_gender"]) == 1 ? true : false,
-                    IsPro = Convert.ToInt32(row["att_pro"]) == 1 ? true : false,
-                    //Handycap = Convert.ToInt32(row["att_handi"]),
-                    IndividualSide = Convert.ToInt32(row["att_side"]) == 1 ? true : false,
-                    AllCoverSide = Convert.ToInt32(row["att_allcover"]) == 1 ? true : false
-                });
-            }
-            foreach (var player in _model.PlayerList)
-            {
-                int baseHandicap = 0;
-
-                // 여자 핸디: +15점
-                if (player.Gender)
-                    baseHandicap += 15;
-
-                // 프로 핸디: -5점
-                if (player.IsPro)
-                    baseHandicap -= 5;
-
-                // 결과 저장
-                player.Handycap = baseHandicap;
-            }
-            //_view.LoadAllPlayers(_model.PlayerList);
-        }
+        
 
         /// <summary>
         /// 게임 버튼 클릭 이벤트 실행시 해당 게임의 그룹별 플레이어 정보를 표시
@@ -219,54 +152,25 @@ namespace ClubManagement.Games.Presenters
         private void SetSideGameGroupBox()
         {
 
-            //개인 사이드 
-            _model.SideGamePlayers = _model.PlayerList.Where(p => p.IndividualSide).ToList();
-            _view.SetSideGamePlayerList(_model.SideGamePlayers);  // 사이드 게임만
-            
-            
-            //올커버 사이드
-            _model.AllcoverGamePlayers = _model.PlayerList.Where(p => p.AllCoverSide).ToList();
-            _view.SetAllcoverGamePlayers(_model.AllcoverGamePlayers);
+            //개인 사이드 플레이어 생성
+            var individualSidePalyer = _model.PlayerList.Where(p => p.IndividualSide).ToList();
+            //개인 사이드 게임 플레이어 DataGridView에 표시
+            _view.SetSideGamePlayerList(individualSidePalyer);
+            //개인 사이드 핸디, 점수, 랭크 계산
+            var scoreList = _service.IndividualScore(_model.GameList, _model.CurrentGame);
+            _view.BindingIndividualScore(scoreList);
 
+
+            //올커버 사이드 플레이어 생성 및 DataGridview에 표시
+            var allCoverSidePlayer = _model.PlayerList.Where(p => p.AllCoverSide).ToList();
+            _view.SetAllcoverGamePlayers(allCoverSidePlayer);
             // 선택되 게임 스코어 정보 적용
             var selectedGame = _model.GameList.FirstOrDefault(g => g.GameSeq == _model.CurrentGame);
-            //선택된 게임 점수 사이드 게임 반영
-            _view.SetSideGameScore(selectedGame);
+            //사이드 게임 반영
             _view.LoadAllcoverGamePlayers(selectedGame);
         }
-        private void LoadIndiviualSideSet()
-        {
-            DataTable result = _repository.LoadIndividualSideSet(_model.MatchCode);
-            _model.IndividaulSideSet.Clear();
-            foreach (DataRow row in result.Rows)
-            {
-                IndividaulSetDto individaulSet = new IndividaulSetDto
-                {
-                    Rank = (int)row["ind_rank"],
-                    Prize = (int)row["ind_prize"],
-                    Handi = (int)row["ind_handi"]
-                };
-                _model.IndividaulSideSet.Add(individaulSet);
-            }
-        }
-        /// <summary>
-        /// gameOrder내 참가자/팀 수 만큼 그룹 자동 생성 메서드
-        /// </summary>
-        /// <param name="gameOrder"></param>
-        private void CreateGroup(GameOrderDto gameOrder)
-        {
-            gameOrder.Groups = new List<GroupDto>();
-            for(int i =1; i <= gameOrder.PlayerCount; i++)
-            {
-                GroupDto group = new GroupDto
-                {
-                    GroupNumber = i,
-                    Score = 0,
-                    Rank = 0,
-                };
-                gameOrder.Groups.Add(group);
-            }
-        }
+
+        
 
         /// <summary>
         /// 참가자의 핸디캡조건, 사이드게임 참가 여부 설정 이벤트
@@ -285,39 +189,7 @@ namespace ClubManagement.Games.Presenters
         }
 
 
-        /// <summary>
-        /// 등록된 게임별 플레이어 정보 수신 후 각 그룹별로 플레이어 정보 등록
-        /// </summary>
-        private void LoadParticitnadPlayers()
-        {
-            // 모임내 기록된 참가자 전체 정보 조회
-            DataTable allGamePlayers = _repository.LoadGamePlayers(_model.MatchCode);
-            // 전체 기록을 각 게임과 그룹 번호 확인 후 최종 Gruops.Player에 등록
-            foreach(DataRow row in allGamePlayers.Rows)
-            {
-                
-                int gameOrder = Convert.ToInt32(row["pl_game"]);
-                int groupNumber = Convert.ToInt32(row["pl_group"]);
-
-                var targetGame = _model.GameList.FirstOrDefault(g => g.GameSeq == gameOrder);
-                var targetGroup = targetGame.Groups.FirstOrDefault(g => g.GroupNumber == groupNumber);
-
-                PlayerInfoDto player = new PlayerInfoDto
-                {
-                    PlayerName = row["pl_name"].ToString(),
-                    MemberCode = Convert.ToInt32(row["pl_member"]),
-                    Handycap = Convert.ToInt32(row["pl_handi"]),
-                    IsPro = row["pl_pro"].ToString() == "1" ? true : false,
-                    Gender = row["pl_gender"].ToString() == "1" ? true : false,
-                    IndividualSide = row["pl_side"].ToString() == "1" ? true : false,
-                    AllCoverSide = row["pl_allcover"].ToString() == "1" ? true : false,
-                    Score = Convert.ToInt32(row["pl_score"]),
-                    IsSelected = true,
-                    IsAllCover = row["pl_isallcover"].ToString() == "1" ? true : false
-                };
-                targetGroup.players.Add(player);
-            }
-        }
+        
 
         /// <summary>
         /// 플레이어 추가 버튼 클릭
@@ -333,7 +205,6 @@ namespace ClubManagement.Games.Presenters
             _model.CurrentGroup = groupNumber;
             presenter.SetPlayerList();
             view.ShowForm();
-            //ShowGameGroup(gameSeq);
             GetMatchInfo(_model.MatchCode);
         }
         private void SaveIndividualSideRank(object sender, EventArgs e)
@@ -344,6 +215,7 @@ namespace ClubManagement.Games.Presenters
             RankAssignmentPresnter presnter = new RankAssignmentPresnter(view, _model);
             view.AddPlayerPanel();
             view.ShowForm();
+            GetMatchInfo(_model.MatchCode);
         }
 
         /// <summary>
@@ -371,6 +243,105 @@ namespace ClubManagement.Games.Presenters
             //ShowGameGroup(_gameSeq);
             GetMatchInfo(_model.MatchCode);
         }
+
+        /// <summary>
+        /// 모임에 등록된 게임 정보 수신 후 _model 게임리스트에 반영
+        /// 20250518 servie로 이전
+        /// </summary>
+        //private void LoadGames()
+        //{
+        //    DataTable games = _repository.LoadGameOrder(_model.MatchCode);
+        //    _model.GameList = new List<GameOrderDto>();
+        //    foreach (DataRow row in games.Rows)
+        //    {
+        //        var gameOrder = new GameOrderDto
+        //        {
+        //            GameSeq = Convert.ToInt32(row["game_order"]),
+        //            GameType = Convert.ToInt32(row["game_type"]),
+        //            PlayerCount = Convert.ToInt32(row["game_player"]),
+        //            PersonalSideGame = Convert.ToInt32(row["game_side"]) == 1 ? true : false,
+        //            AllCoverGame = Convert.ToInt32(row["game_allcover"]) == 1 ? true : false
+        //        };
+        //        _model.GameList.Add(gameOrder);
+        //        //참가자 그룹 자동 생성
+        //        CreateGroup(gameOrder);
+        //    }
+        //}
+
+        /// <summary>
+        /// 전체 참가자 정보 수신
+        /// 20250518 servie로 이전
+        /// </summary>
+        //private void GetAllPlayer()
+        //{
+        //    // attend 참가자 정보에서 참가자 수신 후 리스트에 등록
+        //    DataTable Players = _repository.LoadAllPalyerList(_model.MatchCode);
+        //    _model.PlayerList = new List<PlayerInfoDto>();
+        //    foreach (DataRow row in Players.Rows)
+        //    {
+        //        _model.PlayerList.Add(new PlayerInfoDto
+        //        {
+        //            //MemberCode = Convert.ToInt32(row["att_memcode"]),
+        //            PlayerName = row["att_name"].ToString(),
+        //            Gender = Convert.ToInt32(row["att_gender"]) == 1 ? true : false,
+        //            IsPro = Convert.ToInt32(row["att_pro"]) == 1 ? true : false,
+        //            //Handycap = Convert.ToInt32(row["att_handi"]),
+        //            IndividualSide = Convert.ToInt32(row["att_side"]) == 1 ? true : false,
+        //            AllCoverSide = Convert.ToInt32(row["att_allcover"]) == 1 ? true : false
+        //        });
+        //    }
+        //    foreach (var player in _model.PlayerList)
+        //    {
+        //        int baseHandicap = 0;
+
+        //        // 여자 핸디: +15점
+        //        if (player.Gender)
+        //            baseHandicap += 15;
+
+        //        // 프로 핸디: -5점
+        //        if (player.IsPro)
+        //            baseHandicap -= 5;
+
+        //        // 결과 저장
+        //        player.Handycap = baseHandicap;
+        //    }
+        //    //_view.LoadAllPlayers(_model.PlayerList);
+        //}
+
+        /// <summary>
+        /// 등록된 게임별 플레이어 정보 수신 후 각 그룹별로 플레이어 정보 등록
+        /// 20250518 servie로 이전
+        /// </summary>
+        //private void LoadParticitnadPlayers()
+        //{
+        //    // 모임내 기록된 참가자 전체 정보 조회
+        //    DataTable allGamePlayers = _repository.LoadGamePlayers(_model.MatchCode);
+        //    // 전체 기록을 각 게임과 그룹 번호 확인 후 최종 Gruops.Player에 등록
+        //    foreach (DataRow row in allGamePlayers.Rows)
+        //    {
+
+        //        int gameOrder = Convert.ToInt32(row["pl_game"]);
+        //        int groupNumber = Convert.ToInt32(row["pl_group"]);
+
+        //        var targetGame = _model.GameList.FirstOrDefault(g => g.GameSeq == gameOrder);
+        //        var targetGroup = targetGame.Groups.FirstOrDefault(g => g.GroupNumber == groupNumber);
+
+        //        PlayerInfoDto player = new PlayerInfoDto
+        //        {
+        //            PlayerName = row["pl_name"].ToString(),
+        //            MemberCode = Convert.ToInt32(row["pl_member"]),
+        //            Handycap = Convert.ToInt32(row["pl_handi"]),
+        //            IsPro = row["pl_pro"].ToString() == "1" ? true : false,
+        //            Gender = row["pl_gender"].ToString() == "1" ? true : false,
+        //            IndividualSide = row["pl_side"].ToString() == "1" ? true : false,
+        //            AllCoverSide = row["pl_allcover"].ToString() == "1" ? true : false,
+        //            Score = Convert.ToInt32(row["pl_score"]),
+        //            IsSelected = true,
+        //            IsAllCover = row["pl_isallcover"].ToString() == "1" ? true : false
+        //        };
+        //        targetGroup.players.Add(player);
+        //    }
+        //}
 
     }
 }

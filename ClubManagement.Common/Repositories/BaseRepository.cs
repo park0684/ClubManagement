@@ -11,7 +11,7 @@ namespace ClubManagement.Common.Repositories
         public SqlConnection OpenSql()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = "127.0.0.1,49492";
+            builder.DataSource = "192.168.219.100,49492";
             builder.UserID = "na2so";
             builder.Password = "!admin1010";
             builder.InitialCatalog = "na2so";
