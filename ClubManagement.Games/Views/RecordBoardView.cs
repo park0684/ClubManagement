@@ -79,6 +79,7 @@ namespace ClubManagement.Games.Views
         /// <param name="games"></param>
         public void CreateGameButton(List<GameOrderDto> games)
         {
+            flpGameButton.Controls.Clear();
             foreach(var game in games)
             {
                 int gameSea = game.GameSeq;
@@ -114,8 +115,8 @@ namespace ClubManagement.Games.Views
         {
             Panel pnlPlayer = new Panel
             {
-                Width = 180,
-                Height = 35,
+                Width = 250,
+                Height = 45,
                 BorderStyle = BorderStyle.FixedSingle,
                 Margin = new Padding(10),
                 Tag = player
@@ -124,7 +125,7 @@ namespace ClubManagement.Games.Views
             Label lblName = new Label
             {
                 Text = player.PlayerName,
-                Font = new Font("맑은 고딕", 12, FontStyle.Bold),
+                Font = new Font("맑은 고딕", 18, FontStyle.Bold),
                 Location = new Point(10, 10),
                 AutoSize = true
             };
@@ -145,8 +146,8 @@ namespace ClubManagement.Games.Views
             Label lblScore = new Label
             {
                 Text = score.ToString(),
-                Font = new Font("맑은 고딕", 10),
-                Location = new Point(70, 10),
+                Font = new Font("맑은 고딕", 18),
+                Location = new Point(90, 10),
                 AutoSize = true,
                 ForeColor = player.Score  + player.Handycap >= 200 ? Color.Red : Color.Black
             };
@@ -172,12 +173,12 @@ namespace ClubManagement.Games.Views
         /// </summary>
         /// <param name="group"></param>
         /// <param name="gameSeq"></param>
-        public void CreateGroupPanal(GroupDto group, int gameSeq)
+        private Panel CreateGroupPanal(GroupDto group, int gameSeq)
         {
             Panel pnlGroup = new Panel
             {
-                Width = 250,
-                Height = 250,
+                Width = 280,
+                Height = 350,
                 BorderStyle = BorderStyle.FixedSingle,
                 Margin = new Padding(10),
             };
@@ -186,18 +187,20 @@ namespace ClubManagement.Games.Views
             Label lblGroupName = new Label
             {
                 Text = $"{group.GroupNumber}팀",
-                Font = new Font("맑은 고딕", 12, FontStyle.Bold),
+                Font = new Font("맑은 고딕", 18, FontStyle.Bold),
                 Location = new Point(10, 10),
                 AutoSize = true
             };
             pnlGroup.Controls.Add(lblGroupName);
 
+            group.Score = group.players.Sum(s => Math.Min(s.Score + s.Handycap, 300));
+
             // 합계 점수 Label
             Label lblScore = new Label
             {
                 Text = $"합계: {group.Score}",
-                Font = new Font("맑은 고딕", 10),
-                Location = new Point(40, 10),
+                Font = new Font("맑은 고딕", 18),
+                Location = new Point(60, 10),
                 AutoSize = true
             };
             pnlGroup.Controls.Add(lblScore);
@@ -207,8 +210,8 @@ namespace ClubManagement.Games.Views
             {
                 Text = "추가",
                 Width = 70,
-                Height = 25,
-                Location = new Point(150, 10),
+                Height = 35,
+                Location = new Point(200, 10),
                 BackColor = Color.FromArgb(0, 111, 246),
                 ForeColor = Color.White
 
@@ -228,10 +231,39 @@ namespace ClubManagement.Games.Views
 
                 startY += pnlPlayer.Height + 5; // 다음 플레이어 패널 위치
             }
-            // 그룹 패널에 추가
-            flpGameGroup.Controls.Add(pnlGroup);
+
+            return pnlGroup;
+            // 그룹 패널에 추가 -> 반복 생성 메소드에서 처리로 이관
+            //flpGameGroup.Controls.Add(pnlGroup);
         }
 
+        public void RenderIndividualGameGroups(List<GroupDto> groups)
+        {
+            flpGameGroup.SuspendLayout();
+            flpGameGroup.Controls.Clear();
+            foreach (var group in groups)
+            {
+                foreach (var player in group.players)
+                {
+                    var pnl = CreatePlayerPanal(player);
+                    flpGameGroup.Controls.Add(pnl);
+                }
+            }
+            flpGameGroup.AutoScroll = true;
+            flpGameGroup.ResumeLayout();
+        }
+
+        public void RenderTeamGameGroups(List<GroupDto> groups, int gameSeq)
+        {
+            flpGameGroup.SuspendLayout();
+            flpGameGroup.Controls.Clear();
+            foreach (var group in groups)
+            {
+                var pnl = CreateGroupPanal(group, gameSeq);
+                flpGameGroup.Controls.Add(pnl);
+            }
+            flpGameGroup.ResumeLayout();
+        }
 
         /// <summary>
         /// 이벤트 등록
@@ -255,6 +287,7 @@ namespace ClubManagement.Games.Views
             pnlPlayerDataGird.Controls.Add(dgvPlayer.dgv);
             dgvPlayer.dgv.Dock = DockStyle.Fill;
             dgvPlayer.dgv.RowTemplate.Height = 35;
+            dgvPlayer.dgv.DefaultCellStyle.Font = new Font("맑은 고딕", 12);
             //개인 사인드 플레이어 리스트
             dgvIndividaulSide = new CustomDataGridViewControl();
             var sideGame = dgvIndividaulSide.dgv;
@@ -264,7 +297,7 @@ namespace ClubManagement.Games.Views
             sideGame.Columns.Add("handycap", "핸디");
             sideGame.Columns.Add("score", "점수");
             sideGame.Columns.Add("rank", "순위");
-            sideGame.RowTemplate.Height = 35;
+            sideGame.RowTemplate.Height = 45;
             dgvIndividaulSide.ApplyDefaultColumnSettings();
             sideGame.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             sideGame.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -273,6 +306,7 @@ namespace ClubManagement.Games.Views
             sideGame.Columns["player"].DataPropertyName = "PlayerName";
             sideGame.Columns["handycap"].DataPropertyName = "Handycap";
             sideGame.DefaultCellStyle.SelectionBackColor = Color.White;
+            sideGame.DefaultCellStyle.Font = new Font("맑은 고딕", 12);
 
             //올커버 사이드 플레이어 리스트
             dgvAllCover = new CustomDataGridViewControl();
@@ -281,7 +315,7 @@ namespace ClubManagement.Games.Views
             allcoverGame.Dock = DockStyle.Fill;
             allcoverGame.Columns.Add("player", "이름");
             allcoverGame.Columns.Add("whether", "올커버");
-            allcoverGame.RowTemplate.Height = 35;
+            allcoverGame.RowTemplate.Height = 45;
             dgvAllCover.ApplyDefaultColumnSettings();
             allcoverGame.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             allcoverGame.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -289,6 +323,7 @@ namespace ClubManagement.Games.Views
             allcoverGame.AutoGenerateColumns = false;
             allcoverGame.Columns["player"].DataPropertyName = "PlayerName";
             allcoverGame.DefaultCellStyle.SelectionBackColor = Color.White;
+            allcoverGame.DefaultCellStyle.Font = new Font("맑은 고딕", 12);
 
             //게임 그룹별 스코어 리스트
             dgvGameScore = new CustomDataGridViewControl();
@@ -299,7 +334,7 @@ namespace ClubManagement.Games.Views
             gameScore.Columns.Add("name", "참가자/팀");
             gameScore.Columns.Add("score", "점수");
             gameScore.Columns.Add("rank", "순위");
-            gameScore.RowTemplate.Height = 35;
+            gameScore.RowTemplate.Height = 45;
             gameScore.Columns.Remove("No");
             gameScore.Columns["group"].Visible = false;
             gameScore.ReadOnly = true;
@@ -307,6 +342,7 @@ namespace ClubManagement.Games.Views
             gameScore.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvGameScore.ApplyDefaultColumnSettings();
             gameScore.DefaultCellStyle.SelectionBackColor = Color.White;
+            gameScore.DefaultCellStyle.Font = new Font("맑은 고딕", 16);
         }
         /// <summary>
         /// dgvPlayer의 경우 등록된 게임수 만큼 게임별 점수 칼럼이 생성되어야 하므로 

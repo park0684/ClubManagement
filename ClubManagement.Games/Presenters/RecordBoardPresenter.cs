@@ -57,10 +57,12 @@ namespace ClubManagement.Games.Presenters
             ShowGameGroup(_model.CurrentGame);
         }
 
-        
+
 
         /// <summary>
         /// 게임 버튼 클릭 이벤트 실행시 해당 게임의 그룹별 플레이어 정보를 표시
+        /// 20250526 Presenter에서 뷰를 직접 생성하는 부분에 대해서
+        /// View에 대상들만 전달하고 직접 반복생성하는 메소드 추가
         /// </summary>
         /// <param name="gameSeq"></param>
         private void ShowGameGroup(int gameSeq)
@@ -76,26 +78,28 @@ namespace ClubManagement.Games.Presenters
                 int registeredCount = selectedGame.Groups.Sum(g => g.players.Count);
                 
                 if( registeredCount == 0)
-                {
-                    InsertIndividualPlayer();
-                }
-                
-                foreach (var targetGroup in selectedGame.Groups)
-                {
-                    foreach (var player in targetGroup.players)
-                    {
-                        _view.AddPlayerPanal(player);
+                    InsertIndividualPlayer();//등록된 플레이어가 없을 경우 직접 등록
+                    //ToDo -> 참석자가 수정되었을 경우 등록은 되었으나 플레이어 수가 맞지않음
+                    //플레이어 숫자와 참석자 숫자로 대체 필요하며
+                    //Presenter에서 플레이어 등록이 아닌 Service에서 처리 하도록 수정 필요
 
-                    }
-                }
+                _view.RenderIndividualGameGroups(selectedGame.Groups);
+                //foreach (var targetGroup in selectedGame.Groups)
+                //{
+                //    foreach (var player in targetGroup.players)
+                //    {
+                //        _view.AddPlayerPanal(player);
+                //    }
+                //} 
             }
             else
             {
                 //단체전의 경우 그룹 패널 생성
-                foreach (var group in selectedGame.Groups)
-                {
-                    _view.CreateGroupPanal(group, gameSeq);
-                }
+                _view.RenderTeamGameGroups(selectedGame.Groups, gameSeq);
+                //foreach (var group in selectedGame.Groups)
+                //{
+                //    _view.CreateGroupPanal(group, gameSeq);
+                //}
             }
             _view.GameSeq = $"{gameSeq} 게임 점수";
             
@@ -121,7 +125,7 @@ namespace ClubManagement.Games.Presenters
                 //_view.AddPlayerPanal(player);
                 _repository.InsertGamePlayer(_model);
             }
-            //Todo 참가자가 변경 되었을 경우 리프레쉬 기능 필요 
+            //Todo 참가자가 변경 되었을 경우 재등록 기능 필요 
         }
 
        

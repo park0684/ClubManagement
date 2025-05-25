@@ -35,11 +35,13 @@ namespace ClubManagement.Games.Views
         void SetGroupScoreList(GameOrderDto groups);
         void flpGameGroupClear();
         void AddPlayerPanal(PlayerInfoDto player);
-        void CreateGroupPanal(GroupDto group, int gameSeq);
+        //void CreateGroupPanal(GroupDto group, int gameSeq);
         void CreateGameButton(List<GameOrderDto> games);
         void LoadAllcoverGamePlayers(GameOrderDto game);
         List<IndividualPlayerDto> SetIndividualSideRank(int rank);
         bool ShowConfirmation(string message);
         void BindingIndividualScore(DataTable players);
+        void RenderIndividualGameGroups(List<GroupDto> groups);
+        void RenderTeamGameGroups(List<GroupDto> groups, int gameSeq);
     }
 }

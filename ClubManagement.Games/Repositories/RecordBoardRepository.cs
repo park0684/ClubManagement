@@ -218,17 +218,17 @@ namespace ClubManagement.Games.Repositories
             using (SqlConnection connection = OpenSql())
             {
                 DataTable paramTable = new DataTable();
-                paramTable.Columns.Add("indp_name", typeof(string));
-                paramTable.Columns.Add("indp_rank", typeof(int));
+                paramTable.Columns.Add("indp_name", typeof(string)); 
                 paramTable.Columns.Add("indp_handi", typeof(int));
-                paramTable.Columns.Add("indp_score", typeof(int));
+                paramTable.Columns.Add("indp_rank", typeof(int));
+
                 foreach (var player in players)
                 {
                     if(player.Rank != 0)
                         paramTable.Rows.Add(
                             player.Player,
-                            player.Rank,
-                            player.AddHandi);
+                            player.AddHandi,
+                            player.Rank);
                 }
                     SqlTransaction transaction = connection.BeginTransaction();
                 try
@@ -245,7 +245,7 @@ namespace ClubManagement.Games.Repositories
                                 Value = paramTable
                             }
                         };
-                    ExecuteNonQuery(StoredProcedures.InsertIndividaulRank, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.InsertIndividaulRank, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -258,33 +258,36 @@ namespace ClubManagement.Games.Repositories
         }
         public void UpdateIndividualSet(RecordBoardModel model)
         {
-            int match = model.MatchCode;
-            string query = $"SELECT COUNT(ind_rank) FROM individualset WHERE ind_match = {match}";
-            using (SqlConnection connection = OpenSql())
+            DataTable paramTable = new DataTable();
+            paramTable.Columns.Add("indo_rank", typeof(int));
+            paramTable.Columns.Add("indo_prize", typeof(int));
+            paramTable.Columns.Add("indo_handi", typeof(int));
+            foreach (var set in model.IndividaulSideSet)
+            {
+                DataRow row = paramTable.NewRow();
+                row["indo_rank"] = set.Rank;
+                row["indo_prize"] = set.Prize;
+                row["indo_handi"] = set.Handi;
+                paramTable.Rows.Add(row);
+
+            }
+                using (SqlConnection connection = OpenSql())
             {
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    int count = Convert.ToInt32(ScalaQuery(query));
-                    if (count > 0)
-                    {
-                        query = $"DELETE FROM individualset WHERE ind_match = @match";
-                        SqlParameter[] deleteParameters = { new SqlParameter("@match", SqlDbType.Int) { Value = match } };
-                        ExecuteNonQuery(query, connection, transaction, deleteParameters);
-                    }
-                    query = "INSERT INTO individualset(ind_match,  ind_rank, ind_prize, ind_handi) VALUES(@match, @rank, @prize, @handi)";
-                    foreach (var set in model.IndividaulSideSet)
-                    {
-                        SqlParameter[] parameters =
+                    SqlParameter[] parameters =
                         {
-                            new SqlParameter("@match", SqlDbType.Int){Value = match},
-                            new SqlParameter("@rank",SqlDbType.Int){Value = set.Rank},
-                            new SqlParameter("@prize", SqlDbType.Int){Value  = set.Prize},
-                            new SqlParameter("@handi", SqlDbType.Int){Value = set.Handi}
+                            new SqlParameter("@match", SqlDbType.Int){Value = model.MatchCode},
+                            new SqlParameter
+                            {
+                                ParameterName = "@individualList",
+                                SqlDbType = SqlDbType.Structured,
+                                TypeName = "dbo.IndividualOption",
+                                Value = paramTable
+                            }
                         };
-                        ExecuteNonQuery(query, connection, transaction, parameters);
-
-                    }
+                    ExecuteNoneQuery(StoredProcedures.SetIndividualOption, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)

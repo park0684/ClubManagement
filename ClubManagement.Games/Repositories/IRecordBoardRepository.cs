@@ -11,8 +11,11 @@ namespace ClubManagement.Games.Repositories
 {
     public interface IRecordBoardRepository
     {
+        //모임 내 게임 조회
         DataTable LoadGameOrder(int code);
+        //모임 참석자 기준으로 플레이어 조회
         DataTable LoadAllPalyerList(int code);
+        //각 게임별 팀/그룹별 플레이어 조회
         DataTable LoadGamePlayers(int match);
         DataRow LoadGamePlayer(int match, int game, string name);
         DataTable LoadIndividualSideSet(int match);
