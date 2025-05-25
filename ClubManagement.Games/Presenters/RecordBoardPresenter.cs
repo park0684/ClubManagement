@@ -141,9 +141,15 @@ namespace ClubManagement.Games.Presenters
                 targetPlayer.AllCoverSide = player.AllCoverSide;
                 targetPlayer.Handycap = player.Handycap;
             }
-            _repository.UpdatePlayerInfo(targetPlayer, _model.MatchCode);
-
-            GetMatchInfo(_model.MatchCode);            
+            try
+            {
+                _service.UpdatePlayerOption(targetPlayer, _model.MatchCode);
+                GetMatchInfo(_model.MatchCode);
+            }
+            catch(Exception ex)
+            {
+                _view.ShowMessage(ex.Message);
+            }
         }
 
         /// <summary>

@@ -41,7 +41,22 @@ namespace ClubManagement.Common.Repositories
                 //return null;
             }
         }
-
+        public void ExecuteNoneQuery (string procedure, SqlConnection connection, SqlTransaction transaction, SqlParameter[] parameters)
+        {
+            using (SqlCommand command = new SqlCommand(procedure, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                if (transaction != null)
+                {
+                    command.Transaction = transaction;
+                }
+                if (parameters != null)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
+                command.ExecuteNonQuery();
+            }
+        }
         public void ExecuteNonQuery(string query, SqlConnection connection, SqlTransaction transaction, SqlParameter[] parameters)
         {
             using (SqlCommand command = new SqlCommand(query, connection))

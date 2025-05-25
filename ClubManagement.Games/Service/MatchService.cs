@@ -144,7 +144,7 @@ namespace ClubManagement.Games.Service
         /// <param name="model"></param>
         public void PlayerUpdate(MatchModel model)
         {
-            _repository.MatchPlayerUpdate(model);
+            _repository.UpdateMatchPlayer(model);
         }
     }
 }

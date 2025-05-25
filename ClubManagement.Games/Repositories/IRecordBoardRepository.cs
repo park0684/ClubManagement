@@ -18,7 +18,7 @@ namespace ClubManagement.Games.Repositories
         DataTable LoadIndividualSideSet(int match);
         DataTable LoadIndividualSideRank(int match, int game);
         int CheckIndividualSideRank(int match, int game);
-        object LoadMatchTitle(int matchCode);
+        string LoadMatchTitle(int matchCode);
         void InsertGame(RecordBoardModel model);
         void InsertGamePlayer(RecordBoardModel model);
         void UpdatePlayerInfo(PlayerInfoDto player, int match);

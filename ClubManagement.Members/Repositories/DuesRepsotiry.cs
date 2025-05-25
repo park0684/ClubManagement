@@ -41,7 +41,12 @@ namespace ClubManagement.Members.Repositories
             query.Append(" GROUP BY mem_code, mem_name, mem_birth, mem_access");
             return SqlAdapterQuery(query.ToString());
         }
+        public DataRow LoadStatmet(int statmentcode)
+        {
+            string query = $"SELECT du_date, du_apply, du_pay, du_memcode, du_type,  du_detail, du_memo FROM dues WHERE du_code = {statmentcode} ";
 
+            return SqlAdapterQuery(query).Rows[0];
+        }
         public DataTable GetStateList(DuesModel model)
         {
             StringBuilder query = new StringBuilder();
@@ -52,27 +57,6 @@ namespace ClubManagement.Members.Repositories
             query.Append("ORDER BY du_date, du_code");
             return SqlAdapterQuery(query.ToString());
         }
-
-        public void DeleteStatment(int statmentCode)
-        {
-            string query = "UPDATE dues SET du_status = 0 WHERE du_code = @code";
-            SqlParameter[] parameters = { new SqlParameter("@code", SqlDbType.Int) { Value = statmentCode } };
-            using (SqlConnection connection = OpenSql())
-            {
-                SqlTransaction transaction = connection.BeginTransaction();
-                try
-                {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw new Exception(ex.Message);
-                }
-            }
-        }
-
         public void InsertStatment(StatementModel model)
         {
             string query = "SELECT ISNULL(MAX(du_code),0) +1 FROM dues";
@@ -108,14 +92,6 @@ namespace ClubManagement.Members.Repositories
                 }
             }
         }
-
-        public DataRow LoadStatmet(int statmentcode)
-        {
-            string query = $"SELECT du_date, du_apply, du_pay, du_memcode, du_type,  du_detail, du_memo FROM dues WHERE du_code = {statmentcode} ";
-
-            return SqlAdapterQuery(query).Rows[0];
-        }
-
         public void UpdateStatment(StatementModel model)
         {
             string query = $"UPDATE dues SET du_date  = @date, du_apply = @apply, du_type  = @type, du_pay  = @amount, du_memcode = @memcode, du_detail = @detail, du_memo = @memo, du_udate = GETDATE() , du_status = 1 WHERE du_code ={model.StatementCode}";
@@ -129,6 +105,25 @@ namespace ClubManagement.Members.Repositories
                 new SqlParameter("@detail", SqlDbType.VarChar) { Value = model.StatementDetail },
                 new SqlParameter("@memo", SqlDbType.VarChar) { Value = model.Memo }
             };
+            using (SqlConnection connection = OpenSql())
+            {
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
+        public void DeleteStatment(int statmentCode)
+        {
+            string query = "UPDATE dues SET du_status = 0 WHERE du_code = @code";
+            SqlParameter[] parameters = { new SqlParameter("@code", SqlDbType.Int) { Value = statmentCode } };
             using (SqlConnection connection = OpenSql())
             {
                 SqlTransaction transaction = connection.BeginTransaction();

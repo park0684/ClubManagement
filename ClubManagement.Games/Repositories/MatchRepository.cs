@@ -45,7 +45,6 @@ namespace ClubManagement.Games.Repositories
                 throw new Exception(ex.Message);
             }
         }
-
         public DataTable LoadPlayerList(int code)
         {
             string query = ($"SELECT att_name,  ISNULL(RTRIM(mem_birth),'') mem_birth, att_gender, att_memtype FROM attend LEFT JOIN member ON att_memcode = mem_code  WHERE att_code = {code}");
@@ -58,7 +57,6 @@ namespace ClubManagement.Games.Repositories
                 throw new Exception(ex.Message);
             }
         }
-
         public DataTable LoadMember(MatchSearchModel model)
         {
             StringBuilder query = new StringBuilder();
@@ -82,40 +80,58 @@ namespace ClubManagement.Games.Repositories
 
             return SqlAdapterQuery(query.ToString());
         }
-
         public DataTable LoadAttendPlayer(int mactchCode)
         {
             string query = $"SELECT att_name, ISNULL(att_memcode,0) att_memcode, att_gender, att_pro, att_handi FROM attend WHERE att_code = {mactchCode} ";
             return SqlAdapterQuery(query);
         }
-        public void MatchPlayerUpdate(MatchModel model)
+        public DataRow LoadMatchInfo(int matchCode)
+        {
+            string query = $"SELECT match_title, match_host, match_date, match_type, match_memo FROM match WHERE match_code = {matchCode}";
+            DataTable result = SqlAdapterQuery(query);
+            return result.Rows[0];
+        }
+        public void UpdateMatchPlayer(MatchModel model)
         {
             int matchCode = (int)model.MatchCode;
-            string detetequery = "DELETE FROM attend WHERE att_code = @code";
-            SqlParameter[] deleteParam = { new SqlParameter("@code", SqlDbType.Int) { Value = matchCode } };
-            string insertQuery = "INSERT INTO attend (att_code, att_name, att_memcode, att_memtype, att_gender, att_pro, att_handi, att_side, att_allcover) VALUES (@code, @name, @memCode, @memType, @gender, @isPro, @handi, 0, 0)";
+            DataTable parmaTable = new DataTable();
+            parmaTable.Columns.Add("player_memcode", typeof(int));
+            parmaTable.Columns.Add("player_name", typeof(string));
+            parmaTable.Columns.Add("player_gender", typeof(byte));
+            parmaTable.Columns.Add("player_handicap", typeof(int));
+            parmaTable.Columns.Add("player_isPro", typeof(byte));
+            parmaTable.Columns.Add("player_individual", typeof(byte));
+            parmaTable.Columns.Add("player_allcover", typeof(byte));
+            parmaTable.Columns.Add("player_isAllcover", typeof(byte));
+            parmaTable.Columns.Add("player_score", typeof(int));
 
-            using (SqlConnection connection = OpenSql())
+            foreach (var player in model.PlayerList)
+            {
+                parmaTable.Rows.Add(
+                player.MemberCode,
+                player.PlayerName,
+                player.Gender ? 1 : 0,
+                player.Handycap,
+                player.IsPro ? 1 : 0
+                );
+            }
+
+                using (SqlConnection connection = OpenSql())
             {
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(detetequery, connection, transaction, deleteParam);
-                    foreach (var player in model.PlayerList)
+                    SqlParameter[] parameters =
                     {
-                        SqlParameter[] insertParams =
-                        {
-                            new SqlParameter("@code", SqlDbType.Int) { Value = matchCode },
-                            new SqlParameter("@name", SqlDbType.NVarChar) { Value = player.PlayerName },
-                            new SqlParameter("@memCode", SqlDbType.Int) { Value = player.MemberCode },
-                            new SqlParameter("@memType", SqlDbType.Int) { Value = player.MemberCode == 0 ? 2 : 1 },
-                            new SqlParameter("@gender", SqlDbType.Int) { Value = player.Gender == true ? 1 :0 },
-                            new SqlParameter("@isPro", SqlDbType.Int) { Value = player.IsPro == true? 1:0 },
-                            new SqlParameter("@handi", SqlDbType.Int) { Value = player.Handycap }
-                        };
-                        ExecuteNonQuery(insertQuery, connection, transaction, insertParams);
-
-                    }
+                        new SqlParameter("@match", SqlDbType.Int){ Value = model.MatchCode},
+                        new SqlParameter{
+                            ParameterName = "@PlayerList",
+                            SqlDbType = SqlDbType.Structured,
+                            TypeName = "dbo.PlayerInfo",
+                            Value = parmaTable
+                        }
+                    };
+                    ExecuteNoneQuery(StoredProcedures.UpdateMatchPlayer, connection, transaction, parameters);
                     transaction.Commit();
                 }
 
@@ -127,15 +143,9 @@ namespace ClubManagement.Games.Repositories
             }
 
         }
-        public DataRow LoadMatchInfo(int matchCode)
-        {
-            string query = $"SELECT match_title, match_host, match_date, match_type, match_memo FROM match WHERE match_code = {matchCode}";
-            DataTable result = SqlAdapterQuery(query);
-            return result.Rows[0];
-        }
+
         public void UpdateMatch(MatchModel model)
         {
-            string query = "UPDATE match SET match_title = @title, match_host = @code, match_date = @date, match_type = @type, match_memo = @memo WHERE match_code = @code ";
             SqlParameter[] parameters =
             {
                 new SqlParameter ("@code",SqlDbType.Int){Value = model.MatchCode},
@@ -150,7 +160,7 @@ namespace ClubManagement.Games.Repositories
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.UpdateMatch, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -162,13 +172,9 @@ namespace ClubManagement.Games.Repositories
         }
         public void InsertMatch(MatchModel model)
         {
-            string query = "SELECT ISNULL(MAX(match_code),0) + 1 FROM match";
-            int code = (int)ScalaQuery(query);
-
-            query = "INSERT INTO match(match_code, match_title, match_host, match_date, match_type, match_memo, match_record) VALUES(@code, @title, @host, @date, @type, @memo,0)";
             SqlParameter[] parameters =
             {
-                new SqlParameter ("@code",SqlDbType.Int){Value = code},
+                new SqlParameter ("@match",SqlDbType.Int){Value = 0},
                 new SqlParameter ("@title",SqlDbType.NVarChar){Value = model.MatchTitle},
                 new SqlParameter ("@host",SqlDbType.NVarChar){Value = model.MatchHost},
                 new SqlParameter ("@date",SqlDbType.Date){Value = model.MatchDate.Value.ToString("yyyy-MM-dd")},
@@ -180,7 +186,7 @@ namespace ClubManagement.Games.Repositories
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.InsertMatch, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)

@@ -50,8 +50,6 @@ namespace ClubManagement.Games.Service
                     GameSeq = Convert.ToInt32(row["game_order"]),
                     GameType = Convert.ToInt32(row["game_type"]),
                     PlayerCount = Convert.ToInt32(row["game_player"]),
-                    PersonalSideGame = Convert.ToInt32(row["game_side"]) == 1 ? true : false,
-                    AllCoverGame = Convert.ToInt32(row["game_allcover"]) == 1 ? true : false,
                     Groups = Enumerable.Range(1, Convert.ToInt32(row["game_player"])).Select(i => new GroupDto { GroupNumber = i }).ToList()
                 };
                 gameOrder.IndividualPlayers = LoadIndividualRak(match, gameOrder.GameSeq);
@@ -275,5 +273,6 @@ namespace ClubManagement.Games.Service
         {
             _repository.InsertGamePlayer(model);
         }
+        
     }
 }

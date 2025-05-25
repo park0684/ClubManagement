@@ -45,8 +45,16 @@ namespace ClubManagement.Games.Presenters
             var plyer = targetGroup.players.FirstOrDefault(p => p.PlayerName == _view.PlayerName);
             plyer.Score = (int)_view.Score;
             plyer.IsAllCover = _view.IsAllcover;
-            _repository.UPdatePlayerScore(plyer, _model.MatchCode, _model.CurrentGame);
-            _view.CloseForm();
+            try
+            {
+                _repository.UPdatePlayerScore(plyer, _model.MatchCode, _model.CurrentGame);
+                _view.CloseForm();
+            }
+            catch(Exception ex)
+            {
+                _view.ShowMessage(ex.Message);
+            }
+            
         }
 
         private void CloseForm(object sender, EventArgs e)
