@@ -49,7 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Presenters\DataBaseConfigPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositries\IOptionRepository.cs" />
+    <Compile Include="Repositries\OptionRepository.cs" />
     <Compile Include="views\DatabaseConfigView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,8 +87,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
-    <Folder Include="Presenters\" />
-    <Folder Include="Repositries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClubManagement.Common\ClubManagement.Common.csproj">
+      <Project>{196b232b-f897-4c04-b7bd-f82a74cb361c}</Project>
+      <Name>ClubManagement.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -17,6 +17,7 @@ namespace ClubManagement.Options.views
             InitializeComponent();
             this.Text = "데이터베이스 연결 설정";
             ControlBox = false;
+            ViewEvent();
         }
 
         public string Address
@@ -62,6 +63,11 @@ namespace ClubManagement.Options.views
         {
             StartPosition = FormStartPosition.CenterParent;
             ShowDialog();
+        }
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
         }
 
         private void ViewEvent()

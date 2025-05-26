@@ -68,7 +68,7 @@ namespace ClubManagement.Members.Presenters
         private void StatementDelete(object sender, EventArgs e)
         {
             int code = (int)_model.StatementCode;
-            _repository.DeleteStatment(code);
+            _repository.DeleteStatement(code);
             _view.CloseForm();
         }
 

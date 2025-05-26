@@ -15,6 +15,9 @@ namespace ClubManagement.View
     {
         private readonly Dictionary<string, Panel> _categoryPanels = new Dictionary<string, Panel>();
         private string _activeCategory = null;
+
+        public event EventHandler DatabaseConnectEvent;
+
         public MainView()
         {
             InitializeComponent();

@@ -59,12 +59,8 @@ namespace ClubManagement.Members.Repositories
         }
         public void InsertStatment(StatementModel model)
         {
-            string query = "SELECT ISNULL(MAX(du_code),0) +1 FROM dues";
-            int code = Convert.ToInt32(ScalaQuery(query));
-            query = "INSERT INTO dues(du_code, du_date, du_apply, du_type, du_pay, du_memcode, du_detail, du_memo, du_idate, du_udate, du_status) VALUES(@code, @date, @apply, @type, @amount, @memcode, @detail, @memo, GETDATE(), GETDATE(), 1)";
             SqlParameter[] parameters =
             {
-                new SqlParameter("@code",SqlDbType.Int){Value = code },
                 new SqlParameter("@date",SqlDbType.Date){Value = model.StatementDate},
                 new SqlParameter("@apply",SqlDbType.Int){Value = model.Apply},
                 new SqlParameter("@type",SqlDbType.Int){Value = model.StatementType},
@@ -78,7 +74,7 @@ namespace ClubManagement.Members.Repositories
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.InsertStatement, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -94,9 +90,10 @@ namespace ClubManagement.Members.Repositories
         }
         public void UpdateStatment(StatementModel model)
         {
-            string query = $"UPDATE dues SET du_date  = @date, du_apply = @apply, du_type  = @type, du_pay  = @amount, du_memcode = @memcode, du_detail = @detail, du_memo = @memo, du_udate = GETDATE() , du_status = 1 WHERE du_code ={model.StatementCode}";
+            
             SqlParameter[] parameters =
             {
+                new SqlParameter("@stateCode",SqlDbType.Int){Value = model.StatementCode},
                 new SqlParameter("@date",SqlDbType.Date){Value = model.StatementDate.ToString("yyyy-MM-dd")},
                 new SqlParameter("@type", SqlDbType.Int) { Value = model.StatementType },
                 new SqlParameter("@apply",SqlDbType.Int){ Value = model.Apply},
@@ -110,7 +107,7 @@ namespace ClubManagement.Members.Repositories
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.UpdateStatement, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -120,16 +117,19 @@ namespace ClubManagement.Members.Repositories
                 }
             }
         }
-        public void DeleteStatment(int statmentCode)
+        public void DeleteStatement(int statmentCode)
         {
-            string query = "UPDATE dues SET du_status = 0 WHERE du_code = @code";
-            SqlParameter[] parameters = { new SqlParameter("@code", SqlDbType.Int) { Value = statmentCode } };
+            
+            SqlParameter[] parameters = 
+            { 
+                new SqlParameter("@code", SqlDbType.Int) { Value = statmentCode } 
+            };
             using (SqlConnection connection = OpenSql())
             {
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.DeleteStatement, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)

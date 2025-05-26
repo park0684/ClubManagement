@@ -15,7 +15,7 @@ namespace ClubManagement.Members.Repositories
         DataRow GetBalance(DuesModel model);
         void InsertStatment(StatementModel model);
         void UpdateStatment(StatementModel model);
-        void DeleteStatment(int statmentCode);
+        void DeleteStatement(int statmentCode);
         DataRow LoadStatmet(int statmentcode);
 
     }

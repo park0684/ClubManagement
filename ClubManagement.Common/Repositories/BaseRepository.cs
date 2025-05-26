@@ -1,22 +1,31 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using ClubManagement.Common.Hlepers;
 
 namespace ClubManagement.Common.Repositories
 {
     public class BaseRepository
     {
-        private string _sqlConnectionstring;
-
-        public SqlConnection OpenSql()
+        //private string _sqlConnectionstring;
+        IniFileHelper _ini = new IniFileHelper();
+        private string GetConntionInfo()
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = "192.168.219.100,49492";
-            builder.UserID = "na2so";
-            builder.Password = "!admin1010";
-            builder.InitialCatalog = "na2so";
-            _sqlConnectionstring = builder.ConnectionString;
-            SqlConnection connectionDatabase = new SqlConnection(_sqlConnectionstring);
+
+            builder.DataSource = _ini.Read("Database Config", "Address") +","+ _ini.Read("Database Config", "Port");
+            builder.InitialCatalog = _ini.Read("Database Config", "Database");
+            builder.UserID = _ini.Read("Database Config", "User");
+            builder.Password = _ini.Read("Database Config", "Password");
+            //_sqlConnectionstring = builder.ConnectionString;
+
+            return builder.ConnectionString;
+        }
+        public SqlConnection OpenSql()
+        {
+
+            SqlConnection connectionDatabase = new SqlConnection(GetConntionInfo());
+
             connectionDatabase.Open();
             return connectionDatabase;
 

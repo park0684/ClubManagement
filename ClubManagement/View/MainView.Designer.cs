@@ -29,14 +29,18 @@ namespace ClubManagement.View
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             this.pnlTopMenu = new System.Windows.Forms.Panel();
             this.pnlSideMenu = new System.Windows.Forms.Panel();
             this.pnlControlMenu = new System.Windows.Forms.Panel();
             this.pnlView = new System.Windows.Forms.Panel();
+            this.btnConnect = new System.Windows.Forms.Button();
+            this.pnlTopMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlTopMenu
             // 
+            this.pnlTopMenu.Controls.Add(this.btnConnect);
             this.pnlTopMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTopMenu.Location = new System.Drawing.Point(0, 0);
             this.pnlTopMenu.Name = "pnlTopMenu";
@@ -70,6 +74,18 @@ namespace ClubManagement.View
             this.pnlView.Size = new System.Drawing.Size(940, 498);
             this.pnlView.TabIndex = 2;
             // 
+            // btnConnect
+            // 
+            this.btnConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.btnConnect.FlatAppearance.BorderSize = 0;
+            this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnConnect.Image")));
+            this.btnConnect.Location = new System.Drawing.Point(1032, 12);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(40, 40);
+            this.btnConnect.TabIndex = 0;
+            this.btnConnect.UseVisualStyleBackColor = false;
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -84,6 +100,7 @@ namespace ClubManagement.View
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainView";
             this.Text = "MainView";
+            this.pnlTopMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -95,6 +112,6 @@ namespace ClubManagement.View
         private System.Windows.Forms.Panel pnlView;
         private System.Windows.Forms.Panel pnlSideMenu;
         private System.Windows.Forms.Panel pnlControlMenu;
-        
+        private System.Windows.Forms.Button btnConnect;
     }
 }

@@ -148,7 +148,7 @@ namespace ClubManagement.Games.Repositories
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter ("@code",SqlDbType.Int){Value = model.MatchCode},
+                new SqlParameter ("@match",SqlDbType.Int){Value = model.MatchCode},
                 new SqlParameter ("@title",SqlDbType.NVarChar){Value = model.MatchTitle},
                 new SqlParameter ("@host",SqlDbType.NVarChar){Value = model.MatchHost},
                 new SqlParameter ("@date",SqlDbType.Date){Value = model.MatchDate.Value.ToString("yyyy-MM-dd")},

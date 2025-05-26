@@ -133,21 +133,14 @@ namespace ClubManagement.Members.Repositories
         }
         public void InsertMember(MemberModel model)
         {
-            string query = "SELECT max(mem_code)+1 FROM member";
-            DataTable result = SqlAdapterQuery(query);
-            DataRow row = result.Rows[0];
-            var code = row[0];
-            query = "INSERT INTO MEMBER (mem_code, mem_name, mem_status, mem_birth, mem_gender, mem_position, mem_memo, mem_access, mem_pro)" +
-                $"VALUES (@code, @name, @status, @birth, @gender, @position, @memo, @access, @pro)";
             SqlParameter[] parameters =
             {
-                new SqlParameter("@code",SqlDbType.Int){Value = code },
-                new SqlParameter("@name",SqlDbType.NVarChar){Value = model.MemberName},
+                new SqlParameter("@name",SqlDbType.VarChar){Value = model.MemberName},
                 new SqlParameter("@status",SqlDbType.Int){Value=model.Status },
-                new SqlParameter("@birth",SqlDbType.NVarChar){Value=model.Birth },
+                new SqlParameter("@birth",SqlDbType.VarChar){Value=model.Birth },
                 new SqlParameter("@gender",SqlDbType.Int){Value = model.Gender},
                 new SqlParameter("@position", SqlDbType.Int){ Value = model.Position },
-                new SqlParameter("@memo", SqlDbType.NVarChar){ Value = model.Memo },
+                new SqlParameter("@memo", SqlDbType.VarChar){ Value = model.Memo },
                 new SqlParameter("@access", SqlDbType.Date){Value = model.AccessDate.Value.ToString("yyyy-MM-dd") },
                 new SqlParameter("@pro",SqlDbType.Int){ Value = model.IsPro == true ? 1:0 } 
             };
@@ -156,7 +149,7 @@ namespace ClubManagement.Members.Repositories
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.InsertMember, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)
@@ -169,10 +162,10 @@ namespace ClubManagement.Members.Repositories
 
         public void UpdateMember(MemberModel model)
         {
-            string query = $"UPDATE member SET mem_name = @name, mem_birth=@birth, mem_status = @status, mem_gender = @gender, mem_position = @position, mem_access = @access, mem_secess = @secess, mem_memo = @memo WHERE mem_code = @code";
+            
             SqlParameter[] parameters =
             {
-                new SqlParameter("@code",SqlDbType.Int){Value = model.Code },
+                new SqlParameter("@memcode",SqlDbType.Int){Value = model.Code },
                 new SqlParameter("@name",SqlDbType.NVarChar){Value = model.MemberName},
                 new SqlParameter("@status",SqlDbType.Int){Value=model.Status },
                 new SqlParameter("@birth",SqlDbType.NVarChar){Value=model.Birth },
@@ -191,7 +184,7 @@ namespace ClubManagement.Members.Repositories
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
                 {
-                    ExecuteNonQuery(query, connection, transaction, parameters);
+                    ExecuteNoneQuery(StoredProcedures.UpdateMember, connection, transaction, parameters);
                     transaction.Commit();
                 }
                 catch (Exception ex)

@@ -20,5 +20,6 @@ namespace ClubManagement.Options.views
 
         void CloseForm();
         void ShowForm();
+        void ShowMessage(string message);
     }
 }

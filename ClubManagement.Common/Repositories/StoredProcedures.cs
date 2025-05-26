@@ -19,8 +19,9 @@ namespace ClubManagement.Common.Repositories
         public const string UpdateMatchPlayer= "usp_UpdateMatchPlayer";
         public const string UpdateMatch= "usp_UpdateMatch";
         public const string UpdateMember= "usp_UpdateMember";
-        public const string InsertStatment= "usp_InsertStatment";
-        public const string UpdateeStatement= "usp_UpdateeStatement";
+        public const string InsertStatement= "usp_InsertStatment";
+        public const string UpdateStatement= "usp_UpdateeStatement";
         public const string InsertMatch= "usp_InsertMatch";
+        public const string DeleteStatement = "usp_DeletStatment";
     }
 }

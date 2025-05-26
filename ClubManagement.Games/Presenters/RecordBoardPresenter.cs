@@ -136,6 +136,7 @@ namespace ClubManagement.Games.Presenters
         private void UpdateInfo(PlayerInfoDto player)
         {
             var targetPlayer = _model.PlayerList.FirstOrDefault(p => p.PlayerName == player.PlayerName);
+            player.Handycap = (player.Gender ? 15 : 0) + (player.IsPro ? -5 : 0);
             if (targetPlayer != null)
             {
                 // 수정된 값 반영

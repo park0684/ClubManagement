@@ -288,6 +288,7 @@ namespace ClubManagement.Games.Views
             dgvPlayer.dgv.Dock = DockStyle.Fill;
             dgvPlayer.dgv.RowTemplate.Height = 35;
             dgvPlayer.dgv.DefaultCellStyle.Font = new Font("맑은 고딕", 12);
+            dgvPlayer.dgv.Margin = new Padding(5, 0, 5, 5);
             //개인 사인드 플레이어 리스트
             dgvIndividaulSide = new CustomDataGridViewControl();
             var sideGame = dgvIndividaulSide.dgv;

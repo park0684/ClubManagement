@@ -12,5 +12,7 @@ namespace ClubManagement.View
     {
         void SetMenuItems(Dictionary<string, List<MenuItemInfo>> groupedItems);
         void LoadContent(Form form);
+
+        event EventHandler DatabaseConnectEvent;
     }
 }
