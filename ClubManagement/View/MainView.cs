@@ -22,6 +22,7 @@ namespace ClubManagement.View
         {
             InitializeComponent();
             this.Text = "Na2So 볼링 클럽";
+            btnConnect.Click += (s, e) => DatabaseConnectEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public void SetMenuItems(Dictionary<string, List<MenuItemInfo>> groupedItems)
@@ -101,6 +102,11 @@ namespace ClubManagement.View
             form.Dock = DockStyle.Fill;
             pnlView.Controls.Add(form);
             form.Show();
+        }
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace ClubManagement.Options.Presenters
         private void SetDataBaseInfo()
         {
             _model.Address = _view.Address;
-            _model.Prer = _view.Port;
+            _model.Port = _view.Port;
             _model.User = _view.User;
             _model.Password = _view.Password;
             _model.Database = _view.Database;

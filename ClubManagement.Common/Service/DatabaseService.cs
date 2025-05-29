@@ -36,7 +36,7 @@ namespace ClubManagement.Common.Service
         {
             var ini = new IniFileHelper();
             ini.Write("Database Config", "Address", model.Address);
-            ini.Write("Database Config", "Port", model.Prer.ToString());
+            ini.Write("Database Config", "Port", model.Port.ToString());
             ini.Write("Database Config", "Database", model.Database);
             ini.Write("Database Config", "User", model.User);
             ini.Write("Database Config", "Password", model.Password);

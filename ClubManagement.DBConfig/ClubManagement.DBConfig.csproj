@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{196B232B-F897-4C04-B7BD-F82A74CB361C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>ClubManagement.Common</RootNamespace>
-    <AssemblyName>ClubManagement.Common</AssemblyName>
+    <ProjectGuid>{4C637F93-0BF2-4A19-A3DB-2835331C55A9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ClubManagement.DBConfig</RootNamespace>
+    <AssemblyName>ClubManagement.DBConfig</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,7 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,26 +55,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\CustomDataGridViewControl.cs" />
-    <Compile Include="Controls\CustomRounButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="DTOs\DatabaseDto.cs" />
-    <Compile Include="Factory\CompositeViewFactory.cs" />
-    <Compile Include="Factory\IViewFactory.cs" />
-    <Compile Include="Hlepers\CodeHelper.cs" />
-    <Compile Include="Hlepers\DataConvertHelper.cs" />
-    <Compile Include="Hlepers\GameHelper.cs" />
-    <Compile Include="Hlepers\IniFileHelper.cs" />
-    <Compile Include="Hlepers\MemberHelper.cs" />
-    <Compile Include="Menu\MenuConfiguration.cs" />
-    <Compile Include="Menu\MenuItemInfo.cs" />
-    <Compile Include="Models\DatabaseModel.cs" />
+    <Compile Include="Presenters\DatabaseConfigPresenter.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\BaseRepository.cs" />
-    <Compile Include="Repositories\StoredProcedures.cs" />
-    <Compile Include="Service\DatabaseService.cs" />
-    <Compile Include="Service\IDatabaseService.cs" />
+    <Compile Include="Service\DatabaseConfigService.cs" />
+    <Compile Include="views\DatabaseConfigView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="views\DatabaseConfigView.Designer.cs">
+      <DependentUpon>DatabaseConfigView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="views\IDatabaseConfigView.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -78,6 +75,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="views\DatabaseConfigView.resx">
+      <DependentUpon>DatabaseConfigView.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -92,5 +93,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ClubManagement.Common\ClubManagement.Common.csproj">
+      <Project>{196b232b-f897-4c04-b7bd-f82a74cb361c}</Project>
+      <Name>ClubManagement.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

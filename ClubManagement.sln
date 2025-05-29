@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubManagement.Games", "Clu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubManagement.Options", "ClubManagement.Options\ClubManagement.Options.csproj", "{826D93C2-4308-4D7D-AA82-3BB93E83CFE9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClubManagement.DBConfig", "ClubManagement.DBConfig\ClubManagement.DBConfig.csproj", "{4C637F93-0BF2-4A19-A3DB-2835331C55A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{826D93C2-4308-4D7D-AA82-3BB93E83CFE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{826D93C2-4308-4D7D-AA82-3BB93E83CFE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{826D93C2-4308-4D7D-AA82-3BB93E83CFE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C637F93-0BF2-4A19-A3DB-2835331C55A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C637F93-0BF2-4A19-A3DB-2835331C55A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C637F93-0BF2-4A19-A3DB-2835331C55A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C637F93-0BF2-4A19-A3DB-2835331C55A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

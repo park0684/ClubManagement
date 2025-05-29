@@ -88,6 +88,10 @@
       <Project>{196b232b-f897-4c04-b7bd-f82a74cb361c}</Project>
       <Name>ClubManagement.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ClubManagement.DBConfig\ClubManagement.DBConfig.csproj">
+      <Project>{4c637f93-0bf2-4a19-a3db-2835331c55a9}</Project>
+      <Name>ClubManagement.DBConfig</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ClubManagement.Games\ClubManagement.Games.csproj">
       <Project>{881659f4-1040-4d77-a806-97e4ea64f8b2}</Project>
       <Name>ClubManagement.Games</Name>
