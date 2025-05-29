@@ -65,6 +65,10 @@
     <Compile Include="Repositories\IDuesRepsotiry.cs" />
     <Compile Include="Repositories\IMemberRepository.cs" />
     <Compile Include="Repositories\MemberRepository.cs" />
+    <Compile Include="Services\DuesService.cs" />
+    <Compile Include="Services\IDuesService.cs" />
+    <Compile Include="Services\IMemberService.cs" />
+    <Compile Include="Services\MemberService.cs" />
     <Compile Include="Views\DuesManageView.cs">
       <SubType>Form</SubType>
     </Compile>

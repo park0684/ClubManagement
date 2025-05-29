@@ -7,6 +7,7 @@ using System.Data;
 using ClubManagement.Members.Models;
 using ClubManagement.Members.Repositories;
 using ClubManagement.Members.Views;
+using ClubManagement.Members.Services;
 
 namespace ClubManagement.Members.Presenters
 {
@@ -14,6 +15,7 @@ namespace ClubManagement.Members.Presenters
     {
         private IStatementDetailView _view;
         private IDuesRepsotiry _repository;
+        IDuesService _service;
         private StatementModel _model;
 
         public StatementDetailPresenter(IStatementDetailView view, IDuesRepsotiry repository)
@@ -21,6 +23,7 @@ namespace ClubManagement.Members.Presenters
             this._view = view;
             this._repository = repository;
             this._model = new StatementModel();
+            this._service = new DuesService(repository);
             this._view.CloseEvent += CloseAction;
             this._view.SaveEvent += SatatementSave;
             this._view.SelectMemberEvent += MemberSelect;
@@ -74,22 +77,12 @@ namespace ClubManagement.Members.Presenters
 
         public void LoadStatement(int code)
         {
-            _model.StatementCode = code;
-            DataRow result = _repository.LoadStatmet(code);
-            _model.IsNew = false;
-            _model.MemberCode = Convert.ToInt32(result["du_memcode"]);
-            _model.StatementDate = Convert.ToDateTime(result["du_date"]);
-            _model.StatementAmount = Convert.ToInt32(result["du_pay"]);
-            _model.DueCount = Convert.ToInt32(result["du_apply"]);
-            _model.Memo = result["du_memo"].ToString().Trim();
-            _model.StatementType = Convert.ToInt32(result["du_type"]);
-            _model.StatementDetail = result["du_detail"].ToString().Trim();
-            _model.IsWithdrawal = _model.StatementType == 1 || _model.StatementType == 3 ? false : true;
+            _model = _service.LoadStatement(code);
 
             _view.StatementDate = _model.StatementDate;
             _view.StatementType = _model.StatementType;
 
-            if (_model.IsWithdrawal == true)
+            if (_model.IsWithdrawal)
             {
                 _view.DueAmount = 0;
                 _view.Withdrawal = _model.StatementAmount;
@@ -126,15 +119,16 @@ namespace ClubManagement.Members.Presenters
         private void SatatementSave(object sender, EventArgs e)
         {
             SetModelDetail();
-            if (_model.IsNew == true)
+            try
             {
-                _repository.InsertStatment(_model);
+                _service.SaveStatement(_model);
+                _view.CloseForm();
             }
-            else
+            catch(Exception ex)
             {
-                _repository.UpdateStatment(_model);
+                _view.ShowMessage(ex.Message);
             }
-            _view.CloseForm();
+            
         }
 
 

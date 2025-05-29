@@ -8,6 +8,7 @@ using ClubManagement.Common.Hlepers;
 using ClubManagement.Members.Models;
 using ClubManagement.Members.Repositories;
 using ClubManagement.Members.Views;
+using ClubManagement.Members.Services;
 
 namespace ClubManagement.Members.Presenters
 {
@@ -16,12 +17,14 @@ namespace ClubManagement.Members.Presenters
         IMemberDetailView _view;
         IMemberRepository _repository;
         MemberModel _model;
+        IMemberService _service;
 
         public MemberDetailPresenter(IMemberDetailView view, IMemberRepository repository)
         {
             this._view = view;
             this._repository = repository;
             this._model = new MemberModel();
+            this._service = new MemberService(repository);
             this._view.SaveEvent += MemberInfoSave;
             this._view.CloseFormEvent += CloseFome;
             this._model.IsNew = true;
@@ -44,8 +47,7 @@ namespace ClubManagement.Members.Presenters
         /// <param name="e"></param>
         private void MemberInfoSave(object sender, EventArgs e)
         {
-            bool isError = ValidateInput();
-            if (isError)
+            if (ValidateInput())
                 return;
 
             _model.MemberName = _view.MemberName;
@@ -58,14 +60,7 @@ namespace ClubManagement.Members.Presenters
             _model.Memo = _view.Memo;
             try
             {
-                if (_model.IsNew)
-                {
-                    _repository.InsertMember(_model);
-                }
-                else
-                {
-                    _repository.UpdateMember(_model);
-                }
+                _service.SaveMember(_model);
                 _view.CloseForm();
             }
             catch(Exception ex)
@@ -80,19 +75,8 @@ namespace ClubManagement.Members.Presenters
         /// <param name="memCode"></param>
         public void GetMemberInfo(int memCode)
         {
-            DataRow row = _repository.LoadMemberInfo(memCode);
-
-            _model.IsNew = false;
-            _model.Code = memCode;
-            _model.MemberName = row["mem_name"].ToString().Trim();
-            _model.Status = Convert.ToInt32(row["mem_status"]);
-            _model.Gender = Convert.ToInt32(row["mem_gender"]);
-            _model.Position = Convert.ToInt32(row["mem_position"]);
-            _model.Birth = row["mem_birth"].ToString().Trim();
-            _model.Memo = row["mem_memo"].ToString().Trim();
-            _model.AccessDate = (DateTime)row["mem_access"];
-            _model.SecessDate = row["mem_secess"] == DBNull.Value ? DateTime.Now : (DateTime)row["mem_secess"];
-
+            _model = _service.LoadMemberInfo(memCode);
+           
             _view.MemberName = _model.MemberName;
             _view.Gender = _model.Gender;
             _view.Birth = _model.Birth;

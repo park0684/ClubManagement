@@ -10,45 +10,32 @@ namespace ClubManagement.Members.Repositories
 {
     class MemberRepository : BaseRepository, IMemberRepository
     {
-        public DataTable GetMemberList(MemberSearchModel model)
+        public DataTable LodaMemberList(MemberSearchModel model)
         {
             //회원검색 query는 회원, 정기전 참석, 비정기전 참석, 이벤트전 참석, 회비납부 현황을 각각 FROM에서 구한 후 LEFT OUTER JOIN으로 연결
             //
-
+            
+            
             StringBuilder query = new StringBuilder();
 
             query.Append("SELECT mem_code, mem_name ,mem_birth, mem_gender,mem_position, ISNULL(match_regular.att_count,0) reglar_count, ");
             query.Append(" ISNULL(match_irregular.att_count, 0) irregular_count, ISNULL(match_event.att_count, 0) event_count,(SELECT COUNT(match_code) FROM match WHERE match_type = 1 AND match_date >= mem_access) game_count ,mem_access, mem_secess, mem_status, ");
             query.Append("ISNULL((SELECT MAX(match_date) FROM attend, match WHERE att_code = match_code AND att_name = mem_name),NULL) match_last,");
-            query.Append("CAST(DATEDIFF(MONTH,CASE WHEN mem_access < '2025-02-01' THEN '2025-02-01'  ELSE mem_access END ,GETDATE()) as INT) + 1 mem_dues,ISNULL(payment, 0) payment, mem_memo FROM ");
+            query.Append($"CAST(DATEDIFF(MONTH,CASE WHEN mem_access < '{model.StartDate}' THEN '{model.StartDate}'  ELSE mem_access END ,GETDATE()) as INT) + 1 mem_dues,ISNULL(payment, 0) payment, mem_memo FROM ");
             //회원 검색 구간
             query.Append("(SELECT mem_code, mem_name ,mem_birth, mem_gender, mem_position, mem_access, mem_secess, mem_status,");
             query.Append(" CAST(DATEDIFF(MONTH,CASE WHEN mem_access < '2025-02-01' THEN '2025-02-01'  ELSE mem_access END,");
             query.Append($"'{DateTime.Now.ToString("d")}') as INT) + 1 [mem_duse], mem_memo FROM member \n");
 
-            List<string> whereCondition = new List<string>();
-            if (!string.IsNullOrEmpty(model.SearchWord))
-                whereCondition.Add($"mem_name LIKE '%{model.SearchWord}%'");
-            if (model.Status != 0)
-                if (model.ExcludeMember)
-                {
-                    whereCondition.Add($"mem_status != {model.Status}");
-                }
-                else
-                { whereCondition.Add($"mem_status = {model.Status}"); }
-            if (model.AccessCheck)
-                whereCondition.Add($"mem_access >=  '{ model.AccFromDate.Value.ToString("yyyy-MM-dd")}' AND mem_access < '{model.AccToDate.Value.AddDays(1).ToString("yyyy-MM-dd")}'");
-            if (model.SecessCheck)
-                whereCondition.Add($"mem_secess >=  '{ model.SecFromDate.Value.ToString("yyyy-MM-dd")}' AND mem_secess < '{model.SecToDate.Value.AddDays(1).ToString("yyyy-MM-dd")}'");
-            if (model.GameCheck)
-                whereCondition.Add($"mem_code IN ( SELECT att_memcode FROM attend, match WHERE match_code = att_code AND match_date >='{ model.GameFromDate.Value.ToString("yyyy-MM-dd")}' AND match_date < '{model.GameTodate.Value.AddDays(1).ToString("yyyy-MM-dd")}')");
-            if (whereCondition.Count > 0)
+            List<string> memberConditio = model.SetWhereCondition();
+           
+            if (memberConditio.Count > 0)
             {
                 query.Append(" WHERE ");
-                query.Append(string.Join(" AND ", whereCondition));
+                query.Append(string.Join(" AND ", memberConditio));
             }
             query.Append(") as member LEFT OUTER JOIN \n");
-
+            // 정기전 참석율 계산을 위한 전체 정기전 혹은 기간내 정기전 횟수를 조회 할 수 있는 쿼리로 설정
             string gameDate = $"match_date > '2023-12-31' AND match_date < '{DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")}' AND ";
             if (model.GameCheck)
             {
@@ -115,7 +102,7 @@ namespace ClubManagement.Members.Repositories
 
             return result.Rows[0];
         }
-        public DataTable LoadMember(MemberSearchModel model)
+        public DataTable LoadSearchMember(MemberSearchModel model)
         {
             StringBuilder query = new StringBuilder();
             List<string> whereCondition = new List<string>();
@@ -195,5 +182,11 @@ namespace ClubManagement.Members.Repositories
             }
         }
 
+        public string LoadStartDate()
+        {
+            string query = "SELECT cf_strvar FROM config WHERE cf_code = 12";
+            return ScalaQuery(query).ToString();
+            
+        }
     }
 }

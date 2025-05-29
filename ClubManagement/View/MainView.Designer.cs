@@ -31,10 +31,10 @@ namespace ClubManagement.View
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             this.pnlTopMenu = new System.Windows.Forms.Panel();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.pnlSideMenu = new System.Windows.Forms.Panel();
             this.pnlControlMenu = new System.Windows.Forms.Panel();
             this.pnlView = new System.Windows.Forms.Panel();
-            this.btnConnect = new System.Windows.Forms.Button();
             this.pnlTopMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,6 +46,19 @@ namespace ClubManagement.View
             this.pnlTopMenu.Name = "pnlTopMenu";
             this.pnlTopMenu.Size = new System.Drawing.Size(1084, 59);
             this.pnlTopMenu.TabIndex = 0;
+            // 
+            // btnConnect
+            // 
+            this.btnConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.btnConnect.FlatAppearance.BorderSize = 0;
+            this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnConnect.Image")));
+            this.btnConnect.Location = new System.Drawing.Point(1032, 12);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(40, 40);
+            this.btnConnect.TabIndex = 0;
+            this.btnConnect.UseVisualStyleBackColor = false;
             // 
             // pnlSideMenu
             // 
@@ -73,18 +86,6 @@ namespace ClubManagement.View
             this.pnlView.Name = "pnlView";
             this.pnlView.Size = new System.Drawing.Size(940, 498);
             this.pnlView.TabIndex = 2;
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.btnConnect.FlatAppearance.BorderSize = 0;
-            this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnConnect.Image")));
-            this.btnConnect.Location = new System.Drawing.Point(1032, 12);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(40, 40);
-            this.btnConnect.TabIndex = 0;
-            this.btnConnect.UseVisualStyleBackColor = false;
             // 
             // MainView
             // 

@@ -31,5 +31,6 @@ namespace ClubManagement.Members.Views
         void SetDeleteButtonVisivle();
         void TypeChaingedSet();
         void SetApplyCounter(int counter);
+        void ShowMessage(string message);
     }
 }

@@ -8,6 +8,7 @@ using ClubManagement.Members.DTOs;
 using ClubManagement.Members.Views;
 using ClubManagement.Members.Repositories;
 using ClubManagement.Members.Models;
+using ClubManagement.Members.Services;
 using ClubManagement.Common.Hlepers;
 
 namespace ClubManagement.Members.Presenters
@@ -16,11 +17,13 @@ namespace ClubManagement.Members.Presenters
     {
         IMemberListView _view;
         IMemberRepository _repository;
+        IMemberService _service;
 
         public MemberListPresenter(IMemberListView view, IMemberRepository repository)
         {
             _view = view;
             _repository = repository;
+            _service = new MemberService(repository);
             _view.SearchEvent += LoadMemberList;
             _view.AddMemberEvent += AddMember;
             _view.EidtMemberEvent += LoadMemberInfo;
@@ -79,35 +82,10 @@ namespace ClubManagement.Members.Presenters
                 model.ExcludeRegular = _view.ExcludeRegular;
                 model.ExcludeIrregular = _view.ExcludeIrregular;
                 model.ExcludeEvent = _view.ExcludeEvent;
-                DataTable result = _repository.GetMemberList(model);
-                if (result == null || result.Rows.Count == 0)
-                    return;
-                List<MemberDto> memberList = new List<MemberDto>();
-                int i = 1;
-                result.Columns.Add("No");
-                result.Columns.Add("status");
-                result.Columns.Add("position");
-                result.Columns.Add("gender");
-                result.Columns.Add("regularRate", typeof(double));
-                result.Columns.Add("nonPayment");
-                foreach (DataRow row in result.Rows)
-                {
-                    row["No"] = i++;
-                    row["status"] = MemberHelper.GetMemberStatus(Convert.ToInt32(row["mem_status"]));
-                    row["gender"] = MemberHelper.GetMemberGenger(Convert.ToInt32(row["mem_gender"]));
-                    row["position"] = MemberHelper.GetMemberPositon(Convert.ToInt32(row["mem_position"]));
-                    int nonPayment = Convert.ToInt32(row["mem_dues"]) - Convert.ToInt32(row["Payment"]);
-                    row["nonPayment"] = nonPayment < 0 ? 0 : nonPayment;
-                    double rate = DataConvertHelper.ConvertRate(row["game_count"], row["reglar_count"]);
-                    row["regularRate"] = rate;
-                }
-                result.Columns.Remove("mem_status");
-                result.Columns.Remove("mem_gender");
-                result.Columns.Remove("mem_position");
-                result.Columns.Remove("game_count");
-                result.Columns.Remove("mem_dues");
-                result.AcceptChanges();
+                model.StartDate = _service.LoadStartDate();
 
+
+                var result = _service.LoadMemberList(model);
                 _view.MemberListBinding(result);
             }
             catch (Exception ex)

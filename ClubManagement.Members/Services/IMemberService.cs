@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using System.Data;
 using ClubManagement.Members.Models;
 
-namespace ClubManagement.Members.Repositories
+namespace ClubManagement.Members.Services
 {
-    public interface IMemberRepository
+    public interface IMemberService
     {
-        DataTable LodaMemberList(MemberSearchModel model);
-        DataRow LoadMemberInfo(int value);
-        void InsertMember(MemberModel model);
-        void UpdateMember(MemberModel model);
+        DataTable LoadMemberList(MemberSearchModel model);
         DataTable LoadSearchMember(MemberSearchModel model);
+        MemberModel LoadMemberInfo(int memberCode);
         string LoadStartDate();
+        void SaveMember(MemberModel model);
+
     }
 }

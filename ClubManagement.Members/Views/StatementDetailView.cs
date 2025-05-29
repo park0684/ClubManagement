@@ -194,5 +194,10 @@ namespace ClubManagement.Members.Views
         {
             cmbCount.SelectedItem = counter;
         }
+
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
     }
 }
