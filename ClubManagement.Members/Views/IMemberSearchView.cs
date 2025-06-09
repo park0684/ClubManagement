@@ -19,7 +19,7 @@ namespace ClubManagement.Members.Views
 
         void CloseForm();
         void SetMemberList(DataTable members);
-        void ShowView();
+        void ShowForm();
         void ShowMessage(string message);
 
     }

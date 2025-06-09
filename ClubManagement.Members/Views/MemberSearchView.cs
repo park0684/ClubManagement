@@ -18,16 +18,7 @@ namespace ClubManagement.Members.Views
             InitializeComponent();
             ViewEvent();
         }
-        private void ViewEvent()
-        {
-            btnSearch.Click += (s, e) => MemberSeachEvent?.Invoke(this, EventArgs.Empty);
-            btnClose.Click += (s, e) => CloseFormEvent?.Invoke(this, EventArgs.Empty);
-            txtSearchWord.KeyDown += (s, e) =>
-            {
-                if (e.KeyCode == Keys.Enter)
-                    MemberSeachEvent?.Invoke(this, EventArgs.Empty);
-            };
-        }
+
         public string SearchWord
         {
             get { return txtSearchWord.Text; }
@@ -47,16 +38,24 @@ namespace ClubManagement.Members.Views
         public event EventHandler SelectMemberEvent;
         public event EventHandler CloseFormEvent;
 
+        /// <summary>
+        ///  폼 종료.
+        /// </summary>
         public void CloseForm()
         {
             Close();
         }
 
+        /// <summary>
+        /// 회원 목록 버튼 생성
+        /// </summary>
+        /// <param name="members"></param>
         public void SetMemberList(DataTable members)
         {
             flpMemberList.Controls.Clear();
             foreach (DataRow member in members.Rows)
             {
+                //회원 버튼 생성
                 Button btn = new Button
                 {
                     Size = new Size(90, 35),
@@ -67,26 +66,52 @@ namespace ClubManagement.Members.Views
                     Tag = member["mem_code"],
                 };
                 btn.FlatAppearance.BorderSize = 0;
+
+                //회원 버튼에 이벤트 설정
                 btn.Click += (sender, e) =>
                 {
                     MemberCode = (int)((Button)sender).Tag;
                     MemberName = ((Button)sender).Text;
                     SelectMemberEvent?.Invoke(this, EventArgs.Empty);
                 };
+
+                //플로우레이어 패널에 버튼 추가
                 flpMemberList.Controls.Add(btn);
             }
+            //스크롤 활성화
             flpMemberList.AutoScroll = true;
         }
 
-        public void ShowView()
+        /// <summary>
+        /// 부모창 가운데 다이얼로그 싫애
+        /// </summary>
+        public void ShowForm()
         {
             this.StartPosition = FormStartPosition.CenterParent;
             this.ShowDialog();
         }
 
+        /// <summary>
+        /// 메시지 박스 표시
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowMessage(string message)
         {
             MessageBox.Show(message, "알림");
+        }
+
+        /// <summary>
+        /// 이벤트 등록
+        /// </summary>
+        private void ViewEvent()
+        {
+            btnSearch.Click += (s, e) => MemberSeachEvent?.Invoke(this, EventArgs.Empty);
+            btnClose.Click += (s, e) => CloseFormEvent?.Invoke(this, EventArgs.Empty);
+            txtSearchWord.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter)
+                    MemberSeachEvent?.Invoke(this, EventArgs.Empty);
+            };
         }
     }
 }

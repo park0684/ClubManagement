@@ -265,7 +265,7 @@ namespace ClubManagement.Games.Views
             this.ShowDialog();
         }
 
-        public void ShowMessge(string message)
+        public void ShowMessage(string message)
         {
             MessageBox.Show(message, "알림");
         }

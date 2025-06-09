@@ -51,7 +51,7 @@ namespace ClubManagement.Members.Presenters
         private void MemberSearch(object sender, EventArgs e)
         {
             _model.SearchWord = _view.SearchWord;
-            _model.IsInclude = _view.IsInculde;
+            _model.StatusInclude = _view.IsInculde;
             DataTable resutl = _service.LoadSearchMember(_model);
             _view.SetMemberList(resutl);
         }

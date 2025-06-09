@@ -26,7 +26,7 @@ namespace ClubManagement.Members.Presenters
             this._model = new MemberModel();
             this._service = new MemberService(repository);
             this._view.SaveEvent += MemberInfoSave;
-            this._view.CloseFormEvent += CloseFome;
+            this._view.CloseFormEvent += CloseForm;
             this._model.IsNew = true;
         }
 
@@ -35,7 +35,7 @@ namespace ClubManagement.Members.Presenters
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CloseFome(object sender, EventArgs e)
+        private void CloseForm(object sender, EventArgs e)
         {
             _view.CloseForm();
         }

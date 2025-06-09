@@ -44,7 +44,7 @@ namespace ClubManagement.View
             this.pnlTopMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTopMenu.Location = new System.Drawing.Point(0, 0);
             this.pnlTopMenu.Name = "pnlTopMenu";
-            this.pnlTopMenu.Size = new System.Drawing.Size(1084, 59);
+            this.pnlTopMenu.Size = new System.Drawing.Size(1184, 59);
             this.pnlTopMenu.TabIndex = 0;
             // 
             // btnConnect
@@ -54,7 +54,7 @@ namespace ClubManagement.View
             this.btnConnect.FlatAppearance.BorderSize = 0;
             this.btnConnect.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConnect.Image = ((System.Drawing.Image)(resources.GetObject("btnConnect.Image")));
-            this.btnConnect.Location = new System.Drawing.Point(1032, 12);
+            this.btnConnect.Location = new System.Drawing.Point(1132, 12);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(40, 40);
             this.btnConnect.TabIndex = 0;
@@ -75,7 +75,7 @@ namespace ClubManagement.View
             this.pnlControlMenu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlControlMenu.Location = new System.Drawing.Point(0, 59);
             this.pnlControlMenu.Name = "pnlControlMenu";
-            this.pnlControlMenu.Size = new System.Drawing.Size(1084, 44);
+            this.pnlControlMenu.Size = new System.Drawing.Size(1184, 44);
             this.pnlControlMenu.TabIndex = 0;
             // 
             // pnlView
@@ -84,7 +84,7 @@ namespace ClubManagement.View
             this.pnlView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlView.Location = new System.Drawing.Point(144, 103);
             this.pnlView.Name = "pnlView";
-            this.pnlView.Size = new System.Drawing.Size(940, 498);
+            this.pnlView.Size = new System.Drawing.Size(1040, 498);
             this.pnlView.TabIndex = 2;
             // 
             // MainView
@@ -92,7 +92,7 @@ namespace ClubManagement.View
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1084, 601);
+            this.ClientSize = new System.Drawing.Size(1184, 601);
             this.Controls.Add(this.pnlView);
             this.Controls.Add(this.pnlSideMenu);
             this.Controls.Add(this.pnlControlMenu);

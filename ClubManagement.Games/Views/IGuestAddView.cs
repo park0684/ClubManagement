@@ -10,7 +10,7 @@ namespace ClubManagement.Games.Views
     public interface IGuestAddView
     {
         string GuestName { get; set; }
-        List<PlayerInfoDto> GusetDate();
+        List<PlayerInfoDto> GusetData();
 
         event EventHandler AddGuestEvent;
         event EventHandler SaveGuestEvent;

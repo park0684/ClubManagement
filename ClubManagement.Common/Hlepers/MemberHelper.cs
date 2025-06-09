@@ -32,6 +32,7 @@ namespace ClubManagement.Common.Hlepers
             {1,"회비" },
             {2,"지출" },
             {3,"면제" },
+            {4,"기타입급" },
             {99, "기타" }
         };
 

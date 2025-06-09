@@ -35,6 +35,8 @@ namespace ClubManagement.Members.Presenters
         }
         /// <summary>
         /// 입출금 전표 수정
+        /// 전표 상세 화면 열기
+        /// 완료 후 회원 목록, 전표 목록 갱신
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -44,16 +46,20 @@ namespace ClubManagement.Members.Presenters
             IStatementDetailView view = new StatementDetailView();
             IDuesRepsotiry repository = new DuesRepsotiry();
             StatementDetailPresenter presenter = new StatementDetailPresenter(view, repository);
+
             presenter.LoadStatement(code);
             view.ShowForm();
             LoadMemberList();
             LoadStatementList();
         }
+
         /// <summary>
         /// 입출금 전표 추가
+        /// 전표 입력 화면 열기
+        /// 완료 후 회원 목록, 전표 목록 갱신
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="e"</param>
         private void AddState(object sender, EventArgs e)
         {
             IStatementDetailView view = new StatementDetailView();
@@ -64,8 +70,9 @@ namespace ClubManagement.Members.Presenters
             LoadStatementList();
         }
 
+
         /// <summary>
-        /// 입출금 전표 리스트 조회 이벤트
+        /// 입출금 전표 리스트 조회
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -74,8 +81,9 @@ namespace ClubManagement.Members.Presenters
             LoadStatementList();
         }
 
+
         /// <summary>
-        /// 회원리스트 조회 이벤트
+        /// 회원 리스트 조회
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -84,37 +92,43 @@ namespace ClubManagement.Members.Presenters
             LoadMemberList();
         }
 
+
         /// <summary>
-        /// 회원 조회 메소드
+        /// 회원 조회
         /// </summary>
         private void LoadMemberList()
         {
-            //모델 속성 설정
+            // 모델 값 설정
             _model.SearchWord = _view.SearchWord;
             _model.FromDate = _view.FromDate;
             _model.ToDate = _view.ToDate;
             _model.SecessInclude = _view.SecessInclude;
 
-            //회원 목록 조회
+            // 회원 목록 조회
             var result = _service.LoadMemberList(_model);
 
-            //결과 DataGridView에 Binding
+            // 결과 바인딩
             _view.SetMemberListBinding(result);
         }
 
+
         /// <summary>
-        /// 입출금 리스트 조회 메소드
+        /// 입출금 리스트 조회
         /// </summary>
         private void LoadStatementList()
         {
-            //모델 속성 설정
+            // 모델 값 설정
             _model.SearchWord = _view.SearchWord;
             _model.FromDate = _view.FromDate;
             _model.ToDate = _view.ToDate;
             _model.SecessInclude = _view.SecessInclude;
             _model.MemberCode = _view.GetMemberCode;
-            
+            _model.StateType = _view.StateType;
+
+            // 리스트 조회
             var result = _service.LoadStatementList(_model);
+
+            // 결과 바인딩
             _view.SetStateListBinding(result);
         }
     }

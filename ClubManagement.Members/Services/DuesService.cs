@@ -19,6 +19,11 @@ namespace ClubManagement.Members.Services
             _repository = repsotiry;
         }
 
+        /// <summary>
+        /// 회비 회원 리스트 데이터 조회 후 가공
+        /// </summary>
+        /// <param name="model">조회 조건</param>
+        /// <returns>가공된 DataTable</returns>
         public DataTable LoadMemberList(DuesModel model)
         {
             var result = _repository.GetMemberList(model);
@@ -51,10 +56,15 @@ namespace ClubManagement.Members.Services
             return result;
         }
 
+        /// <summary>
+        /// 전표리스트 조회 후 가공
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>가공된 DataTable</returns>
         public DataTable LoadStatementList(DuesModel model)
         {
             int balance = 0;
-            if (model.MemberCode == 0)
+            if (model.MemberCode == 0 && model.StateType == -1)
             {
                 //설정 기간 이전 잔액 확인
                 var resultRow = _repository.GetBalance(model);
@@ -64,15 +74,16 @@ namespace ClubManagement.Members.Services
             var result = _repository.GetStateList(model);
             //DataTable 컬럼 설정
             result.Columns.Add("No");
-            result.Columns.Add("balance");
+            result.Columns.Add("balance",typeof(int));
             result.Columns.Add("type");
             result.Columns["du_code"].ColumnName = "code";
             result.Columns["du_date"].ColumnName = "date";
             result.Columns["du_detail"].ColumnName = "statement";
             result.Columns["du_apply"].ColumnName = "applay";
+            result.Columns["du_memo"].ColumnName = "memo";
             result.Columns["deposit"].ColumnName = "deposit";
             result.Columns["whthdrawal"].ColumnName = "withdrawal";
-            if (model.MemberCode == 0)
+            if (model.MemberCode == 0 && model.StateType == -1)
             {
                 DataRow newRow = result.NewRow();
                 newRow["No"] = 0;
@@ -90,6 +101,10 @@ namespace ClubManagement.Members.Services
                 }
 
                 result.Rows.InsertAt(newRow, 0);
+                DataRow BalanceRow = result.NewRow();
+                BalanceRow["statement"] = "최종 잔액";
+                BalanceRow["balance"] = beforeBalance;
+                result.Rows.Add(BalanceRow);
             }
             else
             {
@@ -97,14 +112,26 @@ namespace ClubManagement.Members.Services
                 foreach (DataRow row in result.Rows)
                 {
                     row["No"] = i++;
+                    row["type"] = MemberHelper.GetDuesType(Convert.ToInt32(row["du_type"]));
                 }
             }
+            DataRow dataRow = result.NewRow();
+            object sumDeposite = result.Compute("SUM(deposit)", "");
+            object sumWitharawal = result.Compute("SUM(withdrawal)", "");
+            int totalDeposit = sumDeposite == DBNull.Value ? 0 : Convert.ToInt32(sumDeposite);
+            int totalWithdrawal = sumWitharawal == DBNull.Value ? 0 : Convert.ToInt32(sumWitharawal);
+            int totalBalance = totalDeposit - totalWithdrawal;
+            dataRow["statement"] = "입출금 차액";
+            dataRow["deposit"] = totalDeposit;
+            dataRow["Withdrawal"] = totalWithdrawal;
+            dataRow["balance"] = totalBalance;
+            result.Rows.Add(dataRow);
             return result;
         }
         public StatementModel LoadStatement(int statementCode)
         {
             var result = _repository.LoadStatmet(statementCode);
-
+            int type = Convert.ToInt32(result["du_type"]);
             return new StatementModel
             {
                 StatementCode = statementCode,
@@ -116,7 +143,7 @@ namespace ClubManagement.Members.Services
                 Memo = result["du_memo"].ToString().Trim(),
                 StatementType = Convert.ToInt32(result["du_type"]),
                 StatementDetail = result["du_detail"].ToString().Trim(),
-                IsWithdrawal = Convert.ToInt32(result["du_type"]) == 1 || Convert.ToInt32(result["du_type"]) == 3 ? false : true
+                IsWithdrawal = type == 1 || type == 3 || type==4 ? false : true
             };
         }
 

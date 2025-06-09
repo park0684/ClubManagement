@@ -25,40 +25,169 @@ namespace ClubManagement.Games.Views
             ViewEvent();
         }
 
-        private void ViewEvent()
+        public DateTime MatchFromDate
         {
+            get { return dtpFromDate.Value; }
+            set { dtpFromDate.Value = value; }
+        }
 
-            btnAddGame.Click += (s, e) => AddMatchEvent?.Invoke(this, EventArgs.Empty);
-            btnGameListEdit.Click += (s, e) => EditMatchEvent?.Invoke(this, EventArgs.Empty);
-            btnPalyerListEdit.Click += (s, e) => EditPlayerEvent?.Invoke(this, EventArgs.Empty);
-            dgvGameList.dgv.CellDoubleClick += GameSelectedEvent;
+        public DateTime MatchToDate
+        {
+            get { return dtpToDate.Value; }
+            set { dtpToDate.Value = value; }
+        }
 
-            dtpFromDate.ValueChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
-            dtpToDate.ValueChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
-            chkExclude.CheckedChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
-
-            // 내부 컨트롤러
-            btnPre.Click += MovePreMonth;
-            btnPost.Click += MovePostMounth;
-            cmbType.SelectedIndexChanged += ComboBoxChaingedEvent;
+        public int? MatchType
+        {
+            get
+            {
+                if (cmbType.SelectedItem is KeyValuePair<int, string> selectedItem)
+                {
+                    return selectedItem.Key == 0 ? (int?)null : selectedItem.Key;
+                }
+                return null;
+            }
+            set
+            {
+                if (value.HasValue)
+                {
+                    int index = cmbType.Items.Cast<KeyValuePair<int, string>>().ToList().FindIndex(item => item.Key == value.Value);
+                    if (index >= 0)
+                    {
+                        cmbType.SelectedIndex = index;
+                    }
+                }
+            }
 
         }
+
+        public bool ExcludeType
+        {
+            get { return chkExclude.Checked; }
+            set { chkExclude.Checked = value; }
+        }
+
+        public int? GetMatchCode
+        {
+            get
+            {
+                if (dgvGameList.dgv.SelectedRows.Count > 0)
+                {
+                    return Convert.ToInt32(dgvGameList.dgv.CurrentRow.Cells["code"].Value);
+                }
+                return null;
+            }
+        }
+
+        public string MatchTile
+        {
+            get
+            {
+                return dgvGameList.dgv.CurrentRow.Cells["title"].Value.ToString();
+            }
+
+        }
+
+        public event EventHandler SearchMatchEvent;
+        public event EventHandler AddMatchEvent;
+        public event EventHandler SearchPlayerEvent;
+        public event EventHandler EditPlayerEvent;
+        public event EventHandler EditMatchEvent;
+
+        // <summary>
+        /// 게임 리스트 DataGridView에 데이터 소스 바인딩.
+        /// </summary>
+        /// <param name="source">바인딩할 데이터</param>
+        public void SetGameListBinding(DataTable source)
+        {
+            dgvGameList.dgv.DataSource = source;
+        }
+
+        /// <summary>
+        /// 플레이어 리스트 DataGridView에 데이터 소스 바인딩.
+        /// </summary>
+        /// <param name="source">바인딩할 데이터</param>
+        public void SetPlayerListBinding(DataTable source)
+        {
+            dgvPlayerList.dgv.DataSource = source;
+        }
+
+        /// <summary>
+        /// 폼을 화면 중앙에서 모달 다이얼로그로 표시.
+        /// </summary>
+        public void ShowForm()
+        {
+            StartPosition = FormStartPosition.CenterParent;
+            ShowDialog();
+        }
+
+        /// <summary>
+        /// 폼 종료.
+        /// </summary>
+        public void CloseForm()
+        {
+            Close();
+        }
+
+        /// <summary>
+        /// 버튼과 컨트롤의 이벤트를 바인딩.
+        /// </summary>
+        private void ViewEvent()
+        {
+            // 게임 추가 버튼 클릭 → AddMatchEvent 호출
+            btnAddGame.Click += (s, e) => AddMatchEvent?.Invoke(this, EventArgs.Empty);
+
+            // 게임 수정 버튼 클릭 → EditMatchEvent 호출
+            btnGameListEdit.Click += (s, e) => EditMatchEvent?.Invoke(this, EventArgs.Empty);
+
+            // 플레이어 수정 버튼 클릭 → EditPlayerEvent 호출
+            btnPalyerListEdit.Click += (s, e) => EditPlayerEvent?.Invoke(this, EventArgs.Empty);
+
+            // 게임 리스트 셀 더블 클릭 → 게임 선택 이벤트 처리
+            dgvGameList.dgv.CellDoubleClick += GameSelectedEvent;
+
+            // 날짜 변경 시 → 자동 검색 이벤트 호출
+            dtpFromDate.ValueChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
+            dtpToDate.ValueChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
+
+            // 제외 체크박스 상태 변경 시 → 검색 이벤트 호출
+            chkExclude.CheckedChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
+
+            // 내부 컨트롤: 이전/다음 달 이동
+            btnPre.Click += MovePreMonth;
+            btnPost.Click += MovePostMounth;
+
+            // 경기 타입 콤보박스 선택 변경 → 처리 이벤트
+            cmbType.SelectedIndexChanged += ComboBoxChaingedEvent;
+        }
+
+        /// <summary>
+        /// 콤보박스 선택 상태에 따라 제외 체크박스 사용 여부를 제어.
+        /// </summary>
         private void CheckBoxEnanbleSet()
         {
             if (cmbType.SelectedIndex != 0)
             {
-                chkExclude.Enabled = true;
+                chkExclude.Enabled = true;  // 특정 타입 선택 시 제외 체크박스 활성화
             }
             else
             {
-                chkExclude.Enabled = false;
+                chkExclude.Enabled = false; // 전체 선택 시 비활성화
             }
         }
+
+        /// <summary>
+        /// 게임 선택 시 타이틀 라벨을 갱신하고 SearchPlayerEvent 호출.
+        /// </summary>
         private void GameSelectedEvent(object sender, EventArgs e)
         {
-            lblGameTitle.Text = MatchTile;
-            SearchPlayerEvent?.Invoke(this, EventArgs.Empty);
+            lblGameTitle.Text = MatchTile;  // 현재 선택된 경기 타이틀 표시
+            SearchPlayerEvent?.Invoke(this, EventArgs.Empty);  // 플레이어 검색 이벤트 호출
         }
+
+        /// <summary>
+        /// From 날짜 DateTimePicker를 현재 달의 1일로 초기화.
+        /// </summary>
         private void InitializeDateTimePicker()
         {
             dtpFromDate.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
@@ -206,95 +335,6 @@ namespace ClubManagement.Games.Views
 
             dgvPlayerList.dgv.AutoGenerateColumns = false;
 
-        }
-        public DateTime MatchFromDate
-        {
-            get { return dtpFromDate.Value; }
-            set { dtpFromDate.Value = value; }
-        }
-
-        public DateTime MatchToDate
-        {
-            get { return dtpToDate.Value; }
-            set { dtpToDate.Value = value; }
-        }
-
-        public int? MatchType
-        {
-            get
-            {
-                if (cmbType.SelectedItem is KeyValuePair<int, string> selectedItem)
-                {
-                    return selectedItem.Key == 0 ? (int?)null : selectedItem.Key;
-                }
-                return null;
-            }
-            set
-            {
-                if (value.HasValue)
-                {
-                    int index = cmbType.Items.Cast<KeyValuePair<int, string>>().ToList().FindIndex(item => item.Key == value.Value);
-                    if (index >= 0)
-                    {
-                        cmbType.SelectedIndex = index;
-                    }
-                }
-            }
-
-        }
-
-        public bool ExcludeType
-        {
-            get { return chkExclude.Checked; }
-            set { chkExclude.Checked = value; }
-        }
-
-        public int? GetMatchCode
-        {
-            get
-            {
-                if (dgvGameList.dgv.SelectedRows.Count > 0)
-                {
-                    return Convert.ToInt32(dgvGameList.dgv.CurrentRow.Cells["code"].Value);
-                }
-                return null;
-            }
-        }
-
-        public string MatchTile
-        {
-            get
-            {
-                return dgvGameList.dgv.CurrentRow.Cells["title"].Value.ToString();
-            }
-
-        }
-
-        public event EventHandler SearchMatchEvent;
-        public event EventHandler AddMatchEvent;
-        public event EventHandler SearchPlayerEvent;
-        public event EventHandler EditPlayerEvent;
-        public event EventHandler EditMatchEvent;
-
-        public void SetGameListBinding(DataTable source)
-        {
-            dgvGameList.dgv.DataSource = source;
-        }
-
-        public void SetPlayerListBinding(DataTable source)
-        {
-            dgvPlayerList.dgv.DataSource = source;
-        }
-
-        public void ShowForm()
-        {
-            StartPosition = FormStartPosition.CenterParent;
-            ShowDialog();
-        }
-
-        public void CloseForm()
-        {
-            Close();
         }
     }
 }

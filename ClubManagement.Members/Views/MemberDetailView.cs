@@ -20,6 +20,10 @@ namespace ClubManagement.Members.Views
             SecessDatePickerSet(cmbStatus, EventArgs.Empty);
             ViewEvent();
         }
+
+        /// <summary>
+        /// 뷰 이벤트 등록
+        /// </summary>
         private void ViewEvent()
         {
             btnClose.Click += (s, e) => CloseFormEvent?.Invoke(s, e);
@@ -27,8 +31,14 @@ namespace ClubManagement.Members.Views
             cmbStatus.SelectedIndexChanged += SecessDatePickerSet;
         }
 
+        /// <summary>
+        /// 탈퇴일자 입력 활성화 여부 설정
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SecessDatePickerSet(object sender, EventArgs e)
         {
+            //회원 상태가 탈퇴 상태가 아니라면 탈퇴일 지정 DatePiker는 비활성화
             if (((KeyValuePair<int, string>)cmbStatus.SelectedItem).Key != 2)
             {
                 dtpSecessDate.Enabled = false;
@@ -39,8 +49,12 @@ namespace ClubManagement.Members.Views
             }
         }
 
+        /// <summary>
+        /// 콤보박스 초기화
+        /// </summary>
         private void InitializeComboBox()
         {
+            //회원 상태 
             foreach (var item in MemberHelper.MemStatus)
             {
                 cmbStatus.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
@@ -50,6 +64,7 @@ namespace ClubManagement.Members.Views
             cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStatus.SelectedIndex = 0;
 
+            //성별 
             foreach (var item in MemberHelper.MemGender)
             {
                 cmbGender.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));
@@ -59,6 +74,7 @@ namespace ClubManagement.Members.Views
             cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGender.SelectedIndex = 1;
 
+            //직책
             foreach (var item in MemberHelper.MemPosition)
             {
                 cmbPosition.Items.Add(new KeyValuePair<int, string>(item.Key, item.Value));

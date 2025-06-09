@@ -12,6 +12,11 @@ namespace ClubManagement.Games.Repositories
 {
     class MatchRepository : BaseRepository, IMatchRepository
     {
+        /// <summary>
+        /// 모임 리스트 조회
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public DataTable LoadMatchList(MatchSearchModel model)
         {
             StringBuilder query = new StringBuilder();
@@ -45,6 +50,12 @@ namespace ClubManagement.Games.Repositories
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 모임 선택 시 참석자 리스트 조회
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public DataTable LoadPlayerList(int code)
         {
             string query = ($"SELECT att_name,  ISNULL(RTRIM(mem_birth),'') mem_birth, att_gender, att_memtype FROM attend LEFT JOIN member ON att_memcode = mem_code  WHERE att_code = {code}");
@@ -57,6 +68,12 @@ namespace ClubManagement.Games.Repositories
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 회원정보 조회
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public DataTable LoadMember(MatchSearchModel model)
         {
             StringBuilder query = new StringBuilder();
@@ -80,17 +97,34 @@ namespace ClubManagement.Games.Repositories
 
             return SqlAdapterQuery(query.ToString());
         }
+
+        /// <summary>
+        /// 모임 참석자 리스트 조회
+        /// </summary>
+        /// <param name="mactchCode"></param>
+        /// <returns></returns>
         public DataTable LoadAttendPlayer(int mactchCode)
         {
             string query = $"SELECT att_name, ISNULL(att_memcode,0) att_memcode, att_gender, att_pro, att_handi FROM attend WHERE att_code = {mactchCode} ";
             return SqlAdapterQuery(query);
         }
+
+        /// <summary>
+        /// 모임 상세정보 조회
+        /// </summary>
+        /// <param name="matchCode"></param>
+        /// <returns></returns>
         public DataRow LoadMatchInfo(int matchCode)
         {
             string query = $"SELECT match_title, match_host, match_date, match_type, match_memo FROM match WHERE match_code = {matchCode}";
             DataTable result = SqlAdapterQuery(query);
             return result.Rows[0];
         }
+
+        /// <summary>
+        /// 모임 참석자 수정
+        /// </summary>
+        /// <param name="model"></param>
         public void UpdateMatchPlayer(MatchModel model)
         {
             int matchCode = (int)model.MatchCode;
@@ -144,6 +178,10 @@ namespace ClubManagement.Games.Repositories
 
         }
 
+        /// <summary>
+        /// 모임 정보 수정
+        /// </summary>
+        /// <param name="model"></param>
         public void UpdateMatch(MatchModel model)
         {
             SqlParameter[] parameters =
@@ -170,11 +208,15 @@ namespace ClubManagement.Games.Repositories
                 }
             }
         }
+
+        /// <summary>
+        /// 모임 정보 등록
+        /// </summary>
+        /// <param name="model"></param>
         public void InsertMatch(MatchModel model)
         {
             SqlParameter[] parameters =
             {
-                new SqlParameter ("@match",SqlDbType.Int){Value = 0},
                 new SqlParameter ("@title",SqlDbType.NVarChar){Value = model.MatchTitle},
                 new SqlParameter ("@host",SqlDbType.NVarChar){Value = model.MatchHost},
                 new SqlParameter ("@date",SqlDbType.Date){Value = model.MatchDate.Value.ToString("yyyy-MM-dd")},

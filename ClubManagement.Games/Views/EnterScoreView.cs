@@ -72,6 +72,9 @@ namespace ClubManagement.Games.Views
             }
         }
 
+        /// <summary>
+        /// 올커버 여부
+        /// </summary>
         public bool IsAllcover
         {
             get { return btnAllcover.Tag is bool val && val; }
@@ -120,30 +123,50 @@ namespace ClubManagement.Games.Views
             }
             TotalScoreEdit();
         }
+        /// <summary>
+        /// 점수 입력란에서 마지막 숫자를 지우는 기능.
+        /// 점수가 "0"이 되면 초기화.
+        /// </summary>
         private void ScoreBackspace()
         {
-            if(lblScore.Text != "0")
+            if (lblScore.Text != "0")
             {
+                // 마지막 문자 제거
                 int textLength = lblScore.Text.Length;
-                lblScore.Text = lblScore.Text.Substring(0,textLength - 1);
+                lblScore.Text = lblScore.Text.Substring(0, textLength - 1);
             }
-            else if(lblScore.Text.Length == 1)
+            else if (lblScore.Text.Length == 1)
             {
+                // 한 글자 남았으면 "0"으로 초기화
                 lblScore.Text = "0";
             }
+
+            // 총점 갱신
             TotalScoreEdit();
         }
+
+        /// <summary>
+        /// 점수 + 핸디캡 합산 총점을 계산하여 표시.
+        /// 300 초과 시 300으로 고정.
+        /// </summary>
         private void TotalScoreEdit()
         {
             int score = Convert.ToInt32(lblScore.Text);
             int handi = Convert.ToInt32(lblHandi.Text);
-            lblTotalScore.Text = score + handi > 300 ? "300" : (score + handi).ToString();
+
+            int total = score + handi;
+            lblTotalScore.Text = total > 300 ? "300" : total.ToString();
         }
+
+        /// <summary>
+        /// 점수와 총점을 0으로 초기화.
+        /// </summary>
         private void ScoreRemove()
         {
             lblScore.Text = "0";
             lblTotalScore.Text = "0";
         }
+
 
         /// <summary>
         /// 입력 점수 제한
@@ -167,59 +190,86 @@ namespace ClubManagement.Games.Views
         }
 
         /// <summary>
-        /// 퍼펙트로 입력시 점수는 300점으로 표시
-        /// 핸디 여부와 상관없이 합계 점수도 300점으로 표시되며
-        /// btnPerfect 버튼 색상 변경 
+        /// 퍼펙트(300점) 입력 처리.
+        /// 퍼펙트로 설정 시: 점수를 300으로 고정하고 버튼 색상 변경.
+        /// 퍼펙트 해제 시: 점수와 총점을 0으로 초기화하고 버튼 색상 초기화.
         /// </summary>
         private void EnterPerfact()
         {
-            if(!IsPerfact)
+            if (!IsPerfact) // 퍼펙트 상태가 아닐 때 → 퍼펙트로 변경
             {
+                // 점수와 총점을 300으로 고정
                 lblScore.Text = "300";
                 lblTotalScore.Text = "300";
+
+                // 버튼 색상 빨강으로 변경
                 btnPerfect.BackColor = Color.Red;
+
+                // 버튼 Tag에 상태 true 설정
                 btnPerfect.Tag = (bool)true;
             }
-            else
+            else // 퍼펙트 상태일 때 → 퍼펙트 해제
             {
+                // 점수와 총점을 0으로 초기화
                 lblScore.Text = "0";
                 lblTotalScore.Text = "0";
+
+                // 버튼 색상 흰색으로 변경
                 btnPerfect.BackColor = Color.White;
+
+                // 버튼 Tag에 상태 false 설정
                 btnPerfect.Tag = (bool)false;
             }
         }
 
         /// <summary>
-        /// 올커버로 입력시 btnAllcover 색상 변경
+        /// 올커버 입력 시 버튼 상태를 토글.
+        /// 활성화 시 버튼 색상을 빨강으로.
+        /// 비활성화 시 버튼 색상을 흰색으로.
         /// </summary>
         private void EnterAllcover()
         {
-            if(!(bool)btnAllcover.Tag)
+            // 현재 버튼 Tag 값이 false (또는 null)일 때 → 올커버 활성화
+            if (!(bool)btnAllcover.Tag)
             {
-                btnAllcover.Tag = (bool)true;
-                btnAllcover.BackColor = Color.Red;
+                btnAllcover.Tag = true;                // 상태: 활성화
+                btnAllcover.BackColor = Color.Red;     // 버튼 색상: 빨강
             }
             else
             {
-                btnAllcover.Tag = (bool)false;
-                btnAllcover.BackColor = Color.White;
+                btnAllcover.Tag = false;               // 상태: 비활성화
+                btnAllcover.BackColor = Color.White;   // 버튼 색상: 흰색
             }
         }
 
+
         /// <summary>
-        /// 버튼 태그값 초기화
+        /// 점수 입력 관련 버튼들의 태그 값을 초기화.
+        /// 퍼펙트, 올커버 상태를 false 로 리셋.
         /// </summary>
         private void InitializeButtonTag()
         {
-            btnPerfect.Tag = (bool)false;
-            btnAllcover.Tag = (bool)false;
+            // 퍼펙트 버튼 상태 초기화
+            btnPerfect.Tag = false;
+            btnPerfect.BackColor = Color.White;
+
+            // 올커버 버튼 상태 초기화
+            btnAllcover.Tag = false;
+            btnAllcover.BackColor = Color.White;
         }
+
+        /// <summary>
+        /// 점수 입력 화면의 버튼 및 컨트롤 이벤트 바인딩.
+        /// </summary>
         private void ViewEvent()
         {
+            // 점수 입력 완료 버튼 → EnterScoreEvent 발생
             btnEner.Click += (s, e) => EnterScoreEvent?.Invoke(this, EventArgs.Empty);
+
+            // 닫기 버튼 → CloseFormEvent 발생
             btnClose.Click += (s, e) => CloseFormEvent?.Invoke(this, EventArgs.Empty);
 
-            //내부 이벤트
+            // 숫자 버튼 클릭 → 점수 숫자 입력 처리
             btnNumber0.Click += (s, e) => EnterScoreNumber("0");
             btnNumber1.Click += (s, e) => EnterScoreNumber("1");
             btnNumber2.Click += (s, e) => EnterScoreNumber("2");
@@ -230,12 +280,21 @@ namespace ClubManagement.Games.Views
             btnNumber7.Click += (s, e) => EnterScoreNumber("7");
             btnNumber8.Click += (s, e) => EnterScoreNumber("8");
             btnNumber9.Click += (s, e) => EnterScoreNumber("9");
-            btnBackSpace.Click += (s, e) => ScoreBackspace();
-            btnDelete.Click += (s, e) => ScoreRemove();
-            btnPerfect.Click += (s, e) => EnterPerfact();
-            btnAllcover.Click += (s, e) => EnterAllcover();
-            lblScore.TextChanged += (s, e) => ScoreLimit();
 
+            // 점수 지우기: 마지막 자리 삭제
+            btnBackSpace.Click += (s, e) => ScoreBackspace();
+
+            // 점수 전체 삭제
+            btnDelete.Click += (s, e) => ScoreRemove();
+
+            // 퍼펙트 버튼 클릭 → 퍼펙트 상태 토글
+            btnPerfect.Click += (s, e) => EnterPerfact();
+
+            // 올커버 버튼 클릭 → 올커버 상태 토글
+            btnAllcover.Click += (s, e) => EnterAllcover();
+
+            // 점수 텍스트 변경 시 → 점수 제한 검사
+            lblScore.TextChanged += (s, e) => ScoreLimit();
         }
 
     }

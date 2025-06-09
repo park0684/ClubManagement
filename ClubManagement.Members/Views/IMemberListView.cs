@@ -26,6 +26,8 @@ namespace ClubManagement.Members.Views
         bool SecessCheck { get; set; }
         bool GameCheck { get; set; }
         int? SelectedCode { get; }
+        int? SortType { get; }
+        int? AttendInclude { get; }
 
         event EventHandler SearchEvent;
         event EventHandler AddMemberEvent;

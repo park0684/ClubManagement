@@ -26,7 +26,7 @@ namespace ClubManagement.Games.Views
         void SearchGame();
         void CloseForm();
         void ShowForm();
-        void ShowMessge(string message);
+        void ShowMessage(string message);
         void SetMatchButton();
 
     }

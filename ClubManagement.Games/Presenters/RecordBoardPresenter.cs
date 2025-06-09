@@ -165,8 +165,10 @@ namespace ClubManagement.Games.Presenters
 
             //개인 사이드 플레이어 생성
             var individualSidePalyer = _model.PlayerList.Where(p => p.IndividualSide).ToList();
+
             //개인 사이드 게임 플레이어 DataGridView에 표시
             _view.SetSideGamePlayerList(individualSidePalyer);
+            
             //개인 사이드 핸디, 점수, 랭크 계산
             var scoreList = _service.IndividualScore(_model.GameList, _model.CurrentGame);
             _view.BindingIndividualScore(scoreList);
@@ -175,8 +177,10 @@ namespace ClubManagement.Games.Presenters
             //올커버 사이드 플레이어 생성 및 DataGridview에 표시
             var allCoverSidePlayer = _model.PlayerList.Where(p => p.AllCoverSide).ToList();
             _view.SetAllcoverGamePlayers(allCoverSidePlayer);
+            
             // 선택되 게임 스코어 정보 적용
             var selectedGame = _model.GameList.FirstOrDefault(g => g.GameSeq == _model.CurrentGame);
+            
             //사이드 게임 반영
             _view.LoadAllcoverGamePlayers(selectedGame);
         }

@@ -83,6 +83,8 @@ namespace ClubManagement.Members.Presenters
                 model.ExcludeIrregular = _view.ExcludeIrregular;
                 model.ExcludeEvent = _view.ExcludeEvent;
                 model.StartDate = _service.LoadStartDate();
+                model.SortType = _view.SortType;
+                model.AttendInclude = _view.AttendInclude;
 
 
                 var result = _service.LoadMemberList(model);

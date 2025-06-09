@@ -21,6 +21,10 @@ namespace ClubManagement.Members.Views
             txtMemberName.Enabled = false;
             btnDelete.Visible = false;
         }
+
+        /// <summary>
+        /// 이벤트 등록
+        /// </summary>
         private void ViewEvent()
         {
             btnSave.Click += (s, e) => SaveEvent?.Invoke(this, EventArgs.Empty);
@@ -31,9 +35,12 @@ namespace ClubManagement.Members.Views
             txtDueAmount.TextChanged += (s, e) => DuesAmountChaingedEvent?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// 전표 유형 설정에 따른 텍스트 박스 설정
+        /// </summary>
         public void TypeChaingedSet()
         {
-            switch(((KeyValuePair<int, string>)cmbStatementType.SelectedItem).Value)
+            switch (((KeyValuePair<int, string>)cmbStatementType.SelectedItem).Value)
             {
                 case "회비":
                     grpDue.Enabled = true;
@@ -65,8 +72,21 @@ namespace ClubManagement.Members.Views
                     txtMemberName.Text = "";
                     cmbCount.SelectedIndex = 0;
                     break;
+                case "기타입금":
+                    grpDue.Enabled = true;
+                    grpWihtdrawal.Enabled = false;
+                    txtWithdrawalAmount.Text = "";
+                    txtWithdrawalDetail.Text = "";
+                    txtDueAmount.Text = "0";
+                    cmbCount.SelectedIndex = 0;
+                    break;
+
             }
         }
+
+        /// <summary>
+        /// 전표 유형 콤보박스 초기화
+        /// </summary>
         private void InitializeComboBox()
         {
             foreach (var item in MemberHelper.DuesType)
@@ -104,7 +124,6 @@ namespace ClubManagement.Members.Views
 
             }
         }
-
 
         public int DueCount
         {
@@ -145,7 +164,7 @@ namespace ClubManagement.Members.Views
             get
             {
                 int selectedKey = ((KeyValuePair<int, string>)cmbStatementType.SelectedItem).Key;
-                if (selectedKey == 1 || selectedKey == 3)
+                if (selectedKey == 1 || selectedKey == 3 || selectedKey == 4)
                 {
                     return false;
                 }

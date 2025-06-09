@@ -24,9 +24,13 @@ namespace ClubManagement.Members.Views
             InitializeDataGridView();
             ViewEvent();
         }
-
+        /// <summary>
+        /// 콤보박스 초기화
+        /// </summary>
         private void InitializeComboBox()
         {
+            //회원 상태 콤보박스 
+            //MemberHelper에서 상태값 참조 등록
             cmbStatus.Items.Add("전체");
             foreach (var item in MemberHelper.MemStatus)
             {
@@ -36,7 +40,30 @@ namespace ClubManagement.Members.Views
             cmbStatus.ValueMember = "key";
             cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStatus.SelectedIndex = 1;
+
+            //정렬 조건 콤보박스
+            string[] sortItems = new string[] { "기본", "참석율↑", "참석율↓", "정기전↑", "정기전↓", "정기전&참석율↑" };
+            foreach(var item in sortItems )
+            {
+                cmbSortType.Items.Add(item);
+            }
+            cmbSortType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSortType.SelectedIndex = 0;
+
+            //게임참가기간내 회원 포함여부 지정 콤보박스
+            string[] inclusion = new string[] { "전체회원", "참석자", "미참석자" };
+            foreach(var item in inclusion)
+            {
+                cmbInclude.Items.Add(item);
+            }
+            cmbInclude.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbInclude.SelectedIndex = 0;
+            cmbInclude.Enabled = false;
         }
+
+        /// <summary>
+        /// DataPicker 상태 초기화
+        /// </summary>
         private void InitializDateTimePicker()
         {
             dtpAccFromDate.Enabled = false;
@@ -45,15 +72,19 @@ namespace ClubManagement.Members.Views
             dtpSecToDate.Enabled = false;
             dtpGameFromDate.Enabled = false;
             dtpGameToDate.Enabled = false;
-            chkExculde.Enabled = false;
+            chkExclude.Enabled = false;
         }
 
+        /// <summary>
+        /// 데이터 그리드 초기화 및 칼럼 설정
+        /// </summary>
         private void InitializeDataGridView()
         {
             dgvMemberList = new CustomDataGridViewControl();
             var dgv = dgvMemberList.dgv;
             pnlDataGrid.Controls.Add(dgv);
             dgv.Dock = DockStyle.Fill;
+
             // 그리드 칼럼 추가
             dgv.Columns.Add("MemberCode", "code");
             dgv.Columns.Add("Name", "이름");
@@ -73,6 +104,7 @@ namespace ClubManagement.Members.Views
             dgv.Columns.Add("Memo", "메모");
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.ReadOnly = true;
+
             // 바인딩을 위한 프로퍼티 네임 설정
             //foreach(DataGridViewColumn column in dgv.Columns)
             //{
@@ -85,7 +117,7 @@ namespace ClubManagement.Members.Views
             dgv.Columns["Gender"].DataPropertyName = "gender";
             dgv.Columns["Status"].DataPropertyName = "status";
             dgv.Columns["Position"].DataPropertyName = "position";
-            dgv.Columns["RegularMatch"].DataPropertyName = "reglar_count";
+            dgv.Columns["RegularMatch"].DataPropertyName = "regular_count";
             dgv.Columns["RegularRate"].DataPropertyName = "regularRate";
             dgv.Columns["IrregularMatch"].DataPropertyName = "irregular_count";
             dgv.Columns["EventMatch"].DataPropertyName = "event_count";
@@ -109,41 +141,60 @@ namespace ClubManagement.Members.Views
 
         }
 
+        /// <summary>
+        /// view 이벤트 연결 설정
+        /// </summary>
         private void ViewEvent()
         {
-            btnSearch.Click += (s, e) => SearchEvent?.Invoke(this, EventArgs.Empty);
+            btnSearch.Click += (s, e) => SearchEvent?.Invoke(this, EventArgs.Empty); // 검색 버튼
             txtSearchWord.KeyDown += (s, e) =>
             {
                 if (e.KeyCode == Keys.Enter)
-                    SearchEvent?.Invoke(this, EventArgs.Empty);
+                    SearchEvent?.Invoke(this, EventArgs.Empty); // 검색어 입력 후 enter 이벤트
             };
-            btnAddMember.Click += (s, e) => AddMemberEvent?.Invoke(this, EventArgs.Empty);
-            dgvMemberList.dgv.CellDoubleClick += (s, e) => EidtMemberEvent?.Invoke(this, EventArgs.Empty);
-            chkAccDate.CheckedChanged += SetAccDatePickersEnabled;
-            chkSecDate.CheckedChanged += SetSecDatePickersEnabled;
-            chkGameDate.CheckedChanged += SetGameDatePickersEnabled;
-            cmbStatus.SelectedIndexChanged += SetExchuldeCheckBoxSet;
-            chkExRegularGeme.CheckedChanged += SetCheckBoxEnable;
-            chkExIrregularGame.CheckedChanged += SetCheckBoxEnable;
-            chkExEventGame.CheckedChanged += SetCheckBoxEnable;
+            btnAddMember.Click += (s, e) => AddMemberEvent?.Invoke(this, EventArgs.Empty); // 새회원 추가 버튼 클릭
+            dgvMemberList.dgv.CellDoubleClick += (s, e) => EidtMemberEvent?.Invoke(this, EventArgs.Empty); //  회원 상세보기 
+            chkAccDate.CheckedChanged += SetAccDatePickersEnabled; //가입일 체크
+            chkSecDate.CheckedChanged += SetSecDatePickersEnabled; //탈퇴일 체크 
+            chkGameDate.CheckedChanged += SetGameDatePickersEnabled; //참석일 체크 박스 이벤트
+            cmbStatus.SelectedIndexChanged += SetStatusExcludeCheckBoxSetㄴㅅㅁ; //상태 콤보 박스 변경시 이벤트
+            chkExRegularGeme.CheckedChanged += SetCheckBoxEnable; //정기전 제외 체크 박스 이벤트
+            chkExIrregularGame.CheckedChanged += SetCheckBoxEnable; //비정기전 제외 체크 박스 이벤트
+            chkExEventGame.CheckedChanged += SetCheckBoxEnable; // 이벤트전 제외 체크 박스 이벤트
         }
 
+        /// <summary>
+        /// 데이터그리드뷰 데이터소스 바인딩 
+        /// </summary>
+        /// <param name="source"></param>
         public void SetMemberListBindingSource(BindingSource source)
         {
             dgvMemberList.dgv.DataSource = source;
         }
-        private void SetExchuldeCheckBoxSet(object sender, EventArgs e)
+
+        /// <summary>
+        /// 상태 콤보박스 선태값에 따른 제외 체크박스 활성화 여부
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SetStatusExcludeCheckBoxSetㄴㅅㅁ(object sender, EventArgs e)
         {
             if (cmbStatus.SelectedIndex == 0)
             {
-                chkExculde.Checked = false;
-                chkExculde.Enabled = false;
+                chkExclude.Checked = false;
+                chkExclude.Enabled = false;
             }
             else
             {
-                chkExculde.Enabled = true;
+                chkExclude.Enabled = true;
             }
         }
+
+        /// <summary>
+        /// 모임 유형 제외 체크 박스 관리
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SetCheckBoxEnable(object sender, EventArgs e)
         {
             if (chkExRegularGeme.Checked && chkExIrregularGame.Checked && chkExEventGame.Checked)
@@ -157,29 +208,60 @@ namespace ClubManagement.Members.Views
             }
         }
 
+        /// <summary>
+        /// 가입일 DataPicker 활성화 설정
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SetAccDatePickersEnabled(object sender, EventArgs e)
         {
             bool isEnabled = chkAccDate.Checked;
             dtpAccFromDate.Enabled = isEnabled;
             dtpAccToDate.Enabled = isEnabled;
         }
+
+        /// <summary>
+        /// 탈퇴일 DataPicker 활성화 설정
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SetSecDatePickersEnabled(object sender, EventArgs e)
         {
             bool isEnabled = chkSecDate.Checked;
             dtpSecFromDate.Enabled = isEnabled;
             dtpSecToDate.Enabled = isEnabled;
         }
+
+        /// <summary>
+        /// 참가일 DataPicker 및 포함 콤보박스 활성화 설정
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void SetGameDatePickersEnabled(object sender, EventArgs e)
         {
             bool isEnabled = chkGameDate.Checked;
             dtpGameFromDate.Enabled = isEnabled;
             dtpGameToDate.Enabled = isEnabled;
+            cmbInclude.Enabled = isEnabled;
+            if(!isEnabled)
+            {
+                cmbInclude.SelectedIndex = 0;
+            }
         }
+
+        /// <summary>
+        /// 메시지 박스 생성 메서드
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowMessage(string message)
         {
             MessageBox.Show(message, "알림");
         }
 
+        /// <summary>
+        /// 회원검색 결과 DataGridView 바인딩 메서드
+        /// </summary>
+        /// <param name="members"></param>
         public void MemberListBinding(DataTable members)
         {
           
@@ -192,6 +274,7 @@ namespace ClubManagement.Members.Views
             dgvMemberList.dgv.Rows.Clear();
         }
 
+        // 필드
         public string SearchWord
         {
             get { return txtSearchWord.Text; }
@@ -254,8 +337,8 @@ namespace ClubManagement.Members.Views
         }
         public bool ExcludeMember
         {
-            get { return chkExculde.Checked; }
-            set { chkExculde.Checked = value; }
+            get { return chkExclude.Checked; }
+            set { chkExclude.Checked = value; }
         }
         public bool AccessCheck
         {
@@ -285,6 +368,10 @@ namespace ClubManagement.Members.Views
             }
         }
 
+        public int? SortType { get => cmbSortType.SelectedIndex; }
+        public int? AttendInclude { get => cmbInclude.SelectedIndex; }
+
+        // 이벤트
         public event EventHandler SearchEvent;
         public event EventHandler AddMemberEvent;
         public event EventHandler EidtMemberEvent;

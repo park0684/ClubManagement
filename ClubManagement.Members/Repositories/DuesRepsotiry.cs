@@ -23,7 +23,7 @@ namespace ClubManagement.Members.Repositories
         {
             StringBuilder query = new StringBuilder();
             List<string> whereCondition = new List<string>();
-            query.Append("SELECT mem_code, mem_name, mem_birth, SUM(ISNULL(payment,0)) payment, SUM(ISNULL(free,0)) free, DATEDIFF(m,CASE WHEN mem_access < '2025-02-01' THEN '2025-02-01' ELSE mem_access END, GETDATE())+1 totaldues  FROM member LEFT OUTER JOIN ");
+            query.Append("SELECT mem_code, mem_name, mem_birth, SUM(ISNULL(payment,0)) payment, SUM(ISNULL(free,0)) free, CASE WHEN mem_position = 5 THEN 0 ELSE DATEDIFF(m,CASE WHEN mem_access < '2025-02-01' THEN '2025-02-01' ELSE mem_access END, GETDATE()) +1 END totaldues  FROM member LEFT OUTER JOIN ");
             query.Append("(SELECT du_memcode , CASE WHEN du_type = 1 THEN SUM(du_apply) END payment, CASE WHEN du_type = 3 THEN SUM(du_apply) END free FROM dues WHERE du_type IN ( 1, 3) AND du_status = 1 GROUP BY du_memcode, du_type) as dues ON  mem_code = du_memcode");
             if (!string.IsNullOrEmpty(model.SearchWord))
             {
@@ -38,7 +38,7 @@ namespace ClubManagement.Members.Repositories
                 query.Append(" Where ");
                 query.Append(string.Join(" and ", whereCondition));
             }
-            query.Append(" GROUP BY mem_code, mem_name, mem_birth, mem_access");
+            query.Append(" GROUP BY mem_code, mem_name, mem_birth, mem_position, mem_access ORDER BY mem_position, mem_code");
             return SqlAdapterQuery(query.ToString());
         }
         public DataRow LoadStatmet(int statmentcode)
@@ -50,8 +50,10 @@ namespace ClubManagement.Members.Repositories
         public DataTable GetStateList(DuesModel model)
         {
             StringBuilder query = new StringBuilder();
-            query.Append("SELECT du_code, du_date, du_type, du_detail , du_apply, CASE WHEN du_type IN (1,3) THEN du_pay ELSE 0 END as deposit, CASE WHEN du_type NOT IN (1,3) THEN du_pay ELSE 0 END whthdrawal FROM dues");
+            query.Append("SELECT du_code, du_date, du_type, du_detail , du_apply, CASE WHEN du_type IN (1,3,4) THEN du_pay ELSE 0 END as deposit, CASE WHEN du_type NOT IN (1,3,4) THEN du_pay ELSE 0 END whthdrawal, du_memo FROM dues");
             query.Append($" WHERE du_date >= '{model.FromDate.ToString("yyyy-MM-dd")}' AND du_date < '{model.ToDate.AddDays(1).ToString("yyyy-MM-dd")}' AND du_status = 1");
+            if (model.StateType != -1)
+                query.Append($" AND du_type = {model.StateType}");
             if (model.MemberCode != 0)
                 query.Append($" AND du_memcode = {model.MemberCode}");
             query.Append("ORDER BY du_date, du_code");
