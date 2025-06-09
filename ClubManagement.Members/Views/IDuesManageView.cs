@@ -15,6 +15,7 @@ namespace ClubManagement.Members.Views
         bool SecessInclude { get; set; }
         int? GetMemberCode { get; }
         int? GetStateMentCode { get; }
+        int? StateType { get; set; }
 
         event EventHandler MemberSearchEvent;
         event EventHandler StatementSearchEvent;

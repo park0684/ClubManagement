@@ -184,7 +184,7 @@ namespace ClubManagement.Members.Repositories
 
         public string LoadStartDate()
         {
-            string query = "SELECT cf_strvar FROM config WHERE cf_code = 12";
+            string query = "SELECT cf_strval FROM config WHERE cf_code = 12";
             return ScalaQuery(query).ToString();
             
         }

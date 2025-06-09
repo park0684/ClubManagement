@@ -14,5 +14,6 @@ namespace ClubManagement.Members.Models
         public bool SecessInclude { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
+        public int? StateType { get; set; }
     }
 }

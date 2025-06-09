@@ -145,7 +145,7 @@ namespace ClubManagement.Members.Views
             get
             {
                 int selectedKey = ((KeyValuePair<int, string>)cmbStatementType.SelectedItem).Key;
-                if (selectedKey == 1 || selectedKey == 3)
+                if (selectedKey == 1 || selectedKey == 3 || selectedKey == 4)
                 {
                     return false;
                 }

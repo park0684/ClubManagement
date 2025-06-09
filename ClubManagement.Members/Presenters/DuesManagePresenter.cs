@@ -94,7 +94,7 @@ namespace ClubManagement.Members.Presenters
             _model.FromDate = _view.FromDate;
             _model.ToDate = _view.ToDate;
             _model.SecessInclude = _view.SecessInclude;
-
+            
             //회원 목록 조회
             var result = _service.LoadMemberList(_model);
 
@@ -113,7 +113,7 @@ namespace ClubManagement.Members.Presenters
             _model.ToDate = _view.ToDate;
             _model.SecessInclude = _view.SecessInclude;
             _model.MemberCode = _view.GetMemberCode;
-            
+            _model.StateType = _view.StateType;
             var result = _service.LoadStatementList(_model);
             _view.SetStateListBinding(result);
         }

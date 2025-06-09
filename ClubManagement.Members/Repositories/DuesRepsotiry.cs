@@ -50,8 +50,10 @@ namespace ClubManagement.Members.Repositories
         public DataTable GetStateList(DuesModel model)
         {
             StringBuilder query = new StringBuilder();
-            query.Append("SELECT du_code, du_date, du_type, du_detail , du_apply, CASE WHEN du_type IN (1,3) THEN du_pay ELSE 0 END as deposit, CASE WHEN du_type NOT IN (1,3) THEN du_pay ELSE 0 END whthdrawal FROM dues");
+            query.Append("SELECT du_code, du_date, du_type, du_detail , du_apply, CASE WHEN du_type IN (1,3,4) THEN du_pay ELSE 0 END as deposit, CASE WHEN du_type NOT IN (1,3,4) THEN du_pay ELSE 0 END whthdrawal, du_memo FROM dues");
             query.Append($" WHERE du_date >= '{model.FromDate.ToString("yyyy-MM-dd")}' AND du_date < '{model.ToDate.AddDays(1).ToString("yyyy-MM-dd")}' AND du_status = 1");
+            if (model.StateType != -1)
+                query.Append($" AND du_type = {model.StateType}");
             if (model.MemberCode != 0)
                 query.Append($" AND du_memcode = {model.MemberCode}");
             query.Append("ORDER BY du_date, du_code");

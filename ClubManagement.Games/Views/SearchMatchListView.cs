@@ -33,6 +33,8 @@ namespace ClubManagement.Games.Views
             // 내부 컨트롤러
             btnPre.Click += MovePreMonth;
             btnPost.Click += MovePostMounth;
+            dtpFromDate.ValueChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
+            dtpToDate.ValueChanged += (s, e) => SearchMatchEvent?.Invoke(this, EventArgs.Empty);
         }
         private void InitializeDataGridView()
         {

@@ -20,6 +20,7 @@ namespace ClubManagement.Members.Views
         {
             InitializeComponent();
             InitializeDataGridView();
+            InitailizeComboBox();
             ViewEvevnt();
             dtpFromDate.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         }
@@ -34,6 +35,7 @@ namespace ClubManagement.Members.Views
             dgvStatementList.dgv.CellDoubleClick += (s, e) => StatementEditEvent?.Invoke(this, EventArgs.Empty);
             dtpFromDate.ValueChanged += (s, e) => StatementSearchEvent?.Invoke(this, EventArgs.Empty);
             dtpToDate.ValueChanged += (s, e) => StatementSearchEvent?.Invoke(this, EventArgs.Empty);
+            cmbStatus.SelectedIndexChanged += (s, e) => StatementSearchEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void InitializeDataGridView()
@@ -73,6 +75,7 @@ namespace ClubManagement.Members.Views
             dgvState.Columns.Add("deposit", "입금액");
             dgvState.Columns.Add("withdrawal", "출금액");
             dgvState.Columns.Add("balance", "잔액");
+            dgvState.Columns.Add("memo", "메모");
             dgvState.Columns.Add("code", "코드");
             dgvState.ReadOnly = true;
             dgvState.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -81,6 +84,7 @@ namespace ClubManagement.Members.Views
                 column.DataPropertyName = column.Name;
             }
             dgvState.AutoGenerateColumns = false;
+
             dgvStatementList.ApplyDefaultColumnSettings();
             dgvStatementList.FormatAsInt("deposit", "withdrawal", "balance");
             dgvStatementList.FormatAsStringCenter("No", "code", "type");
@@ -136,7 +140,18 @@ namespace ClubManagement.Members.Views
                 dtpToDate.Value = new DateTime(fromDate.Year, fromDate.Month, lastDayOfMonth);
             }
         }
+        
+        private void InitailizeComboBox()
+        {
+            var items = MemberHelper.DuesType.Select(kvp => new KeyValuePair<int, string>(kvp.Key, kvp.Value)).ToList();
+            items.Insert(0, new KeyValuePair<int, string>(-1, "전체"));
 
+            cmbStatus.DataSource = items;
+            cmbStatus.DisplayMember = "Value";
+            cmbStatus.ValueMember = "Key";
+            cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbStatus.SelectedIndex = 0;
+        }
         public void SetMemberListBinding(DataTable members)
         {
             dgvMemberList.dgv.DataSource = members;
@@ -191,6 +206,29 @@ namespace ClubManagement.Members.Views
                 return null;
             }
         }
+
+        public int? StateType 
+        {
+
+            get
+            {
+                if (cmbStatus.SelectedValue is int val)
+                    return val;
+                return null;
+            }
+            set
+            {
+                foreach (var item in cmbStatus.Items)
+                {
+                    if (item is KeyValuePair<int, string> kv && kv.Key == value)
+                    {
+                        cmbStatus.SelectedItem = kv;
+                        break;
+                    }
+                }
+            }
+        }
+
         public event EventHandler MemberSearchEvent;
         public event EventHandler StatementSearchEvent;
         public event EventHandler StatementAddEvent;

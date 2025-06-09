@@ -40,6 +40,7 @@ namespace ClubManagement.Members.Views
             this.pnlStatemet = new System.Windows.Forms.Panel();
             this.dtpToDate = new System.Windows.Forms.DateTimePicker();
             this.btnPost = new System.Windows.Forms.Button();
+            this.cmbStatus = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,6 +67,7 @@ namespace ClubManagement.Members.Views
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.cmbStatus);
             this.splitContainer1.Panel2.Controls.Add(this.btnAdd);
             this.splitContainer1.Panel2.Controls.Add(this.dtpFromDate);
             this.splitContainer1.Panel2.Controls.Add(this.btnPre);
@@ -184,6 +186,14 @@ namespace ClubManagement.Members.Views
             this.btnPost.Text = "▷";
             this.btnPost.UseVisualStyleBackColor = true;
             // 
+            // cmbStatus
+            // 
+            this.cmbStatus.FormattingEnabled = true;
+            this.cmbStatus.Location = new System.Drawing.Point(7, 14);
+            this.cmbStatus.Name = "cmbStatus";
+            this.cmbStatus.Size = new System.Drawing.Size(84, 20);
+            this.cmbStatus.TabIndex = 8;
+            // 
             // DuesManageView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -214,5 +224,6 @@ namespace ClubManagement.Members.Views
         private System.Windows.Forms.Panel pnlStatemet;
         private System.Windows.Forms.DateTimePicker dtpToDate;
         private System.Windows.Forms.Button btnPost;
+        private System.Windows.Forms.ComboBox cmbStatus;
     }
 }
