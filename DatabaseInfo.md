@@ -1,6 +1,72 @@
 # 📘 Club Management Database Schema
 
 ---
+## ✍ 다이어그램
+<details> <summary> 상세보기 </summary>
+	
+```mermaid
+erDiagram
+    member ||--o{ dues : " du_memcode -> mem_code"
+    match ||--o{ games : "game_match -> match_code "
+    match ||--o{ individualset : "ind_match -> match_code "
+    games ||--o{ players : " pl_match ->game_match, pl_game -> game_order"
+    games ||--o{ individualscore : " is_match ->game_match, is_game -> game_order"
+    match ||--o{ attend : "att_match -> match_code "
+    
+    member {
+        int mem_code PK
+        varchar mem_name
+        bit mem_gender
+    }
+    
+    dues {
+        int du_code PK
+        int du_memcode FK
+        int du_pay
+    }
+
+    attend {
+        int att_match FK
+        int att_memcode
+        varchar att_name
+    }
+
+    match {
+        int match_code PK
+        varchar match_title
+        date match_date
+    }
+
+    games {
+        int game_match FK
+        int game_order
+        int game_type
+    }
+
+    players {
+        int pl_match FK
+        int pl_game FK
+        varchar pl_name
+        int pl_score
+    }
+
+    individualscore {
+        int is_match FK
+        int is_game FK
+        varchar is_name
+        int is_rank
+    }
+
+    individualset {
+        int ind_match FK
+        int ind_rank
+        int ind_prize
+    }
+```
+
+</details>
+
+---
 
 ## 🧱 데이터베이스 테이블 목록
 
