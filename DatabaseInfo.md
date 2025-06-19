@@ -1,4 +1,4 @@
-# 📘 Club Management Database Schema 문서
+# 📘 Club Management Database Schema
 
 ---
 
