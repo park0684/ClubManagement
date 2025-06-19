@@ -49,6 +49,7 @@
 
 ## 📘 DB 스키마
 
+- **스키마 문서 바로가기** : https://github.com/park0684/ClubManagement/blob/master/DatabaseInfo.md
 
 ---
 
