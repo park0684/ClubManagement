@@ -39,11 +39,11 @@ namespace ClubManagement.Games.Presenters
             _model = _service.LoadMatch(code);
 
             // 뷰의 컨트롤에 모델 데이터를 표시
-            _view.GameTitle = _model.MatchTitle;             // 경기 제목
-            _view.GameHost = _model.MatchHost;               // 주최자
-            _view.GameMemo = _model.MatchMemo;               // 메모
-            _view.GameDate = (DateTime)_model.MatchDate;     // 경기 일자
-            _view.GameType = (int)_model.MatchType;          // 경기 유형
+            _view.MatchTitle = _model.MatchTitle;             // 경기 제목
+            _view.HostName = _model.MatchHost;               // 주최자
+            _view.MatchMemo = _model.MatchMemo;               // 메모
+            _view.MatchDate = (DateTime)_model.MatchDate;     // 경기 일자
+            _view.MatchType = (int)_model.MatchType;          // 경기 유형
         }
         /// <summary>
         /// 뷰에서 입력된 경기 정보를 모델에 저장하고 서비스로 저장 요청.
@@ -52,11 +52,11 @@ namespace ClubManagement.Games.Presenters
         private void SaveMatch(object sender, EventArgs e)
         {
             // 뷰에서 입력된 값을 모델에 반영
-            _model.MatchTitle = _view.GameTitle;     // 제목
-            _model.MatchHost = _view.GameHost;       // 주최자
-            _model.MatchDate = _view.GameDate;       // 일자
-            _model.MatchType = _view.GameType;       // 유형
-            _model.MatchMemo = _view.GameMemo;       // 메모
+            _model.MatchTitle = _view.MatchTitle;     // 제목
+            _model.MatchHost = _view.HostName;       // 주최자
+            _model.MatchDate = _view.MatchDate;       // 일자
+            _model.MatchType = _view.MatchType;       // 유형
+            _model.MatchMemo = _view.MatchMemo;       // 메모
 
             try
             {

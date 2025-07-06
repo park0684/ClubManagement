@@ -22,31 +22,31 @@ namespace ClubManagement.Games.Views
             this.Text = "모임 상세 내역";
         }
 
-        public string GameTitle
+        public string MatchTitle
         {
             get { return txtTitle.Text; }
             set { txtTitle.Text = value; }
         }
 
-        public string GameHost
+        public string HostName
         {
             get { return txtHost.Text; }
             set { txtHost.Text = value; }
         }
 
-        public string GameMemo
+        public string MatchMemo
         {
             get { return txtMemo.Text; }
             set { txtMemo.Text = value; }
         }
 
-        public DateTime GameDate
+        public DateTime MatchDate
         {
             get { return dtpGameDate.Value; }
             set { dtpGameDate.Value = value; }
         }
 
-        public int GameType
+        public int MatchType
         {
             get { return ((KeyValuePair<int, string>)cmbGameType.SelectedItem).Key; }
             set

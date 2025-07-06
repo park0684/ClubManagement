@@ -42,7 +42,7 @@ namespace ClubManagement.Games.Presenters
             _view.Score = player.Score;
             _view.TotalScore = player.Handycap + player.Score > 300 ? 300 : player.Handycap + player.Score;
             _view.IsAllcover = player.IsAllCover;
-            _view.IsPerfact = player.Score == 300 ? true : false;
+            _view.IsPerfect = player.Score == 300 ? true : false;
         }
 
         /// <summary>

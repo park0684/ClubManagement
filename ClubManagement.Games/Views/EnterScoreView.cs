@@ -61,13 +61,13 @@ namespace ClubManagement.Games.Views
         /// <summary>
         /// 퍼펙트 여부
         /// </summary>
-        public bool IsPerfact
+        public bool IsPerfect
         {
             get { return btnPerfect.Tag is bool val && val; }
             set 
             { 
                 btnPerfect.Tag = (bool)value; 
-                if(IsPerfact == true)
+                if(IsPerfect == true)
                     btnPerfect.BackColor = Color.Red; 
             }
         }
@@ -196,7 +196,7 @@ namespace ClubManagement.Games.Views
         /// </summary>
         private void EnterPerfact()
         {
-            if (!IsPerfact) // 퍼펙트 상태가 아닐 때 → 퍼펙트로 변경
+            if (!IsPerfect) // 퍼펙트 상태가 아닐 때 → 퍼펙트로 변경
             {
                 // 점수와 총점을 300으로 고정
                 lblScore.Text = "300";

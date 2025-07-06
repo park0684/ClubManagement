@@ -98,7 +98,7 @@ namespace ClubManagement.Games.Views
         /// 게임 리스트 DataGridView에 데이터 소스 바인딩.
         /// </summary>
         /// <param name="source">바인딩할 데이터</param>
-        public void SetGameListBinding(DataTable source)
+        public void SetMatchListBinding(DataTable source)
         {
             dgvGameList.dgv.DataSource = source;
         }

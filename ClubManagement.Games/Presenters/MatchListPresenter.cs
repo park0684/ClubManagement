@@ -46,7 +46,7 @@ namespace ClubManagement.Games.Presenters
                 _model.MatchType = _view.MatchType ?? 0;
                 _model.ExcludeType = _view.ExcludeType;
                 DataTable dataSource = _service.LoadMatchList(_model);
-                _view.SetGameListBinding(dataSource);
+                _view.SetMatchListBinding(dataSource);
             }
             catch (Exception ex) 
             { 

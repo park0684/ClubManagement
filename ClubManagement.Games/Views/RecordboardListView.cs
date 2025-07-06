@@ -23,6 +23,8 @@ namespace ClubManagement.Games.Views
             ViewEvent();
         }
 
+        /*필드*/
+
         public DateTime FromDate
         {
             get { return dtpFromDate.Value; }
@@ -46,8 +48,6 @@ namespace ClubManagement.Games.Views
                 return null;
             }
         }
-
-    
 
         public event EventHandler RecordBoardRegistEvent;
         public event EventHandler RecordBoardEditEvent;
