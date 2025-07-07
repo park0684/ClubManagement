@@ -69,7 +69,8 @@ namespace ClubManagement.Games.Views
         /// </summary>
         /// <param name="player">플레이어 이름</param>
         /// <param name="isCurrentGroup">현재 그룹 여부</param>
-        /// <param name="isSelected">
+        /// <param name="isSelected">선택 여부</param>
+        void UpdateButtonColor(string player, bool isCurrentGroup, bool isSelected);
 
     }
 }

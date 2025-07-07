@@ -56,34 +56,24 @@ namespace ClubManagement.Members.Repositories
             
             // 정기전 참석 현황 집계
             if (!model.ExcludeRegular)
-            {
                 query.Append(GetGameQuery(1, gameDate));
-                query.Append("as match_regular ON m.mem_code = match_regular.att_memcode LEFT OUTER JOIN \n");
-            }
             else
-            {
-                query.Replace(" ISNULL(match_regular.att_count,0) regular_count", " 0 regular_count");
-            }
+                query.Append(GetGameQuery(1));
+            query.Append("as match_regular ON m.mem_code = match_regular.att_memcode LEFT OUTER JOIN \n");
+
             // 비정기전 참석 현황 집계
             if (!model.ExcludeIrregular)
-            {
                 query.Append(GetGameQuery(2, gameDate));
-                query.Append("as match_irregular ON m.mem_code = match_irregular.att_memcode LEFT OUTER JOIN \n");
-            }
             else
-            {
-                query.Replace(" ISNULL(match_irregular.att_count, 0) irregular_count", " 0 irregular_count");
-            }
+                query.Append(GetGameQuery(2));
+            query.Append("as match_irregular ON m.mem_code = match_irregular.att_memcode LEFT OUTER JOIN \n");
+
             // 이벤트전 참석 현황 집계
             if (!model.ExcludeEvent)
-            {
                 query.Append(GetGameQuery(3, gameDate));
-                query.Append("as match_event ON m.mem_code = match_event.att_memcode LEFT OUTER JOIN \n");
-            }
             else
-            {
-                query.Replace(" ISNULL(match_event.att_count, 0) event_count", " 0 event_count");
-            }
+                query.Append(GetGameQuery(3));
+            query.Append("as match_event ON m.mem_code = match_event.att_memcode LEFT OUTER JOIN \n");
 
             //회비 납부 현황 집계
             query.Append("(select du_memcode, sum(du_apply) as payment FROM dues WHERE du_status = 1 AND du_type = 1 GROUP BY du_memcode) as dues ON m.mem_code = du_memcode");
@@ -164,13 +154,16 @@ namespace ClubManagement.Members.Repositories
         /// <param name="type"></param>
         /// <param name="gameDate"></param>
         /// <returns></returns>
-        public string GetGameQuery(int type, string gameDate)
+        public string GetGameQuery(int type, string gameDate = null)
         {
-            string query = "(SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE ";
-            if (!gameDate.Equals("N/A"))
+            string query;
+            if (gameDate != null)
             {
+                query = "(SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE ";
                 query += gameDate;
             }
+            else
+                query = "(SELECT att_memcode, 0 att_count FROM attend, match WHERE ";
             query += $" match_type = {type} AND att_code = match_code GROUP BY att_memcode)";
             return query;
 

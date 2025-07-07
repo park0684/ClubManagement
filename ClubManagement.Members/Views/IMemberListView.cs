@@ -48,6 +48,11 @@ namespace ClubManagement.Members.Views
         DateTime? GameFromDate { get; set; }
 
         /// <summary>
+        /// 참가일 조회 종료일
+        /// </summary>
+        DateTime? GameToDate { get; set; }
+
+        /// <summary>
         /// 정기전 제외 여부
         /// </summary>
         bool ExcludeRegular { get; set; }
