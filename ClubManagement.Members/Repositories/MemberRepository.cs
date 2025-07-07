@@ -43,11 +43,11 @@ namespace ClubManagement.Members.Repositories
 
             query.Append("  \nmem_access, mem_secess, mem_status, ");
             query.Append("ISNULL((SELECT MAX(match_date) FROM attend, match WHERE att_code = match_code AND att_name = mem_name),NULL) match_last,");
-            query.Append($"CASE WHEN mem_position = 5 THEN 0 ELSE CAST(DATEDIFF(MONTH,CASE WHEN mem_access < '{model.StartDate}' THEN '{model.StartDate}'  ELSE mem_access END ,GETDATE()) as INT) + 1 END mem_dues,ISNULL(payment, 0) payment, mem_memo \nFROM ");
+            query.Append($"CASE WHEN mem_position = 5 THEN 0 ELSE CAST(DATEDIFF(MONTH,CASE WHEN mem_access < '{model.StartDate}' THEN '{model.StartDate}'  ELSE mem_access END ,GETDATE()) as INT) + 1 END mem_dues,ISNULL(payment, 0) payment, mem_memo \nFROM \n");
             //회원 검색 구간
-            query.Append("(SELECT mem_code, mem_name ,mem_birth, mem_gender, mem_position, mem_access, mem_secess, mem_status,");
+            query.Append(" (SELECT mem_code, mem_name ,mem_birth, mem_gender, mem_position, mem_access, mem_secess, mem_status,");
             query.Append(" CAST(DATEDIFF(MONTH,CASE WHEN mem_access < '2025-02-01' THEN '2025-02-01'  ELSE mem_access END,");
-            query.Append($"'{DateTime.Now.ToString("d")}') as INT) + 1 [mem_duse], mem_memo FROM member \n");
+            query.Append($"'{DateTime.Now.ToString("d")}') as INT) + 1 [mem_duse], mem_memo FROM member ");
 
             List<string> memberConditio = SetWhereCondition(model);
            
@@ -66,11 +66,10 @@ namespace ClubManagement.Members.Repositories
 
 
             // 정기전 참석 현황 집계
-
-            if (!model.ExcludeRegular)
+            if (!model.ExcludeRegular) // 정기전 참석 제외를 클릭 하지 않았을 경우 쿼리문 포함
             {
                 // 대상 정기전 횟수 집계 
-                query.Append($"(SELECT mem_code, COUNT(match_code) game_count FROM member, match");
+                query.Append($" (SELECT mem_code, COUNT(match_code) game_count FROM member, match");
                 if (model.GameCheck) // 참석일 설정이 되어 있다면 해당 기간내 정기전만으로 게임 카운트 설정
                 {
                     gameDate = $" match_date >= '{model.GameFromDate.Value.ToString("yyyy-MM-dd")}' AND match_date < '{model.GameTodate.Value.AddDays(1).ToString("d")}' AND ";
@@ -80,28 +79,31 @@ namespace ClubManagement.Members.Repositories
                 {
                     query.Append(" WHERE match_type = 1 AND match_date >= mem_access GROUP BY mem_code) as regular_game ON m.mem_code = regular_game.mem_code LEFT OUTER JOIN \n");
                 }
-                
+
                 //참석 정기전 횟수 집계
-                query.Append(GetGameQuery(1, gameDate));
+                query.Append($" (SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE {gameDate} match_type = 1 AND att_code = match_code GROUP BY att_memcode)");
+                //query.Append(GetGameQuery(1, gameDate));
                 query.Append("as match_regular ON m.mem_code = match_regular.att_memcode LEFT OUTER JOIN \n");
             }            
 
             // 비정기전 참석 현황 집계
-            if (!model.ExcludeIrregular)
+            if (!model.ExcludeIrregular) // 비정기전 참석 제외르 클릭 하지 않을 경우 쿼리문 포함
             {
-                query.Append(GetGameQuery(2, gameDate));
+                //query.Append(GetGameQuery(2, gameDate));
+                query.Append($" (SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE {gameDate} match_type = 2 AND att_code = match_code GROUP BY att_memcode)");
                 query.Append("as match_irregular ON m.mem_code = match_irregular.att_memcode LEFT OUTER JOIN \n");
             }            
 
-            // 이벤트전 참석 현황 집계
+            // 이벤트전 참석 현황 집계 // 이벤트전 참석 제외를 클릭 하지 않았을 경우 쿼리문 포함
             if (!model.ExcludeEvent)
             {
-                query.Append(GetGameQuery(3, gameDate));
+                //query.Append(GetGameQuery(3, gameDate));
+                query.Append($" (SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE {gameDate} match_type = 1 AND att_code = match_code GROUP BY att_memcode)");
                 query.Append("as match_event ON m.mem_code = match_event.att_memcode LEFT OUTER JOIN \n");
             }            
 
             //회비 납부 현황 집계
-            query.Append("(select du_memcode, sum(du_apply) as payment FROM dues WHERE du_status = 1 AND du_type = 1 GROUP BY du_memcode) as dues ON m.mem_code = du_memcode");
+            query.Append($" (select du_memcode, sum(du_apply) as payment FROM dues WHERE du_status = 1 AND du_type = 1 GROUP BY du_memcode) as dues ON m.mem_code = du_memcode");
 
             //ORDER BY 설정
             //2025-07-05 정렬 콤보 박스 추가
@@ -184,11 +186,11 @@ namespace ClubManagement.Members.Repositories
             string query;
             if (gameDate != null)
             {
-                query = "(SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE ";
+                query = "   (SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE ";
                 query += gameDate;
             }
             else
-                query = "(SELECT att_memcode, 0 att_count FROM attend, match WHERE ";
+                query = "   (SELECT att_memcode, 0 att_count FROM attend, match WHERE ";
             query += $" match_type = {type} AND att_code = match_code GROUP BY att_memcode)";
             return query;
 
