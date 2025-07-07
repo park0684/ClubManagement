@@ -19,11 +19,29 @@ namespace ClubManagement.Members.Repositories
             StringBuilder query = new StringBuilder();
 
             query.Append("SELECT m.mem_code, mem_name ,mem_birth, mem_gender, mem_position,");
-            query.Append("\nISNULL(match_regular.att_count,0) regular_count, ");
-            query.Append("\nCASE WHEN ISNULL(match_regular.att_count,0) =0 THEN 0 ELSE CAST(ISNULL(match_regular.att_count,0) as decimal)/(cast(ISNULL(regular_game.game_count, 0) as decimal)) END regular_rate, ");
-            query.Append("ISNULL(match_irregular.att_count, 0) irregular_count,");
-            query.Append(" \nISNULL(match_event.att_count, 0) event_count,");
-            query.Append(" \nISNULL(regular_game.game_count, 0) game_count, \nmem_access, mem_secess, mem_status, ");
+
+            //정기전 제외가 아니라면 정기전 참석 횟수와 참석율을 계산하고, 아닐 경우 모두 0으로 표시
+            if (!model.ExcludeRegular)
+            {
+                query.Append("\nISNULL(match_regular.att_count,0) regular_count, \nISNULL(regular_game.game_count, 0) game_count,");
+                query.Append("\nCASE WHEN ISNULL(match_regular.att_count,0) =0 THEN 0 ELSE CAST(ISNULL(match_regular.att_count,0) as decimal)/(cast(ISNULL(regular_game.game_count, 0) as decimal)) END regular_rate, ");
+            }
+            else
+                query.Append(" 0 regular_count, 0 regular_rate, 0 game_count,");
+
+            //비정기전 제외가 아니라면 비정기전 값을 가져오고, 아닐 경우 모두 0으로 표시
+            if (!model.ExcludeIrregular)
+                query.Append("\nISNULL(match_irregular.att_count, 0) irregular_count,");
+            else
+                query.Append(" 0 irregular_count,");
+
+            //이벤트 제외가 아니라면 
+            if (!model.ExcludeEvent)
+                query.Append(" \nISNULL(match_event.att_count, 0) event_count,");
+            else
+                query.Append(" 0 event_count,");
+
+            query.Append("  \nmem_access, mem_secess, mem_status, ");
             query.Append("ISNULL((SELECT MAX(match_date) FROM attend, match WHERE att_code = match_code AND att_name = mem_name),NULL) match_last,");
             query.Append($"CASE WHEN mem_position = 5 THEN 0 ELSE CAST(DATEDIFF(MONTH,CASE WHEN mem_access < '{model.StartDate}' THEN '{model.StartDate}'  ELSE mem_access END ,GETDATE()) as INT) + 1 END mem_dues,ISNULL(payment, 0) payment, mem_memo \nFROM ");
             //회원 검색 구간
@@ -42,38 +60,45 @@ namespace ClubManagement.Members.Repositories
 
             
             //참가일 설정은 기본적으로 config에 등록된 시작일부터 모든 모임을 검색하는 것으로 설정
-            string gameDate = $"match_date > '{model.StartDate}' AND match_date < '{DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")}' AND "; ; 
-            query.Append($"(SELECT mem_code, COUNT(match_code) game_count FROM member, match");
-            if (model.GameCheck) // 참석일 설정이 되어 있다면 해당 기간내 정기전만으로 게임 카운트 설정
-            {
-                gameDate = $" match_date >= '{model.GameFromDate.Value.ToString("yyyy-MM-dd")}' AND match_date < '{model.GameTodate.Value.AddDays(1).ToString("d")}' AND ";
-                query.Append($" WHERE {gameDate} match_type = 1 AND match_date >= mem_access GROUP BY mem_code) as regular_game ON m.mem_code = regular_game.mem_code LEFT OUTER JOIN \n");
-            }
-            else // 체크되지 않았다면 참가일 설정은 기존 유지 && 정기전 대상 모임의 수를 가입 후 모든 정기 모임으로 카운트 설정 
-            {
-                query.Append(" WHERE match_type = 1 AND match_date >= mem_access GROUP BY mem_code) as regular_game ON m.mem_code = regular_game.mem_code LEFT OUTER JOIN \n");
-            }
-            
+            string gameDate = $"match_date > '{model.StartDate}' AND match_date < '{DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")}' AND ";
+
+
+
+
             // 정기전 참석 현황 집계
+
             if (!model.ExcludeRegular)
+            {
+                // 대상 정기전 횟수 집계 
+                query.Append($"(SELECT mem_code, COUNT(match_code) game_count FROM member, match");
+                if (model.GameCheck) // 참석일 설정이 되어 있다면 해당 기간내 정기전만으로 게임 카운트 설정
+                {
+                    gameDate = $" match_date >= '{model.GameFromDate.Value.ToString("yyyy-MM-dd")}' AND match_date < '{model.GameTodate.Value.AddDays(1).ToString("d")}' AND ";
+                    query.Append($" WHERE {gameDate} match_type = 1 AND match_date >= mem_access GROUP BY mem_code) as regular_game ON m.mem_code = regular_game.mem_code LEFT OUTER JOIN \n");
+                }
+                else // 체크되지 않았다면 참가일 설정은 기존 유지 && 정기전 대상 모임의 수를 가입 후 모든 정기 모임으로 카운트 설정 
+                {
+                    query.Append(" WHERE match_type = 1 AND match_date >= mem_access GROUP BY mem_code) as regular_game ON m.mem_code = regular_game.mem_code LEFT OUTER JOIN \n");
+                }
+                
+                //참석 정기전 횟수 집계
                 query.Append(GetGameQuery(1, gameDate));
-            else
-                query.Append(GetGameQuery(1));
-            query.Append("as match_regular ON m.mem_code = match_regular.att_memcode LEFT OUTER JOIN \n");
+                query.Append("as match_regular ON m.mem_code = match_regular.att_memcode LEFT OUTER JOIN \n");
+            }            
 
             // 비정기전 참석 현황 집계
             if (!model.ExcludeIrregular)
+            {
                 query.Append(GetGameQuery(2, gameDate));
-            else
-                query.Append(GetGameQuery(2));
-            query.Append("as match_irregular ON m.mem_code = match_irregular.att_memcode LEFT OUTER JOIN \n");
+                query.Append("as match_irregular ON m.mem_code = match_irregular.att_memcode LEFT OUTER JOIN \n");
+            }            
 
             // 이벤트전 참석 현황 집계
             if (!model.ExcludeEvent)
+            {
                 query.Append(GetGameQuery(3, gameDate));
-            else
-                query.Append(GetGameQuery(3));
-            query.Append("as match_event ON m.mem_code = match_event.att_memcode LEFT OUTER JOIN \n");
+                query.Append("as match_event ON m.mem_code = match_event.att_memcode LEFT OUTER JOIN \n");
+            }            
 
             //회비 납부 현황 집계
             query.Append("(select du_memcode, sum(du_apply) as payment FROM dues WHERE du_status = 1 AND du_type = 1 GROUP BY du_memcode) as dues ON m.mem_code = du_memcode");
@@ -154,7 +179,7 @@ namespace ClubManagement.Members.Repositories
         /// <param name="type"></param>
         /// <param name="gameDate"></param>
         /// <returns></returns>
-        public string GetGameQuery(int type, string gameDate = null)
+        public string GetGameQuery(int type, string gameDate)
         {
             string query;
             if (gameDate != null)
