@@ -114,7 +114,7 @@ namespace ClubManagement.Games.Presenters
                 var member = _model.MemberList.FirstOrDefault(m => m.MemberCode == memberCode);
                 if (member == null)
                     return; //해당 회원 정보가 없으면 종료
-
+                int handi = (member.IsPro == true ? -5 : 0) + (member.Gender == true ? 15 : 0);
                 // 플레이어 정보 DTO 생성 및 PlayerList에 추가
                 _model.PlayerList.Add(new PlayerInfoDto
                 {
@@ -123,8 +123,8 @@ namespace ClubManagement.Games.Presenters
                     Gender = member.Gender,             // 성별
                     IsPro = member.IsPro,               // 프로 여부
                     IsSelected = member.IsSelected,     // 선택 여부 (기존 값 반영)
-                    Handycap = member.Handycap          // 핸디캡
-                });
+                    Handycap = (member.IsPro == true ? -5 : 0) + (member.Gender == true ? 15 : 0) // 핸디캡
+            });
 
                 // 버튼 색상 변경 (선택 상태 표시)
                 _view.UpdateButtonColor(memberCode, true);

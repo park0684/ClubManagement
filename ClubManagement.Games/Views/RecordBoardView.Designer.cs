@@ -235,7 +235,7 @@ namespace ClubManagement.Games.Views
             // 
             this.flpGameButton.Location = new System.Drawing.Point(332, 8);
             this.flpGameButton.Name = "flpGameButton";
-            this.flpGameButton.Size = new System.Drawing.Size(385, 40);
+            this.flpGameButton.Size = new System.Drawing.Size(661, 40);
             this.flpGameButton.TabIndex = 8;
             // 
             // RecordBoardView

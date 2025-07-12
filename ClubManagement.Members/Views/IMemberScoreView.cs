@@ -40,11 +40,6 @@ namespace ClubManagement.Members.Views
         string MatchTitel { set; }
 
         /// <summary>
-        /// 기간 조회 여부
-        /// </summary>
-        bool IsSearchDate { get; }
-
-        /// <summary>
         /// 모임 조회 여부
         /// </summary>
         bool IsMatch { get; }
@@ -62,9 +57,10 @@ namespace ClubManagement.Members.Views
         /// <summary>
         /// 회원 선택
         /// </summary>
-        event EventHandler<int> MemberSelectedEvent;
+        event Action<int> MemberSelectedEvent;
         event EventHandler MatachSearchEvent;
         event EventHandler CheckedEvent;
+        event EventHandler<List<int>> GradeUpdateEvet;
         // === 메서드 ===
         /// <summary>
         /// 메시지 박스 표시

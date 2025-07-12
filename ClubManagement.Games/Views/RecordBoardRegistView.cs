@@ -51,6 +51,7 @@ namespace ClubManagement.Games.Views
             // 게임 타입 ComboBox
             ComboBox cmbOrderType = new ComboBox
             {
+                Name = "cmbOrderType",
                 Width = 100,
                 Location = new Point(40, 10),
                 DropDownStyle = ComboBoxStyle.DropDownList
@@ -74,6 +75,7 @@ namespace ClubManagement.Games.Views
             // 단체전 참가조 ComboBox
             ComboBox cmbPlayerCount = new ComboBox
             {
+                Name = "cmbPlayerCount",
                 Width = 60,
                 Location = new Point(240, 10),
                 DropDownStyle = ComboBoxStyle.DropDownList
@@ -183,8 +185,8 @@ namespace ClubManagement.Games.Views
                 GameOrderDto order = new GameOrderDto
                 {
                     GameSeq = Convert.ToInt32(lblOrderSeq.Text),
-                    GameType = Convert.ToInt32(orderType?.SelectedItem?.ToString()),
-                    PlayerCount = Convert.ToInt32(playerCount?.SelectedItem?.ToString())
+                    GameType = ((KeyValuePair<int, string>)orderType?.SelectedItem).Key,
+                    PlayerCount = Convert.ToInt32(playerCount?.SelectedItem)
                 };
                 GameOrderList.Add(order);
             }

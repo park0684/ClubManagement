@@ -111,7 +111,7 @@ namespace ClubManagement.Members.Views
             // 
             // btn1Month
             // 
-            this.btn1Month.BackColor = System.Drawing.Color.Black;
+            this.btn1Month.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(112)))), ((int)(((byte)(247)))));
             this.btn1Month.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn1Month.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.btn1Month.ForeColor = System.Drawing.Color.White;
@@ -125,7 +125,7 @@ namespace ClubManagement.Members.Views
             // 
             // btn3Month
             // 
-            this.btn3Month.BackColor = System.Drawing.Color.Black;
+            this.btn3Month.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(112)))), ((int)(((byte)(247)))));
             this.btn3Month.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn3Month.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.btn3Month.ForeColor = System.Drawing.Color.White;
@@ -139,7 +139,7 @@ namespace ClubManagement.Members.Views
             // 
             // btn6Month
             // 
-            this.btn6Month.BackColor = System.Drawing.Color.Black;
+            this.btn6Month.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(112)))), ((int)(((byte)(247)))));
             this.btn6Month.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn6Month.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.btn6Month.ForeColor = System.Drawing.Color.White;
@@ -153,7 +153,7 @@ namespace ClubManagement.Members.Views
             // 
             // btn1Year
             // 
-            this.btn1Year.BackColor = System.Drawing.Color.Black;
+            this.btn1Year.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(112)))), ((int)(((byte)(247)))));
             this.btn1Year.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn1Year.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.btn1Year.ForeColor = System.Drawing.Color.White;
@@ -167,7 +167,7 @@ namespace ClubManagement.Members.Views
             // 
             // btnAllGame
             // 
-            this.btnAllGame.BackColor = System.Drawing.Color.Black;
+            this.btnAllGame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(112)))), ((int)(((byte)(247)))));
             this.btnAllGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAllGame.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.btnAllGame.ForeColor = System.Drawing.Color.White;
@@ -189,10 +189,11 @@ namespace ClubManagement.Members.Views
             this.label1.TabIndex = 31;
             this.label1.Text = "~";
             // 
-            // ReferenceAverSet
+            // ReferenceAverView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(317, 141);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnPost);
@@ -206,7 +207,7 @@ namespace ClubManagement.Members.Views
             this.Controls.Add(this.btn1Month);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnClose);
-            this.Name = "ReferenceAverSet";
+            this.Name = "ReferenceAverView";
             this.Text = "ReferenceAverSet";
             this.ResumeLayout(false);
             this.PerformLayout();

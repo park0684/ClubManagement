@@ -41,7 +41,7 @@ namespace ClubManagement.Games.Repositories
         /// <returns></returns>
         public DataTable LoadAllPalyerList(int code)
         {
-            string query = $"SELECT att_name, att_memcode, att_memtype, att_gender, att_pro, att_handi, att_side, att_allcover FROM attend WHERE att_code = {code}";
+            string query = $"SELECT att_name, ISNULL(att_memcode,0) att_memcode, att_memtype, att_gender, att_pro, att_handi, att_side, att_allcover FROM attend WHERE att_code = {code}";
             return SqlAdapterQuery(query);
         }
 
@@ -65,7 +65,7 @@ namespace ClubManagement.Games.Repositories
         /// <returns></returns>
         public DataTable LoadGamePlayers(int match)
         {
-            string query = $"SELECT pl_game, pl_group, att_memcode, att_name, att_handi, att_pro, att_gender, att_side, att_allcover, pl_score, pl_isallcover FROM players, attend WHERE pl_match = att_code AND pl_name = att_name AND pl_match = {match} ORDER BY pl_game, pl_group";
+            string query = $"SELECT pl_game, pl_group, ISNULL(att_memcode,0) att_memcode, att_name, att_handi, att_pro, att_gender, att_side, att_allcover, pl_score, pl_isallcover FROM players, attend WHERE pl_match = att_code AND pl_name = att_name AND pl_match = {match} ORDER BY pl_game, pl_group";
             return SqlAdapterQuery(query);
         }
 

@@ -25,6 +25,7 @@ namespace ClubManagement.Games.Views
             BindEvents();
 
         }
+        
 
         public event EventHandler SaveEvent;
         public event EventHandler CloseEvent;
@@ -53,6 +54,9 @@ namespace ClubManagement.Games.Views
             SetLabelColor(_player.IsPro, lblIconPro, lblIsPro);
             SetLabelColor(_player.IndividualSide, lblIconSide, lblSideGame);
             SetLabelColor(_player.AllCoverSide, lblIconAllcover, lblAllcoverGame);
+
+            // 핸디캡 점수 텍스트 박스 표시 2025-07-16 추가
+            txtHandi.Text = _player.Handycap.ToString();
         }
 
         /// <summary>
@@ -84,6 +88,7 @@ namespace ClubManagement.Games.Views
         {
             btnClose.Click += (s, e) => CloseEvent?.Invoke(this, EventArgs.Empty);
             btnSave.Click += (s, e) => SaveEvent?.Invoke(this, EventArgs.Empty);
+            txtHandi.TextChanged += txtHandi_TextChanged;
         }
 
         /// <summary>
@@ -119,6 +124,11 @@ namespace ClubManagement.Games.Views
         private void ToggleGender()
         {
             _player.Gender = !_player.Gender;
+
+            //체크 여부에 따라 핸디 변경 및 텍스트 박스 표시 2025-07-16 추가
+            _player.Handycap = !_player.Gender ? _player.Handycap - 15 : _player.Handycap + 15;
+            txtHandi.Text = _player.Handycap.ToString();
+
             SetLabelColor(_player.Gender, lblIconGender, lblGenderHandi);
         }
 
@@ -128,6 +138,10 @@ namespace ClubManagement.Games.Views
         private void TogglePro()
         {
             _player.IsPro = !_player.IsPro;
+            //체크 여부에 따라 핸디 변경 및 텍스트 박스 표시 2025-07-16 추가
+            _player.Handycap = !_player.IsPro ? _player.Handycap + 5 : _player.Handycap - 5;
+            txtHandi.Text = _player.Handycap.ToString();
+
             SetLabelColor(_player.IsPro, lblIconPro, lblIsPro);
         }
 
@@ -164,6 +178,11 @@ namespace ClubManagement.Games.Views
 
             iconLabel.ForeColor = color;
             textLabel.ForeColor = color;
+        }
+
+        private void txtHandi_TextChanged(object sender, EventArgs e)
+        {
+            _player.Handycap = Convert.ToInt32(txtHandi.Text);
         }
     }
 }

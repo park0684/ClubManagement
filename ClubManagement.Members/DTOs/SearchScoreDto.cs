@@ -17,5 +17,6 @@ namespace ClubManagement.Members.DTOs
         public bool IsSearchDate { get; set; }
         public bool IsSearchMatch { get; set; }
         public bool IsExcludedMember { get; set; }
+        public int MatchCode { get; set; }
     }
 }

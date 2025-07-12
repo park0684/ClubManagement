@@ -46,6 +46,7 @@ namespace ClubManagement.Games.Views
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblPlayerName = new System.Windows.Forms.Label();
+            this.txtHandi = new System.Windows.Forms.TextBox();
             this.pnlGenderHandi.SuspendLayout();
             this.pnlProHandi.SuspendLayout();
             this.pnlSideGame.SuspendLayout();
@@ -179,20 +180,22 @@ namespace ClubManagement.Games.Views
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtHandi);
             this.groupBox1.Controls.Add(this.pnlGenderHandi);
             this.groupBox1.Controls.Add(this.pnlProHandi);
             this.groupBox1.Location = new System.Drawing.Point(106, 17);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(237, 66);
+            this.groupBox1.Size = new System.Drawing.Size(351, 66);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "핸디캡";
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.pnlSideGame);
             this.groupBox2.Controls.Add(this.pnlAllcoverGame);
-            this.groupBox2.Location = new System.Drawing.Point(360, 18);
+            this.groupBox2.Location = new System.Drawing.Point(477, 18);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(253, 65);
             this.groupBox2.TabIndex = 16;
@@ -201,12 +204,13 @@ namespace ClubManagement.Games.Views
             // 
             // btnSave
             // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(178)))), ((int)(((byte)(221)))));
             this.btnSave.FlatAppearance.BorderSize = 0;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(633, 27);
+            this.btnSave.Location = new System.Drawing.Point(750, 27);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(86, 55);
             this.btnSave.TabIndex = 17;
@@ -215,12 +219,13 @@ namespace ClubManagement.Games.Views
             // 
             // btnClose
             // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(178)))), ((int)(((byte)(221)))));
             this.btnClose.FlatAppearance.BorderSize = 0;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btnClose.ForeColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(725, 27);
+            this.btnClose.Location = new System.Drawing.Point(842, 27);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(86, 55);
             this.btnClose.TabIndex = 17;
@@ -239,12 +244,20 @@ namespace ClubManagement.Games.Views
             this.lblPlayerName.Text = "플레이어";
             this.lblPlayerName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // txtHandi
+            // 
+            this.txtHandi.Font = new System.Drawing.Font("맑은 고딕", 13F);
+            this.txtHandi.Location = new System.Drawing.Point(245, 22);
+            this.txtHandi.Name = "txtHandi";
+            this.txtHandi.Size = new System.Drawing.Size(100, 31);
+            this.txtHandi.TabIndex = 13;
+            // 
             // PlayerOptionView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(823, 100);
+            this.ClientSize = new System.Drawing.Size(940, 100);
             this.Controls.Add(this.lblPlayerName);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSave);
@@ -263,6 +276,7 @@ namespace ClubManagement.Games.Views
             this.pnlAllcoverGame.ResumeLayout(false);
             this.pnlAllcoverGame.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -288,5 +302,6 @@ namespace ClubManagement.Games.Views
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblPlayerName;
+        private System.Windows.Forms.TextBox txtHandi;
     }
 }

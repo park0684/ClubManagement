@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClubManagement.Members.Repositories;
+using ClubManagement.Common.DTOs;
 
 namespace ClubManagement.Members.Services
 {
@@ -22,9 +23,9 @@ namespace ClubManagement.Members.Services
         /// </summary>
         /// <param name="search">검색 조건 DTO</param>
         /// <returns></returns>
-        public DataTable GetTotalScore(SearchMemberDto search)
+        public DataTable GetTotalScore(SearchScoreDto search)
         {
-            var result = _repository.GetTotelScore(search);
+            var result = _repository.GetTotalScore(search);
 
             return result;
         }
@@ -36,11 +37,10 @@ namespace ClubManagement.Members.Services
             return result;
         }
 
-        public (DataTable resutData, int gameOrder) GetMatchScore(int matchCode)
+        public (DataTable resutData, int gameOrder) GetMatchScore(SearchScoreDto search)
         {
-            var result = _repository.GetMatchScore(matchCode);
-            var gameCount = Convert.ToInt32(result.Compute("MAX(game_order)", string.Empty));
-            var columns = new Dictionary<string, string>();
+            var gameCount = _repository.GetGameCount(search.MatchCode);
+            var result = _repository.GetMatchScore(search, gameCount);
 
             return (result, gameCount);
         }
@@ -49,6 +49,76 @@ namespace ClubManagement.Members.Services
         {
             var result = _repository.GetStartDate();
             return result;
+        }
+
+        /// <summary>
+        /// 지정 회원의 기간내 모임,게임별 점수를 조회
+        /// </summary>
+        /// <param name="member">회원코드</param>
+        /// <param name="interval">조회 간격</param>
+        /// <returns></returns>
+        public List<ScoreDto> GetMemberScoreList(int member, int interval)
+        {
+            var search = new SearchScoreDto
+            {
+                ToDate = DateTime.Now,
+                FromDate = interval == 0 ? Convert.ToDateTime(_repository.GetStartDate()) : DateTime.Now.AddMonths(-interval)
+            };
+            var resultDate = _repository.GetMemberScoreList(search, member);
+            
+            List<ScoreDto> scores = new List<ScoreDto>();
+            var scoreDate = resultDate;
+            foreach(DataRow row in scoreDate.Rows)
+            {
+                var score = new ScoreDto
+                {
+                    GameTitle = row["match_title"].ToString(),
+                    GameDate = Convert.ToDateTime(row["match_date"]),
+                    GameAverage = Convert.ToDecimal(row["game_average"]),
+                    TotalScore = Convert.ToInt32(row["game_totalscore"]),
+                    GameScore = new List<int>()
+                };
+                foreach (DataColumn col in scoreDate.Columns)
+                {
+                    if (col.ColumnName.StartsWith("Game"))
+                    {
+                        var val = row[col];
+                        if (val != DBNull.Value)
+                        {
+                            score.GameScore.Add(Convert.ToInt32(val));
+                        }
+                    }
+                }
+                scores.Add(score);
+            }
+            return scores;
+        }
+
+        public DataRow GetMemberBaseInfo(int member)
+        {
+            var reulst = _repository.GetMemberBaseInfo(member);
+            return reulst;
+        }
+
+        public Dictionary<int, string> GetMemberGrade()
+        {
+            var resultDate = _repository.GetGradeInfo();
+            var result = new Dictionary<int, string>();
+            foreach(DataRow row in resultDate.Rows)
+            {
+                result.Add(Convert.ToInt32(row["grd_code"]), row["grd_name"].ToString());
+            }
+            return result;
+        }
+
+        public void SaveMemberGrade(int member, int grade)
+        {
+            _repository.UpdateMemberGrade(member, grade);
+        }
+
+        public void BulkSvaeMemberGared(List<int> members, int grade)
+        {
+            _repository.UpdateMemberGradeBulk(members, grade);
         }
     }
 }

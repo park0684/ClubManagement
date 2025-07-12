@@ -37,7 +37,6 @@ namespace ClubManagement.Members.Views
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkMatchSearch = new System.Windows.Forms.CheckBox();
             this.txtMatchTitle = new System.Windows.Forms.TextBox();
-            this.chkDateSearch = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.chkExclude = new System.Windows.Forms.CheckBox();
             this.txtSearchWord = new System.Windows.Forms.TextBox();
@@ -55,7 +54,7 @@ namespace ClubManagement.Members.Views
             // 
             this.dtpFromDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFromDate.Location = new System.Drawing.Point(117, 18);
+            this.dtpFromDate.Location = new System.Drawing.Point(36, 18);
             this.dtpFromDate.Name = "dtpFromDate";
             this.dtpFromDate.Size = new System.Drawing.Size(99, 23);
             this.dtpFromDate.TabIndex = 9;
@@ -64,7 +63,7 @@ namespace ClubManagement.Members.Views
             // 
             this.btnPre.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPre.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPre.Location = new System.Drawing.Point(87, 14);
+            this.btnPre.Location = new System.Drawing.Point(6, 14);
             this.btnPre.Name = "btnPre";
             this.btnPre.Size = new System.Drawing.Size(24, 30);
             this.btnPre.TabIndex = 11;
@@ -75,7 +74,7 @@ namespace ClubManagement.Members.Views
             // 
             this.dtpToDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpToDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpToDate.Location = new System.Drawing.Point(232, 18);
+            this.dtpToDate.Location = new System.Drawing.Point(151, 18);
             this.dtpToDate.Name = "dtpToDate";
             this.dtpToDate.Size = new System.Drawing.Size(99, 23);
             this.dtpToDate.TabIndex = 8;
@@ -84,7 +83,7 @@ namespace ClubManagement.Members.Views
             // 
             this.btnPost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnPost.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPost.Location = new System.Drawing.Point(337, 14);
+            this.btnPost.Location = new System.Drawing.Point(256, 14);
             this.btnPost.Name = "btnPost";
             this.btnPost.Size = new System.Drawing.Size(24, 30);
             this.btnPost.TabIndex = 10;
@@ -105,14 +104,13 @@ namespace ClubManagement.Members.Views
             // 
             this.groupBox1.Controls.Add(this.chkMatchSearch);
             this.groupBox1.Controls.Add(this.txtMatchTitle);
-            this.groupBox1.Controls.Add(this.chkDateSearch);
             this.groupBox1.Controls.Add(this.btnPre);
             this.groupBox1.Controls.Add(this.btnPost);
             this.groupBox1.Controls.Add(this.dtpToDate);
             this.groupBox1.Controls.Add(this.dtpFromDate);
             this.groupBox1.Location = new System.Drawing.Point(218, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(369, 88);
+            this.groupBox1.Size = new System.Drawing.Size(288, 88);
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
             // 
@@ -132,19 +130,8 @@ namespace ClubManagement.Members.Views
             this.txtMatchTitle.Enabled = false;
             this.txtMatchTitle.Location = new System.Drawing.Point(87, 57);
             this.txtMatchTitle.Name = "txtMatchTitle";
-            this.txtMatchTitle.Size = new System.Drawing.Size(274, 23);
+            this.txtMatchTitle.Size = new System.Drawing.Size(193, 23);
             this.txtMatchTitle.TabIndex = 3;
-            // 
-            // chkDateSearch
-            // 
-            this.chkDateSearch.AutoSize = true;
-            this.chkDateSearch.Font = new System.Drawing.Font("맑은 고딕", 9F);
-            this.chkDateSearch.Location = new System.Drawing.Point(6, 21);
-            this.chkDateSearch.Name = "chkDateSearch";
-            this.chkDateSearch.Size = new System.Drawing.Size(74, 19);
-            this.chkDateSearch.TabIndex = 27;
-            this.chkDateSearch.Text = "전체기간";
-            this.chkDateSearch.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -281,7 +268,6 @@ namespace ClubManagement.Members.Views
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkMatchSearch;
         private System.Windows.Forms.TextBox txtMatchTitle;
-        private System.Windows.Forms.CheckBox chkDateSearch;
         private System.Windows.Forms.Button btnSearch;
     }
 }

@@ -58,7 +58,7 @@ namespace ClubManagement.Games.Repositories
         /// <returns></returns>
         public DataTable LoadPlayerList(int code)
         {
-            string query = ($"SELECT att_name,  ISNULL(RTRIM(mem_birth),'') mem_birth, att_gender, att_memtype FROM attend LEFT JOIN member ON att_memcode = mem_code  WHERE att_code = {code}");
+            string query = ($"SELECT att_name,  ISNULL(RTRIM(mem_birth),'') mem_birth, att_gender, att_memtype, att_average FROM attend LEFT JOIN member ON att_memcode = mem_code  WHERE att_code = {code}");
             try
             {
                 return SqlAdapterQuery(query);
@@ -105,7 +105,7 @@ namespace ClubManagement.Games.Repositories
         /// <returns></returns>
         public DataTable LoadAttendPlayer(int mactchCode)
         {
-            string query = $"SELECT att_name, ISNULL(att_memcode,0) att_memcode, att_gender, att_pro, att_handi FROM attend WHERE att_code = {mactchCode} ";
+            string query = $"SELECT att_name, ISNULL(att_memcode,0) att_memcode, att_gender, att_pro, att_handi, att_average FROM attend WHERE att_code = {mactchCode} ";
             return SqlAdapterQuery(query);
         }
 

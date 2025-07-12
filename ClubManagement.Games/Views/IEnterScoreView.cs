@@ -42,14 +42,6 @@ namespace ClubManagement.Games.Views
         /// </summary>
         event EventHandler EnterScoreEvent;
         /// <summary>
-        /// 퍼펙트 기록
-        /// </summary>
-        event EventHandler IsPerFectEvent;
-        /// <summary>
-        /// 올커버 기록
-        /// </summary>
-        event EventHandler IsAllcoverEvent;
-        /// <summary>
         /// 폼 종료
         /// </summary>
         event EventHandler CloseFormEvent;

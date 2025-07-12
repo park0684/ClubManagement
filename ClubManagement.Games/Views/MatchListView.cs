@@ -320,6 +320,7 @@ namespace ClubManagement.Games.Views
             dgvPlayerList.dgv.Columns.Add("birht", "생년");
             dgvPlayerList.dgv.Columns.Add("gender", "성별");
             dgvPlayerList.dgv.Columns.Add("memberType", "회원여부");
+            dgvPlayerList.dgv.Columns.Add("Average", "기준에버");
             dgvPlayerList.ApplyDefaultColumnSettings();
             dgvPlayerList.FormatAsStringCenter("player", "birht", "gender", "memberType");
             dgvPlayerList.dgv.Columns["code"].Visible = false;
@@ -332,6 +333,7 @@ namespace ClubManagement.Games.Views
             dgvPlayerList.dgv.Columns["birht"].DataPropertyName = "mem_birth";
             dgvPlayerList.dgv.Columns["gender"].DataPropertyName = "gender";
             dgvPlayerList.dgv.Columns["memberType"].DataPropertyName = "memberType";
+            dgvPlayerList.dgv.Columns["Average"].DataPropertyName = "att_average";
 
             dgvPlayerList.dgv.AutoGenerateColumns = false;
 

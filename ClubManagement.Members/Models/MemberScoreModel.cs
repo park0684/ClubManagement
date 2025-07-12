@@ -18,6 +18,7 @@ namespace ClubManagement.Members.Models
         public bool IsSearchDate { get; set; }
         public bool IsSearchMatch { get; set; }
         public bool IsExcludedMember { get; set; }
+        public int MatchCode { get; set; }
 
         public MemberScoreModel(string start)
         {
@@ -33,10 +34,11 @@ namespace ClubManagement.Members.Models
                 Status = dto.Status,
                 SortType = dto.SortType,
                 SearchWord = dto.SearchWord,
-                IsSearchDate = dto.IsSearchDate,
+                //IsSearchDate = dto.IsSearchDate,
                 IsSearchMatch = dto.IsSearchMatch,
                 IsExcludedMember = dto.IsExcludedMember
             };
+            result.UpdateSeachCondition();
             return result;
         }
 
@@ -52,7 +54,8 @@ namespace ClubManagement.Members.Models
                 SearchWord = this.SearchWord,
                 IsSearchDate = this.IsSearchDate,
                 IsSearchMatch = this.IsSearchMatch,
-                IsExcludedMember = this.IsExcludedMember
+                IsExcludedMember = this.IsExcludedMember,
+                MatchCode = this.MatchCode
             };
         }
         public void UpdateSeachCondition()

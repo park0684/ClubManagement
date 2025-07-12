@@ -136,7 +136,11 @@ namespace ClubManagement.Games.Presenters
         private void UpdateInfo(PlayerInfoDto player)
         {
             var targetPlayer = _model.PlayerList.FirstOrDefault(p => p.PlayerName == player.PlayerName);
-            player.Handycap = (player.Gender ? 15 : 0) + (player.IsPro ? -5 : 0);
+            
+            //2025-07-16 view에서 핸디캡 속성 추가하여 토글 이벤트 또는 텍스트 박스 직접 입력값이 player.Handycap에 반영되도록 수정
+            //player.Handycap = (player.Gender ? 15 : 0) + (player.IsPro ? -5 : 0);
+
+
             if (targetPlayer != null)
             {
                 // 수정된 값 반영

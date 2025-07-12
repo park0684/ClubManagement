@@ -87,8 +87,6 @@ namespace ClubManagement.Games.Views
         }
 
         public event EventHandler EnterScoreEvent;
-        public event EventHandler IsPerFectEvent;
-        public event EventHandler IsAllcoverEvent;
         public event EventHandler CloseFormEvent;
 
         public void CloseForm()

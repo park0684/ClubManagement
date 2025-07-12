@@ -73,7 +73,7 @@ namespace ClubManagement.Games.Service
             {
                 bool isFemale = Convert.ToInt32(row["att_gender"]) == 1;
                 bool isPro = Convert.ToInt32(row["att_pro"]) == 1;
-                int handicap = (isFemale ? 15 : 0) + (isPro ? -5 : 0);
+                int handicap = Convert.ToInt32(row["att_handi"]);
 
                 PlayerInfoDto player = new PlayerInfoDto
                 {

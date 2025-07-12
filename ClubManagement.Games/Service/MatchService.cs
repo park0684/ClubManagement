@@ -44,6 +44,7 @@ namespace ClubManagement.Games.Service
             result.Columns.Add("No");
             result.Columns.Add("gender");
             result.Columns.Add("memberType");
+
             int i = 1;
             foreach (DataRow row in result.Rows)
             {

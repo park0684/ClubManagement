@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\MemberDto.cs" />
+    <Compile Include="DTOs\SearchMatchDto.cs" />
     <Compile Include="DTOs\SearchMemberDto.cs" />
     <Compile Include="DTOs\SearchScoreDto.cs" />
     <Compile Include="Factory\MembersViewFactory.cs" />
@@ -59,10 +61,13 @@
     <Compile Include="Models\MemberSearchModel.cs" />
     <Compile Include="Models\StatementModel.cs" />
     <Compile Include="Presenters\DuesManagePresenter.cs" />
+    <Compile Include="Presenters\GradeUpdatePresenter.cs" />
     <Compile Include="Presenters\MemberDetailPresenter.cs" />
     <Compile Include="Presenters\MemberListPresenter.cs" />
+    <Compile Include="Presenters\MemberScoreDetailPresenter.cs" />
     <Compile Include="Presenters\MemberScorePresenter.cs" />
     <Compile Include="Presenters\MemberSearchPresenter.cs" />
+    <Compile Include="Presenters\SearchMatchPresenter.cs" />
     <Compile Include="Presenters\StatementDetailPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DuesRepsotiry.cs" />
@@ -77,14 +82,22 @@
     <Compile Include="Services\IMemberService.cs" />
     <Compile Include="Services\MemberScoreService.cs" />
     <Compile Include="Services\MemberService.cs" />
+    <Compile Include="Views\BulkChangeView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\BulkChangeView.Designer.cs">
+      <DependentUpon>BulkChangeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\DuesManageView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\DuesManageView.Designer.cs">
       <DependentUpon>DuesManageView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\IBulkChangeView.cs" />
     <Compile Include="Views\IDuesManageView.cs" />
     <Compile Include="Views\IMemberGradeView.cs" />
+    <Compile Include="Views\IMemberScoreDetailView.cs" />
     <Compile Include="Views\IMemberScoreView.cs" />
     <Compile Include="Views\IReferencAverView.cs" />
     <Compile Include="Views\ISearchMatchView.cs" />
@@ -155,6 +168,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\BulkChangeView.resx">
+      <DependentUpon>BulkChangeView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\DuesManageView.resx">
       <DependentUpon>DuesManageView.cs</DependentUpon>
     </EmbeddedResource>

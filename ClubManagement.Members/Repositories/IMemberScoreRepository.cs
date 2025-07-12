@@ -10,10 +10,17 @@ namespace ClubManagement.Members.Repositories
 {
     public interface IMemberScoreRepository
     {
-        DataTable GetTotelScore(SearchMemberDto search);
-        DataTable GetMatchScore(int matchCode);
+        DataTable GetTotalScore(SearchScoreDto search);
+        DataTable GetMatchScore(SearchScoreDto search, int gameCount);
         string GetMatchTitle(int matchCode);
         string GetStartDate();
+        int GetGameCount(int matchCode);
+        DataTable LoadMatchList(SearchMatchDto search);
 
+        DataTable GetMemberScoreList(SearchScoreDto search, int member);
+        DataRow GetMemberBaseInfo(int member);
+        DataTable GetGradeInfo();
+        void UpdateMemberGrade(int member, int grade);
+        void UpdateMemberGradeBulk(List<int> members, int grade);
     }
 }

@@ -124,7 +124,7 @@ namespace ClubManagement.Members.Repositories
             
             SqlParameter[] parameters = 
             { 
-                new SqlParameter("@code", SqlDbType.Int) { Value = statmentCode } 
+                new SqlParameter("@stateCode", SqlDbType.Int) { Value = statmentCode } 
             };
             using (SqlConnection connection = OpenSql())
             {
