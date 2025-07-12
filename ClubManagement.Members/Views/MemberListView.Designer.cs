@@ -38,28 +38,28 @@ namespace ClubManagement.Members.Views
             this.dtpAccFromDate = new System.Windows.Forms.DateTimePicker();
             this.dtpSecToDate = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
-            this.dtpGameFromDate = new System.Windows.Forms.DateTimePicker();
             this.dtpAccToDate = new System.Windows.Forms.DateTimePicker();
-            this.chkGameDate = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.chkSecDate = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.dtpSecFromDate = new System.Windows.Forms.DateTimePicker();
+            this.dtpGameFromDate = new System.Windows.Forms.DateTimePicker();
+            this.chkGameDate = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.chkExRegularGeme = new System.Windows.Forms.CheckBox();
             this.chkExEventGame = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkExclude = new System.Windows.Forms.CheckBox();
             this.txtSearchWord = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cmbSortType = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.chkExIrregularGame = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.cmbInclude = new System.Windows.Forms.ComboBox();
-            this.cmbSortType = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.cmbInclude = new System.Windows.Forms.ComboBox();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -157,14 +157,6 @@ namespace ClubManagement.Members.Views
             this.label3.TabIndex = 1;
             this.label3.Text = "~";
             // 
-            // dtpGameFromDate
-            // 
-            this.dtpGameFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpGameFromDate.Location = new System.Drawing.Point(74, 20);
-            this.dtpGameFromDate.Name = "dtpGameFromDate";
-            this.dtpGameFromDate.Size = new System.Drawing.Size(102, 23);
-            this.dtpGameFromDate.TabIndex = 5;
-            // 
             // dtpAccToDate
             // 
             this.dtpAccToDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
@@ -172,28 +164,6 @@ namespace ClubManagement.Members.Views
             this.dtpAccToDate.Name = "dtpAccToDate";
             this.dtpAccToDate.Size = new System.Drawing.Size(102, 23);
             this.dtpAccToDate.TabIndex = 5;
-            // 
-            // chkGameDate
-            // 
-            this.chkGameDate.AutoSize = true;
-            this.chkGameDate.Font = new System.Drawing.Font("맑은 고딕", 9F);
-            this.chkGameDate.Location = new System.Drawing.Point(6, 22);
-            this.chkGameDate.Name = "chkGameDate";
-            this.chkGameDate.Size = new System.Drawing.Size(62, 19);
-            this.chkGameDate.TabIndex = 4;
-            this.chkGameDate.Text = "참가일";
-            this.chkGameDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkGameDate.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("맑은 고딕", 9F);
-            this.label5.Location = new System.Drawing.Point(182, 24);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(15, 15);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "~";
             // 
             // chkSecDate
             // 
@@ -223,6 +193,36 @@ namespace ClubManagement.Members.Views
             this.dtpSecFromDate.Name = "dtpSecFromDate";
             this.dtpSecFromDate.Size = new System.Drawing.Size(102, 23);
             this.dtpSecFromDate.TabIndex = 5;
+            // 
+            // dtpGameFromDate
+            // 
+            this.dtpGameFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpGameFromDate.Location = new System.Drawing.Point(74, 20);
+            this.dtpGameFromDate.Name = "dtpGameFromDate";
+            this.dtpGameFromDate.Size = new System.Drawing.Size(102, 23);
+            this.dtpGameFromDate.TabIndex = 5;
+            // 
+            // chkGameDate
+            // 
+            this.chkGameDate.AutoSize = true;
+            this.chkGameDate.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.chkGameDate.Location = new System.Drawing.Point(6, 22);
+            this.chkGameDate.Name = "chkGameDate";
+            this.chkGameDate.Size = new System.Drawing.Size(62, 19);
+            this.chkGameDate.TabIndex = 4;
+            this.chkGameDate.Text = "참가일";
+            this.chkGameDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkGameDate.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.label5.Location = new System.Drawing.Point(182, 24);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(15, 15);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "~";
             // 
             // chkExRegularGeme
             // 
@@ -261,12 +261,12 @@ namespace ClubManagement.Members.Views
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
-            // chkExculde
+            // chkExclude
             // 
             this.chkExclude.AutoSize = true;
             this.chkExclude.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.chkExclude.Location = new System.Drawing.Point(144, 13);
-            this.chkExclude.Name = "chkExculde";
+            this.chkExclude.Name = "chkExclude";
             this.chkExclude.Size = new System.Drawing.Size(50, 19);
             this.chkExclude.TabIndex = 5;
             this.chkExclude.Text = "제외";
@@ -278,6 +278,25 @@ namespace ClubManagement.Members.Views
             this.txtSearchWord.Name = "txtSearchWord";
             this.txtSearchWord.Size = new System.Drawing.Size(132, 23);
             this.txtSearchWord.TabIndex = 3;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.label6.Location = new System.Drawing.Point(21, 40);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(31, 15);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "정렬";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cmbSortType
+            // 
+            this.cmbSortType.FormattingEnabled = true;
+            this.cmbSortType.Location = new System.Drawing.Point(58, 36);
+            this.cmbSortType.Name = "cmbSortType";
+            this.cmbSortType.Size = new System.Drawing.Size(132, 23);
+            this.cmbSortType.TabIndex = 0;
             // 
             // label1
             // 
@@ -343,33 +362,6 @@ namespace ClubManagement.Members.Views
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             // 
-            // cmbInclude
-            // 
-            this.cmbInclude.FormattingEnabled = true;
-            this.cmbInclude.Location = new System.Drawing.Point(74, 48);
-            this.cmbInclude.Name = "cmbInclude";
-            this.cmbInclude.Size = new System.Drawing.Size(170, 23);
-            this.cmbInclude.TabIndex = 6;
-            // 
-            // cmbSortType
-            // 
-            this.cmbSortType.FormattingEnabled = true;
-            this.cmbSortType.Location = new System.Drawing.Point(58, 36);
-            this.cmbSortType.Name = "cmbSortType";
-            this.cmbSortType.Size = new System.Drawing.Size(132, 23);
-            this.cmbSortType.TabIndex = 0;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("맑은 고딕", 9F);
-            this.label6.Location = new System.Drawing.Point(21, 40);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(31, 15);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "정렬";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -379,6 +371,14 @@ namespace ClubManagement.Members.Views
             this.label7.Size = new System.Drawing.Size(59, 15);
             this.label7.TabIndex = 7;
             this.label7.Text = "포함 여부";
+            // 
+            // cmbInclude
+            // 
+            this.cmbInclude.FormattingEnabled = true;
+            this.cmbInclude.Location = new System.Drawing.Point(74, 48);
+            this.cmbInclude.Name = "cmbInclude";
+            this.cmbInclude.Size = new System.Drawing.Size(170, 23);
+            this.cmbInclude.TabIndex = 6;
             // 
             // MemberListView
             // 

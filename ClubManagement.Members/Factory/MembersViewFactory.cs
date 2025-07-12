@@ -28,7 +28,11 @@ namespace ClubManagement.Members.Factory
                     var duesRepo = new DuesRepsotiry();
                     var udesPres = new DuesManagePresenter(duesView, duesRepo);
                     return duesView;
-
+                case "MemberScore":
+                    var scoreView = new MemberScoreView();
+                    var scoreRepo = new MemberScoreRepository();
+                    var scorePres = new MemberScorePresenter(scoreView, scoreRepo);
+                    return scoreView;
             }
             return null;
 

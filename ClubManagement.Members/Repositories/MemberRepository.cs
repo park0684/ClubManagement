@@ -98,7 +98,7 @@ namespace ClubManagement.Members.Repositories
             if (!model.ExcludeEvent)
             {
                 //query.Append(GetGameQuery(3, gameDate));
-                query.Append($" (SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE {gameDate} match_type = 1 AND att_code = match_code GROUP BY att_memcode)");
+                query.Append($" (SELECT att_memcode, COUNT(att_name) att_count FROM attend, match WHERE {gameDate} match_type = 3 AND att_code = match_code GROUP BY att_memcode)");
                 query.Append("as match_event ON m.mem_code = match_event.att_memcode LEFT OUTER JOIN \n");
             }            
 

@@ -40,6 +40,7 @@ namespace ClubManagement.Members.Views
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkIsPro = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbGender = new System.Windows.Forms.ComboBox();
@@ -50,7 +51,6 @@ namespace ClubManagement.Members.Views
             this.txtMemo = new System.Windows.Forms.TextBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.chkIsPro = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -164,6 +164,17 @@ namespace ClubManagement.Members.Views
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             // 
+            // chkIsPro
+            // 
+            this.chkIsPro.AutoSize = true;
+            this.chkIsPro.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkIsPro.Location = new System.Drawing.Point(216, 53);
+            this.chkIsPro.Name = "chkIsPro";
+            this.chkIsPro.Size = new System.Drawing.Size(50, 19);
+            this.chkIsPro.TabIndex = 4;
+            this.chkIsPro.Text = "프로";
+            this.chkIsPro.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -253,17 +264,6 @@ namespace ClubManagement.Members.Views
             this.btnClose.TabIndex = 20;
             this.btnClose.Text = "닫기";
             this.btnClose.UseVisualStyleBackColor = false;
-            // 
-            // chkIsPro
-            // 
-            this.chkIsPro.AutoSize = true;
-            this.chkIsPro.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkIsPro.Location = new System.Drawing.Point(216, 53);
-            this.chkIsPro.Name = "chkIsPro";
-            this.chkIsPro.Size = new System.Drawing.Size(50, 19);
-            this.chkIsPro.TabIndex = 4;
-            this.chkIsPro.Text = "프로";
-            this.chkIsPro.UseVisualStyleBackColor = true;
             // 
             // MemberDetailView
             // 

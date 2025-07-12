@@ -14,7 +14,7 @@ namespace ClubManagement.Members.Repositories
     {
         public DataRow GetBalance(DuesModel model)
         {
-            string query = $"SELECT ISNULL(SUM(CASE WHEN du_type = 1 THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS deus, ISNULL(SUM(CASE WHEN du_type NOT IN (1,3) THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS payment FROM dues WHERE du_date < '{model.FromDate.ToString("yyyy-MM-dd")}' AND du_status = 1";
+            string query = $"SELECT ISNULL(SUM(CASE WHEN du_type IN (1,3,4) THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS deus, ISNULL(SUM(CASE WHEN du_type NOT IN (1,3,4) THEN ISNULL(du_pay, 0) ELSE 0 END),0) AS payment FROM dues WHERE du_date < '{model.FromDate.ToString("yyyy-MM-dd")}' AND du_status = 1";
 
             return SqlAdapterQuery(query).Rows[0];
         }
