@@ -589,7 +589,27 @@ BEGIN
 	WHERE pl_match = @match AND pl_game = @game AND pl_name = @name
 END 
 ```
+### 🔹 ups_UpdateGradeInfo[회원 등급 수정]
+> 회원 점수 관리에서 표시될 회원 등급의 정보를 수정하는 프로시점입니다.(2025-07-23 추가)
 
+```SQL
+CREATE PROCEDURE usp_UpdateGradeInfo
+	@code int,
+	@name NVARCHAR(10)
+as
+BEGIN
+	SET NOCOUNT ON;
+	IF(EXISTS(SELECT 1 FROM grade WHERE grd_code = @code))
+	BEGIN
+		UPDATE grade SET grd_name = @name, grd_udate = GETDATE() WHERE grd_code = @code;	
+	END
+	ELSE 
+	BEGIN 
+		INSERT INTO grade(grd_code, grd_name, grd_udate)
+		VALUES(@code, @name, GETDATE());
+	END
+END;
+```
 ### 
 
 </details>
