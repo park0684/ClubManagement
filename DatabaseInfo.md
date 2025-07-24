@@ -612,6 +612,19 @@ BEGIN
 	END
 END;
 ```
+
+### 🔹 usp_DeleteGradeInfo[회원 등급 삭제]
+> 회원 등급 수정 시 기존의 등급 종류보다 더 적은 종류로 수정 할 경우 삭제 하는 프로시저입니다.(2025-07-23 추가)
+```SQL
+CREATE PROCEDURE usp_DeleteGradeInfo
+@code int
+
+AS 
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM grade WHERE grd_code >= @code
+END
+```
 ### 
 
 </details>
