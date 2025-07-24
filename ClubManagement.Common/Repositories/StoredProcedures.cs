@@ -24,5 +24,7 @@ namespace ClubManagement.Common.Repositories
         public const string InsertMatch= "usp_InsertMatch";
         public const string DeleteStatement = "usp_DeletStatment";
         public const string UpdateMemberGrade = "usp_UpdateMemberGarde";
+        public const string UpdateGradeInfo = "usp_UpdateGradeInfo";
+        public const string DeleteGradeInfo = "usp_DeleteGradeInfo";
     }
 }

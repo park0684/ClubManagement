@@ -59,6 +59,8 @@ namespace ClubManagement.Members.Views
         public event EventHandler MatachSearchEvent;
         public event EventHandler CheckedEvent;
         public event EventHandler<List<int>> GradeUpdateEvet;
+        public event EventHandler ConfigGradeEvent;
+        public event EventHandler ConfigAverageInterverEvent;
 
         /// <summary>
         /// 데이터 그리드 뷰에 데이터 바인딩
@@ -145,7 +147,8 @@ namespace ClubManagement.Members.Views
             btnSearch.Click += (s, e) => SearchScoreEvent?.Invoke(this, EventArgs.Empty);
             chkMatchSearch.CheckedChanged += chkMatchSearch_checked;
             dgvScoreList.dgv.CellDoubleClick += dgvScoreList_DoubleClick;
-            
+            btnGradeConfig.Click += (s, e) => ConfigGradeEvent?.Invoke(this, EventArgs.Empty);
+            btnAverageConfig.Click += (s, e) => ConfigAverageInterverEvent(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -175,6 +178,7 @@ namespace ClubManagement.Members.Views
             btnPre.Click += MovePreMonth;
             dgvScoreList.dgv.MouseClick += dgvScoreList_RightClick;
             dgvScoreList.dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            
         }
 
         /// <summary>

@@ -19,6 +19,7 @@ namespace ClubManagement.Members.Views
             InitializeDataGridView();
             InitializeDateTimePicker();
             ViewEvent();
+            this.Text = "모임 검색";
         }
 
         public event EventHandler CloseFormEvent;

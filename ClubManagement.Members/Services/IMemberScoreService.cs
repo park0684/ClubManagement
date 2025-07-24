@@ -20,5 +20,9 @@ namespace ClubManagement.Members.Services
         void SaveMemberGrade(int member, int grade);
 
         void BulkSvaeMemberGared(List<int> members, int grade);
+
+        void UpdateGradeInfo(DataTable updateItems);
+        int GetAverageInterval();
+        void SaveReferenceAverageInterval(int interval);
     }
 }

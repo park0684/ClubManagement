@@ -24,6 +24,7 @@ namespace ClubManagement.Members.Views
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.Text = "회원 점수 상세 정보";
         }
 
         public Decimal Average 

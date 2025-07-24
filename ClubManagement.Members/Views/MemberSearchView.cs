@@ -17,6 +17,7 @@ namespace ClubManagement.Members.Views
         {
             InitializeComponent();
             ViewEvent();
+            this.Text = "회원 검색";
         }
 
         public string SearchWord

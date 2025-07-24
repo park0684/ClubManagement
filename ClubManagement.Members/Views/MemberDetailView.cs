@@ -19,6 +19,7 @@ namespace ClubManagement.Members.Views
             InitializeComboBox();
             SecessDatePickerSet(cmbStatus, EventArgs.Empty);
             ViewEvent();
+            this.Text = "회원 등록 정보";
         }
 
         /// <summary>

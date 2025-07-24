@@ -295,9 +295,70 @@ namespace ClubManagement.Members.Repositories
                     transaction.Rollback();
                     throw new Exception("회원 등급 수정 오류\n" + ex.Message);
                 }
-
             }
-               
+        }
+        public void UpdateGradeInfo(DataTable gradeItems, int? deleteCode = null)
+        {
+            using(SqlConnection connection = OpenSql())
+            {
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    foreach(DataRow item in gradeItems.Rows)
+                    {
+                        SqlParameter[] parameters =
+                        {
+                            new SqlParameter("@code", SqlDbType.Int){Value=item["grd_code"]},
+                            new SqlParameter("@name", SqlDbType.NVarChar){Value = item["grd_name"]}
+                        };
+                        ExecuteNoneQuery(StoredProcedures.UpdateGradeInfo, connection, transaction, parameters);
+                    }
+
+                    if(deleteCode.HasValue)
+                    {
+                        SqlParameter[] deleteParam =
+                        {
+                            new SqlParameter("@code", SqlDbType.Int){Value = deleteCode}
+                        };
+                        ExecuteNoneQuery(StoredProcedures.DeleteGradeInfo, connection, transaction, deleteParam);
+                    }
+                    transaction.Commit();
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("회원 등급 정보 수정 오류\n" + ex.Message);
+                }
+            }
+        }
+
+        public int GetAverageInterval()
+        {
+            string query = "SELECT cf_value FROM config WHERE cf_code = 14";
+            return Convert.ToInt32(ScalaQuery(query));
+        }
+        public void UpdateAverageInter(int interval)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@code", SqlDbType.Int){Value = 14},
+                new SqlParameter("@value", SqlDbType.Int){Value = interval},
+                new SqlParameter("@str", SqlDbType.VarChar){Value = ""}
+            };
+            using (SqlConnection connection = OpenSql())
+            {
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    ExecuteNoneQuery(StoredProcedures.UpdateConfig, connection, transaction, parameters);
+                    transaction.Commit();
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("기준 에버 설정 실패" + ex.Message);
+                }
+            }
         }
     }
 }

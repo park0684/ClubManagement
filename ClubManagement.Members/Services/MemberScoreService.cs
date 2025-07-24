@@ -120,5 +120,29 @@ namespace ClubManagement.Members.Services
         {
             _repository.UpdateMemberGradeBulk(members, grade);
         }
+
+        public void UpdateGradeInfo(DataTable updateItems)
+        {
+            var preItems = _repository.GetGradeInfo();
+                        
+            int preCount = preItems.Rows.Count;
+            int postCount = updateItems.Rows.Count;
+
+            // DB에 있는 데이터가 수정 데이터보다 클 경우 
+            if (preCount > postCount) 
+                _repository.UpdateGradeInfo(updateItems, postCount + 1);//삭제 시작 코드 같이 전달
+            else 
+                _repository.UpdateGradeInfo(updateItems); // 같거나 작을 경우 수정 데이터만 전달
+        }
+
+        public int GetAverageInterval()
+        {
+            return _repository.GetAverageInterval();
+        }
+
+        public void SaveReferenceAverageInterval(int interval)
+        {
+            _repository.UpdateAverageInter(interval);
+        }
     }
 }

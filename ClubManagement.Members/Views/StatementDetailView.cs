@@ -20,6 +20,7 @@ namespace ClubManagement.Members.Views
             ViewEvent();
             txtMemberName.Enabled = false;
             btnDelete.Visible = false;
+            this.Text = "전표 상세 내역";
         }
 
         /// <summary>

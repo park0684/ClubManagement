@@ -61,12 +61,14 @@
     <Compile Include="Models\MemberSearchModel.cs" />
     <Compile Include="Models\StatementModel.cs" />
     <Compile Include="Presenters\DuesManagePresenter.cs" />
+    <Compile Include="Presenters\GradeManagePresenter.cs" />
     <Compile Include="Presenters\GradeUpdatePresenter.cs" />
     <Compile Include="Presenters\MemberDetailPresenter.cs" />
     <Compile Include="Presenters\MemberListPresenter.cs" />
     <Compile Include="Presenters\MemberScoreDetailPresenter.cs" />
     <Compile Include="Presenters\MemberScorePresenter.cs" />
     <Compile Include="Presenters\MemberSearchPresenter.cs" />
+    <Compile Include="Presenters\ReferenceConfigPresenter.cs" />
     <Compile Include="Presenters\SearchMatchPresenter.cs" />
     <Compile Include="Presenters\StatementDetailPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,19 +96,19 @@
     <Compile Include="Views\DuesManageView.Designer.cs">
       <DependentUpon>DuesManageView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\IBulkChangeView.cs" />
-    <Compile Include="Views\IDuesManageView.cs" />
-    <Compile Include="Views\IMemberGradeView.cs" />
-    <Compile Include="Views\IMemberScoreDetailView.cs" />
-    <Compile Include="Views\IMemberScoreView.cs" />
-    <Compile Include="Views\IReferencAverView.cs" />
-    <Compile Include="Views\ISearchMatchView.cs" />
-    <Compile Include="Views\MemberGradeView.cs">
+    <Compile Include="Views\GradeManageView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\MemberGradeView.Designer.cs">
-      <DependentUpon>MemberGradeView.cs</DependentUpon>
+    <Compile Include="Views\GradeManageView.Designer.cs">
+      <DependentUpon>GradeManageView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\IBulkChangeView.cs" />
+    <Compile Include="Views\IDuesManageView.cs" />
+    <Compile Include="Views\IMemberScoreDetailView.cs" />
+    <Compile Include="Views\IMemberScoreView.cs" />
+    <Compile Include="Views\IGradeManageView.cs" />
+    <Compile Include="Views\IReferenceAverConfigView.cs" />
+    <Compile Include="Views\ISearchMatchView.cs" />
     <Compile Include="Views\MemberScoreDetailView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,11 +143,11 @@
     <Compile Include="Views\MemberSearchView.Designer.cs">
       <DependentUpon>MemberSearchView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ReferenceAverView.cs">
+    <Compile Include="Views\ReferenceAverConfigView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\ReferenceAverView.Designer.cs">
-      <DependentUpon>ReferenceAverView.cs</DependentUpon>
+    <Compile Include="Views\ReferenceAverConfigView.Designer.cs">
+      <DependentUpon>ReferenceAverConfigView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchMatchView.cs">
       <SubType>Form</SubType>
@@ -174,8 +176,8 @@
     <EmbeddedResource Include="Views\DuesManageView.resx">
       <DependentUpon>DuesManageView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\MemberGradeView.resx">
-      <DependentUpon>MemberGradeView.cs</DependentUpon>
+    <EmbeddedResource Include="Views\GradeManageView.resx">
+      <DependentUpon>GradeManageView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MemberScoreDetailView.resx">
       <DependentUpon>MemberScoreDetailView.cs</DependentUpon>
@@ -192,8 +194,8 @@
     <EmbeddedResource Include="Views\MemberSearchView.resx">
       <DependentUpon>MemberSearchView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\ReferenceAverView.resx">
-      <DependentUpon>ReferenceAverView.cs</DependentUpon>
+    <EmbeddedResource Include="Views\ReferenceAverConfigView.resx">
+      <DependentUpon>ReferenceAverConfigView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\SearchMatchView.resx">
       <DependentUpon>SearchMatchView.cs</DependentUpon>

@@ -16,11 +16,15 @@ namespace ClubManagement.Members.Repositories
         string GetStartDate();
         int GetGameCount(int matchCode);
         DataTable LoadMatchList(SearchMatchDto search);
-
+        int GetAverageInterval();
         DataTable GetMemberScoreList(SearchScoreDto search, int member);
         DataRow GetMemberBaseInfo(int member);
         DataTable GetGradeInfo();
         void UpdateMemberGrade(int member, int grade);
         void UpdateMemberGradeBulk(List<int> members, int grade);
+
+        void UpdateGradeInfo(DataTable gradeItems, int? DeleteCode = null);
+        void UpdateAverageInter(int interval);
+
     }
 }

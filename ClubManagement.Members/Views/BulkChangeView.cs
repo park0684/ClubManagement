@@ -11,6 +11,7 @@ namespace ClubManagement.Members.Views
         {
             InitializeComponent();
             ViewEvent();
+            this.Text = "회원 등급 일괄 수정";
         }
 
         public int SelectedItem => ((KeyValuePair<int, string>)cmbItem.SelectedItem).Key;

@@ -30,8 +30,22 @@ namespace ClubManagement.Members.Presenters
             _view.MemberSelectedEvent += LoadMemberInfo;
             _view.SearchScoreEvent += LoadMemberScore;
             _view.GradeUpdateEvet += UpdateGrade;
+            _view.ConfigGradeEvent += ConfigGradeInfo;
+            _view.ConfigAverageInterverEvent += ConfigAverageInterval;
             SetComboBoxItem();
             InitailizeModel();
+        }
+
+        private void ConfigAverageInterval(object sender, EventArgs e)
+        {
+            IReferenceAverConfigView view = new ReferenceAverConfigView();
+            var presenter = new ReferenceConfigPresenter(view, _repository);
+        }
+
+        private void ConfigGradeInfo(object sender, EventArgs e)
+        {
+            IGradeManageView view = new GradeManageView();
+            var presenter = new GradeManagePresenter(view, _repository);
         }
 
         private void UpdateGrade(object sender, List<int> memberList)

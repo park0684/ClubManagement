@@ -61,6 +61,9 @@ namespace ClubManagement.Members.Views
         event EventHandler MatachSearchEvent;
         event EventHandler CheckedEvent;
         event EventHandler<List<int>> GradeUpdateEvet;
+        event EventHandler ConfigGradeEvent;
+        event EventHandler ConfigAverageInterverEvent;
+
         // === 메서드 ===
         /// <summary>
         /// 메시지 박스 표시

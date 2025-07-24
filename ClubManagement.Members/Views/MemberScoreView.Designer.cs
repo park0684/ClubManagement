@@ -46,6 +46,8 @@ namespace ClubManagement.Members.Views
             this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.btnGradeConfig = new System.Windows.Forms.Button();
+            this.btnAverageConfig = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -220,13 +222,43 @@ namespace ClubManagement.Members.Views
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("맑은 고딕", 9F);
             this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(12, 103);
+            this.btnSearch.Location = new System.Drawing.Point(12, 107);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 30);
+            this.btnSearch.Size = new System.Drawing.Size(75, 25);
             this.btnSearch.TabIndex = 27;
             this.btnSearch.Text = "조회";
             this.btnSearch.UseVisualStyleBackColor = false;
+            // 
+            // btnGradeConfig
+            // 
+            this.btnGradeConfig.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(112)))), ((int)(((byte)(247)))));
+            this.btnGradeConfig.FlatAppearance.BorderSize = 0;
+            this.btnGradeConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGradeConfig.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.btnGradeConfig.ForeColor = System.Drawing.Color.White;
+            this.btnGradeConfig.Location = new System.Drawing.Point(93, 107);
+            this.btnGradeConfig.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnGradeConfig.Name = "btnGradeConfig";
+            this.btnGradeConfig.Size = new System.Drawing.Size(75, 25);
+            this.btnGradeConfig.TabIndex = 27;
+            this.btnGradeConfig.Text = "등급설정";
+            this.btnGradeConfig.UseVisualStyleBackColor = false;
+            // 
+            // btnAverageConfig
+            // 
+            this.btnAverageConfig.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(126)))), ((int)(((byte)(112)))), ((int)(((byte)(247)))));
+            this.btnAverageConfig.FlatAppearance.BorderSize = 0;
+            this.btnAverageConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAverageConfig.Font = new System.Drawing.Font("맑은 고딕", 9F);
+            this.btnAverageConfig.ForeColor = System.Drawing.Color.White;
+            this.btnAverageConfig.Location = new System.Drawing.Point(174, 107);
+            this.btnAverageConfig.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnAverageConfig.Name = "btnAverageConfig";
+            this.btnAverageConfig.Size = new System.Drawing.Size(90, 25);
+            this.btnAverageConfig.TabIndex = 27;
+            this.btnAverageConfig.Text = "기준에버설정";
+            this.btnAverageConfig.UseVisualStyleBackColor = false;
             // 
             // MemberScoreView
             // 
@@ -234,6 +266,8 @@ namespace ClubManagement.Members.Views
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1084, 561);
+            this.Controls.Add(this.btnAverageConfig);
+            this.Controls.Add(this.btnGradeConfig);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
@@ -269,5 +303,7 @@ namespace ClubManagement.Members.Views
         private System.Windows.Forms.CheckBox chkMatchSearch;
         private System.Windows.Forms.TextBox txtMatchTitle;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Button btnGradeConfig;
+        private System.Windows.Forms.Button btnAverageConfig;
     }
 }
