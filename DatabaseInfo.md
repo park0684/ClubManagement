@@ -106,6 +106,7 @@ erDiagram
   | mem_memo | varchar(100) | ✅ |  |  | 메모 |
   | mem_idate | datetime | ✅ |  |  | 등록일 |
   | mem_udate | datetime | ✅ |  |  | 수정일 |
+  | mem_grade | int | ✅ |  |  | 회원등급(2025-07-20 추가) |
   
   <br>
   
@@ -133,17 +134,18 @@ erDiagram
     
   📋**컬럼 구성**
   
-  | 칼럼명 | 자료형 | NULL 여부 | PK/Index | 참조 관계 | 설명 |
-  |--------|--------|-----------|----------|-----------|------|
-  | att_match | int | ❌ | FK , IDX_attend| match(match_code) | 경기 코드 |
-  | att_memcode | int | ✅ |  |  | 회원 코드 |
-  | att_name | varchar(50) | ✅ |  |  | 이름 |
-  | att_memtype | int | ❌ |  |  | 회원 구분 ( 1= 회원, 0 = 비회원) |
-  | att_gender | bit | ❌ |  |  | 성별 |
-  | att_pro | bit | ✅ |  |  | 프로 여부 |
-  | att_handi | int | ✅ |  |  | 핸디 |
-  | att_individual | bit | ✅ |  |  | 개인전 여부 |
-  | att_allcover | bit | ✅ |  |  | 올커버 여부 |
+  | 칼럼명 | 자료형 | NULL 여부 | PK/Index | 참조 관계 | 설명 | 비고 |
+  |--------|--------|-----------|----------|-----------|------|------|
+  | att_match | int | ❌ | FK , IDX_attend| match(match_code) | 경기 코드 | |
+  | att_memcode | int | ✅ |  |  | 회원 코드 | |
+  | att_name | varchar(50) | ✅ |  |  | 이름 | |
+  | att_memtype | int | ❌ |  |  | 회원 구분 ( 1= 회원, 0 = 비회원) | |
+  | att_gender | bit | ❌ |  |  | 성별 | |
+  | att_pro | bit | ✅ |  |  | 프로 여부 | |
+  | att_handi | int | ✅ |  |  | 핸디 | |
+  | att_individual | bit | ✅ |  |  | 개인전 여부 | |
+  | att_allcover | bit | ✅ |  |  | 올커버 여부 | |
+  | att_average | decimal | ✅ |  |  | 기준 에버 | 2025-07-15 추가 |
 
   <br>
 
@@ -224,6 +226,19 @@ erDiagram
   | ind_prize | int | ✅ |  |  | 상금 |
   | ind_handi | int | ✅ |  |  | 핸디 보정 |
 
+  <br>
+
+  ### 🔹grade  테이블
+  > 회원 등급 설정을 위한 테이블입니다. (2025-07-20 추가)
+
+📋**컬럼 구성**
+  
+  | 칼럼명 | 자료형 | NULL 여부 | PK/Index | 참조 관계 | 설명 |
+  |--------|--------|-----------|----------|-----------|------|
+  | grd_code | int | ❌ | PK |  | 등급 코드 |
+  | grd_name | nvarchar(10) | ❌ |  |  | 등급명 |
+  | grd_udate | datetime | ✅ |  |  | 수정일 |
+  
   <br>
 </details>
 
@@ -412,7 +427,8 @@ BEGIN
 END
 ```
 ### 🔹 usp_UpdateMatchPlayer [모임 참가자 정보 수정]
-> 모임관리에서 모임의 참가자 정보 등록 및 수정시 사용하는 프로시저입니다.
+> 모임관리에서 모임의 참가자 정보 등록 및 수정시 사용하는 프로시저입니다.<br>
+> 2025-07-15 기준 에버 쿼리 추가
 ```sql
 CREATE PROCEDURE [dbo].[usp_UpdateMatchPlayer]
 	@match int,
@@ -420,14 +436,39 @@ CREATE PROCEDURE [dbo].[usp_UpdateMatchPlayer]
 AS 
 BEGIN
 	SET NOCOUNT ON;
-	IF EXISTS(SELECT 1 FROM attend WHERE att_match = @match)
-	BEGIN
-		DELETE FROM attend WHERE att_match = @match;
-	END
 
-	INSERT INTO attend (att_match, att_name, att_memcode, att_memtype, att_gender, att_pro, att_handi, att_individual, att_allcover) 
-	SELECT @match, player_name, player_memcode, CASE WHEN player_memcode  = 0 THEN 2 ELSE 1 END, player_gender, player_isPro, player_handicap, 0, 0
-	FROM @PlayerList;
+	-- 기존 참석자 삭제
+	IF EXISTS (SELECT 1 FROM attend WHERE att_code = @match)
+	BEGIN
+		DELETE FROM attend WHERE att_code = @match;
+	END
+	/*기준 에버리지 계산 및 칼럼 2025-07-15 추가*/
+	-- 기준 에버리지 계산용 임시 테이블
+	DECLARE @Average TABLE ( mem_code INT PRIMARY KEY,average_score FLOAT);
+	-- 기준 에버 생성 기준일
+	DECLARE @fromdate date, @todate date , @interval int;
+	
+	SET @interval = (SELECT cf_value FROM config WHERE cf_code = 14)
+	SET @todate = (SELECT match_date FROM match WHERE match_code = @match)
+	SET @fromdate = DATEADD(MONTH,@interval*-1,@todate)
+
+	-- 필요한 회원만 선별하여 평균 점수 계산
+	INSERT INTO @Average (mem_code, average_score)
+	SELECT 
+		p.player_memcode,
+		ROUND( CASE WHEN COUNT(pl.pl_score) > 0 THEN CAST(SUM(a.att_handi + pl.pl_score) AS DECIMAL) / COUNT(pl.pl_score)ELSE 0 END, 2) AS average_score
+	FROM @PlayerList p
+	JOIN member m ON m.mem_code = p.player_memcode AND m.mem_status != 2
+	LEFT JOIN attend a ON m.mem_code = a.att_memcode
+	LEFT JOIN (SELECT match_code FROM match WHERE match_type = 1 AND match_date >= @fromdate AND match_date <  @todate) mt ON a.att_code = mt.match_code
+	LEFT JOIN players pl ON mt.match_code = pl.pl_match AND pl.pl_member = a.att_memcode AND pl.pl_score != 0
+	GROUP BY p.player_memcode;
+
+	-- 참석자 입력 (기준 에버리지 포함)
+	INSERT INTO attend (att_code, att_name, att_memcode, att_memtype, att_gender, att_pro, att_handi, att_side, att_allcover, att_average)
+	SELECT 
+		@match, player_name, player_memcode, CASE WHEN player_memcode = 0 THEN 2 ELSE 1 END, player_gender, player_isPro, player_handicap,0, 0, ISNULL(avg.average_score, 0)
+	FROM @PlayerList p LEFT JOIN @Average avg ON p.player_memcode = avg.mem_code;
 END
 ```
 ### 🔹 usp_InsertGames [게임 등록]
@@ -548,7 +589,42 @@ BEGIN
 	WHERE pl_match = @match AND pl_game = @game AND pl_name = @name
 END 
 ```
+### 🔹 ups_UpdateGradeInfo[회원 등급 수정]
+> 회원 점수 관리에서 표시될 회원 등급의 정보를 수정하는 프로시점입니다.(2025-07-23 추가)
+> 기존 등급 이름을 수정 하거나, 새로 추가 할 수 있습니다.
+> 코드가 존재하면 수정, 존재하지 않을 경우 등록 작업을 수행 합니다.
 
+```SQL
+CREATE PROCEDURE usp_UpdateGradeInfo
+	@code int,
+	@name NVARCHAR(10)
+as
+BEGIN
+	SET NOCOUNT ON;
+	IF(EXISTS(SELECT 1 FROM grade WHERE grd_code = @code))
+	BEGIN
+		UPDATE grade SET grd_name = @name, grd_udate = GETDATE() WHERE grd_code = @code;	
+	END
+	ELSE 
+	BEGIN 
+		INSERT INTO grade(grd_code, grd_name, grd_udate)
+		VALUES(@code, @name, GETDATE());
+	END
+END;
+```
+
+### 🔹 usp_DeleteGradeInfo[회원 등급 삭제]
+> 회원 등급 수정 시 기존의 등급 종류보다 더 적은 종류로 수정 할 경우 삭제 하는 프로시저입니다.(2025-07-23 추가)
+```SQL
+CREATE PROCEDURE usp_DeleteGradeInfo
+@code int
+
+AS 
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM grade WHERE grd_code >= @code
+END
+```
 ### 
 
 </details>
