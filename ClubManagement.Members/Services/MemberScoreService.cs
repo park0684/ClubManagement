@@ -64,8 +64,9 @@ namespace ClubManagement.Members.Services
                 ToDate = DateTime.Now,
                 FromDate = interval == 0 ? Convert.ToDateTime(_repository.GetStartDate()) : DateTime.Now.AddMonths(-interval)
             };
-            var resultDate = _repository.GetMemberScoreList(search, member);
-            
+            DataTable resultDate = _repository.GetMemberScoreList(search, member);
+            if (resultDate == null)
+                return null;
             List<ScoreDto> scores = new List<ScoreDto>();
             var scoreDate = resultDate;
             foreach(DataRow row in scoreDate.Rows)

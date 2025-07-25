@@ -320,9 +320,9 @@ namespace ClubManagement.Members.Views
             this.lblAvergeScore.Location = new System.Drawing.Point(20, 22);
             this.lblAvergeScore.Name = "lblAvergeScore";
             this.lblAvergeScore.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblAvergeScore.Size = new System.Drawing.Size(83, 37);
+            this.lblAvergeScore.Size = new System.Drawing.Size(32, 37);
             this.lblAvergeScore.TabIndex = 4;
-            this.lblAvergeScore.Text = "123.0";
+            this.lblAvergeScore.Text = "0";
             this.lblAvergeScore.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblGameCount

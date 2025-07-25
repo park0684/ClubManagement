@@ -92,16 +92,21 @@ namespace ClubManagement.Members.Repositories
 
         public DataRow GetMemberBaseInfo( int member)
         {
-            string query = "DECLARE @fromdate date, @todate date , @interval int;\n" +                                                     //기준 에버 계산기간 변수
-                "SET @interval = (SELECT cf_value FROM config WHERE cf_code = 14)\n" +                                          //에버 기준 기간 변수값 설정
+            string query = "DECLARE @fromdate date, @todate date , @interval int;\n" +         //기준 에버 계산기간 변수
+                "SET @interval = (SELECT cf_value FROM config WHERE cf_code = 14)\n" +         //에버 기준 기간 변수값 설정
                 $"SET @todate = GETDATE()\n" +                                                 //기준 에버 생성 종료일
                 "SET @fromdate = DATEADD(MONTH,@interval*-1,@todate)\n\n" + 
                 "SELECT m.mem_name, m.mem_gender,ISNULL(m.mem_grade,-1) mem_grade,\n" +
                 "CASE WHEN m.mem_gender = 1 THEN 15 ELSE 0 END + CASE WHEN m.mem_pro = 1 THEN -5 ELSE 0 END as mem_handi,\n" +
-                "CAST(AVG(CASE WHEN a.att_code = pl.pl_match AND a.att_memcode = pl.pl_member THEN 1.0 * pl.pl_score + ISNULL(a.att_handi, 0)ELSE 1.0 * pl.pl_score END) AS DECIMAL(5,1)) AS AVG_SCORE\n" +
-                $"FROM member m JOIN attend a ON m.mem_code = a.att_memcode AND m.mem_code = {member}\n" +
+                "ISNULL(CAST(AVG(CASE WHEN a.att_code = pl.pl_match AND a.att_memcode = pl.pl_member THEN 1.0 * pl.pl_score + ISNULL(a.att_handi, 0)ELSE 1.0 * pl.pl_score END) AS DECIMAL(5,1)),0) AS AVG_SCORE\n" +
+                /*$"FROM member m JOIN attend a ON m.mem_code = a.att_memcode AND m.mem_code = {member}\n" + 
                 $"JOIN (SELECT match_code FROM match WHERE match_type = 1 AND match_date >= @fromdate AND match_date < @todate) mt ON a.att_code = mt.match_code\n" +
                 $"JOIN players pl ON mt.match_code = pl.pl_match AND pl.pl_member = a.att_memcode AND pl.pl_score != 0\n" +
+                */ // 회원 검색 조건 Member 테이블에서 대상 먼저 지정 후 JOIN에서 LEFT JOIN으로 변경 2025-07-25
+                $"FROM (SELECT mem_code, mem_name, mem_gender, mem_pro, mem_grade FROM member WHERE mem_code = {member}) m " +
+                $"LEFT JOIN attend a ON m.mem_code = a.att_memcode \n" +
+                $"LEFT JOIN (SELECT match_code FROM match WHERE match_type = 1 AND match_date >= @fromdate AND match_date < @todate) mt ON a.att_code = mt.match_code\n" +
+                $"LEFT JOIN players pl ON mt.match_code = pl.pl_match AND pl.pl_member = a.att_memcode AND pl.pl_score != 0\n" +
                 $"GROUP BY m.mem_code, m.mem_name, m.mem_gender,mem_grade, m.mem_pro";
             
             return SqlAdapterQuery(query).Rows[0];
@@ -111,8 +116,11 @@ namespace ClubManagement.Members.Repositories
         {
             string fromDate = search.FromDate.ToString("yyyy-MM-dd");
             string toDate = search.ToDate.ToString("yyyy-MM-dd");
-            string query = $"SELECT max(game_order)   FROM games WHERE game_match IN (SELECT match_code FROM match, attend WHERE match_date > '{fromDate}' AND match_date < '{toDate}' AND match_record = 1 AND match_code = att_code AND att_memcode = {member})";
-            int maxCount = Convert.ToInt32(ScalaQuery(query));
+            string query = $"SELECT ISNULL(max(game_order),0)   FROM games WHERE game_match IN (SELECT match_code FROM match, attend WHERE match_date > '{fromDate}' AND match_date < '{toDate}' AND match_record = 1 AND match_code = att_code AND att_memcode = {member})";
+            int? maxCount = Convert.ToInt32(ScalaQuery(query));
+            if (maxCount == 0)
+                return null;
+            
 
             //게임 칼럼 생성
             List<string> columnList = new List<string>();
